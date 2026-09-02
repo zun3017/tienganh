@@ -353,11 +353,19 @@ function safeSyncToSupabase(userKey) {
                 activeStudyStart = Date.now();
             }
 
+            // Scroll reset to top
+            try {
+                window.scrollTo(0, 0);
+                if (document.documentElement) document.documentElement.scrollTop = 0;
+                if (document.body) document.body.scrollTop = 0;
+            } catch (e) {}
+
             document.querySelectorAll('.container').forEach(el => el.classList.remove('active-screen'));
             document.getElementById(screenId).classList.add('active-screen');
+
             // Header display management
             const mainHeader = document.getElementById('main-header');
-            if (currentUser && screenId !== 'screen-auth' && screenId !== 'screen-dashboard' && screenId !== 'screen-flashcard') {
+            if (currentUser && screenId !== 'screen-auth' && screenId !== 'screen-dashboard') {
                 if (mainHeader) mainHeader.style.display = 'flex';
                 updateDashboardProgress();
             } else {
