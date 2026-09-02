@@ -1,3 +1,19 @@
+
+// --- SAFE SUPABASE SYNC HELPER ---
+function safeSyncToSupabase(userKey) {
+    const targetUser = userKey || currentUser;
+    if (typeof SupabaseService !== 'undefined' && targetUser) {
+        try {
+            let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
+            if (users[targetUser]) {
+                SupabaseService.syncUser(targetUser, users[targetUser]);
+            }
+        } catch (e) {
+            console.log('Supabase sync offline:', e);
+        }
+    }
+}
+
 // --- DATA SETUP ---
         // vocabTopics is loaded from vocab_data.js
         let currentUser = null;
@@ -296,7 +312,7 @@
                     if(!users[currentUser].dailyStudyTime[today]) users[currentUser].dailyStudyTime[today] = 0;
                     users[currentUser].dailyStudyTime[today] += elapsedSecs;
                     localStorage.setItem('gas_users', JSON.stringify(users));
-            if(typeof SupabaseService !== 'undefined') { SupabaseService.syncUser(u, users[u]); }
+            safeSyncToSupabase();
                 }
                 activeStudyStart = null;
             }
@@ -345,7 +361,7 @@
             
             users[u] = { password: p, dailyProgress: {}, topicProgress: {}, learnedWords: [], points: 0, unlockedTopics: [] };
             localStorage.setItem('gas_users', JSON.stringify(users));
-            if(typeof SupabaseService !== 'undefined') { SupabaseService.syncUser(u, users[u]); }
+            safeSyncToSupabase();
             
             msg.style.color = "var(--success)";
             msg.innerText = "Đăng ký thành công! Đang chuyển sang Đăng nhập...";
@@ -374,7 +390,7 @@
             document.getElementById('password').value = '';
             msg.innerText = '';
             
-            if(typeof SupabaseService !== 'undefined') { SupabaseService.syncUser(u, users[u]); }
+            safeSyncToSupabase();
             initDashboard();
             showScreen('screen-dashboard'); showMascotSpeech('Chào mừng trở lại! Hú hú!', 3000);
         }
@@ -556,7 +572,7 @@
             uData.points -= cost;
             uData.unlockedTopics.push(itemType);
             localStorage.setItem('gas_users', JSON.stringify(users));
-            if(typeof SupabaseService !== 'undefined') { SupabaseService.syncUser(u, users[u]); }
+            safeSyncToSupabase();
             
             updateDashboardProgress();
             alert(`Chúc mừng! Bạn đã mở khóa thành công gói từ vựng ${itemType.toUpperCase()}.`);
@@ -597,7 +613,7 @@
             }
             
             localStorage.setItem('gas_users', JSON.stringify(users));
-            if(typeof SupabaseService !== 'undefined') { SupabaseService.syncUser(u, users[u]); }
+            safeSyncToSupabase();
             
             if(!sessionLearnedWords.some(word => word.word === w.word)) {
                 sessionLearnedWords.push(w);
@@ -637,7 +653,7 @@
                 if(!users[currentUser].topicProgress) users[currentUser].topicProgress = {};
                 users[currentUser].topicProgress[topicIdx] = 0;
                 localStorage.setItem('gas_users', JSON.stringify(users));
-            if(typeof SupabaseService !== 'undefined') { SupabaseService.syncUser(u, users[u]); }
+            safeSyncToSupabase();
             }
             
             sessionLearnedWords = [];
@@ -831,7 +847,7 @@
             uData.dailyProgress[today].review++;
             
             localStorage.setItem('gas_users', JSON.stringify(users));
-            if(typeof SupabaseService !== 'undefined') { SupabaseService.syncUser(u, users[u]); }
+            safeSyncToSupabase();
             
             document.getElementById('controls-srs').style.visibility = 'hidden';
             
@@ -859,7 +875,7 @@
                     if(!users[currentUser].topicProgress[currentTopicId] || users[currentUser].topicProgress[currentTopicId] < currentIndex) {
                         users[currentUser].topicProgress[currentTopicId] = currentIndex;
                         localStorage.setItem('gas_users', JSON.stringify(users));
-            if(typeof SupabaseService !== 'undefined') { SupabaseService.syncUser(u, users[u]); }
+            safeSyncToSupabase();
                     }
                 }
                 
