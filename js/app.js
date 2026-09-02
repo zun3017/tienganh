@@ -1,4 +1,24 @@
 
+// --- REGISTER EXTENDED TOPICS (B1, B2, TOEIC) ---
+function ensureExtendedTopicsRegistered() {
+    if (typeof premiumTopics !== 'undefined') {
+        if (typeof b1VocabData !== 'undefined') {
+            b1VocabData.id = 'b1_vocab';
+            premiumTopics['b1_vocab'] = b1VocabData;
+        }
+        if (typeof b2VocabData !== 'undefined') {
+            b2VocabData.id = 'b2_vocab';
+            premiumTopics['b2_vocab'] = b2VocabData;
+        }
+        if (typeof toeic650Data !== 'undefined') {
+            toeic650Data.id = 'toeic_650';
+            premiumTopics['toeic_650'] = toeic650Data;
+        }
+    }
+}
+ensureExtendedTopicsRegistered();
+
+
 // --- SAFE SUPABASE SYNC HELPER ---
 function safeSyncToSupabase(userKey) {
     const targetUser = userKey || currentUser;
@@ -402,6 +422,7 @@ function safeSyncToSupabase(userKey) {
 
         // --- DASHBOARD ---
         function initDashboard() {
+            ensureExtendedTopicsRegistered();
             const select = document.getElementById('topic-select');
             select.innerHTML = '<option value="">-- Chọn chủ đề để học --</option>';
             
@@ -417,8 +438,8 @@ function safeSyncToSupabase(userKey) {
             });
             
             // Add Unlocked Premium Topics
-            let users = JSON.parse(localStorage.getItem('gas_users'));
-            let uData = users[currentUser];
+            let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
+            let uData = (currentUser && users[currentUser]) ? users[currentUser] : {};
             if (uData.unlockedTopics) {
                 uData.unlockedTopics.forEach(unlockedKey => {
                     if (premiumTopics[unlockedKey]) {
@@ -445,8 +466,9 @@ function safeSyncToSupabase(userKey) {
                 return;
             }
             
-            let users = JSON.parse(localStorage.getItem('gas_users'));
-            let savedIndex = users[currentUser].topicProgress ? users[currentUser].topicProgress[select.value] || 0 : 0;
+            let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
+            let uData = (currentUser && users[currentUser]) ? users[currentUser] : {};
+            let savedIndex = uData.topicProgress ? uData.topicProgress[select.value] || 0 : 0;
             
             actions.style.display = 'flex';
             if(savedIndex > 0) {
@@ -465,10 +487,12 @@ function safeSyncToSupabase(userKey) {
         }
 
         function updateDashboardProgress() {
-            let users = JSON.parse(localStorage.getItem('gas_users'));
+            let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
+            if (!currentUser || !users[currentUser]) return;
+            let uData = users[currentUser];
             let today = getTodayString();
-            
-            let dailyObj = users[currentUser].dailyProgress[today];
+            if (!uData.dailyProgress) uData.dailyProgress = {};
+            let dailyObj = uData.dailyProgress[today];
             let learned = 0;
             if (dailyObj) {
                 if (typeof dailyObj === 'number') {
@@ -492,7 +516,6 @@ function safeSyncToSupabase(userKey) {
             if (storePointsDisplay) storePointsDisplay.innerText = points;
 
             // Update Store Buttons
-            let uData = users[currentUser];
             let unlocked = uData.unlockedTopics || [];
             
             const btnIt = document.getElementById('btn-buy-it');
@@ -545,12 +568,26 @@ function safeSyncToSupabase(userKey) {
         }
 
         function startLearningStoreItem(itemType) {
+            ensureExtendedTopicsRegistered();
+            let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
+            if (currentUser && users[currentUser]) {
+                if (!users[currentUser].unlockedTopics) users[currentUser].unlockedTopics = [];
+                if (!users[currentUser].unlockedTopics.includes(itemType)) {
+                    users[currentUser].unlockedTopics.push(itemType);
+                    localStorage.setItem('gas_users', JSON.stringify(users));
+                    safeSyncToSupabase();
+                }
+            }
             showScreen('screen-dashboard');
             initDashboard();
             showCloudContent('library');
             let topicSelect = document.getElementById('topic-select');
-            topicSelect.value = itemType;
-            onTopicSelect();
+            if (topicSelect) {
+                topicSelect.value = itemType;
+                onTopicSelect();
+            }
+            // Directly start learning session
+            startLearning(true);
         }
 
         function buyItem(itemType, cost) {
@@ -631,11 +668,18 @@ function safeSyncToSupabase(userKey) {
             const topicIdx = document.getElementById('topic-select').value;
             if(topicIdx === "") { alert("Hãy chọn một chủ đề!"); return; }
             
+            ensureExtendedTopicsRegistered();
             let topicData;
-            if (freeTopics[topicIdx]) {
+            if (freeTopics && freeTopics[topicIdx]) {
                 topicData = freeTopics[topicIdx];
-            } else if (premiumTopics[topicIdx]) {
+            } else if (premiumTopics && premiumTopics[topicIdx]) {
                 topicData = premiumTopics[topicIdx];
+            } else if (topicIdx === 'b1_vocab' && typeof b1VocabData !== 'undefined') {
+                topicData = b1VocabData;
+            } else if (topicIdx === 'b2_vocab' && typeof b2VocabData !== 'undefined') {
+                topicData = b2VocabData;
+            } else if (topicIdx === 'toeic_650' && typeof toeic650Data !== 'undefined') {
+                topicData = toeic650Data;
             } else {
                 topicData = vocabTopics[topicIdx];
             }
@@ -645,15 +689,19 @@ function safeSyncToSupabase(userKey) {
             document.getElementById('flashcard-topic-title').innerText = topicData.topic;
             currentWords = [...topicData.words]; // clone array
             
-            let users = JSON.parse(localStorage.getItem('gas_users'));
+            let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
+            let uData = (currentUser && users[currentUser]) ? users[currentUser] : {};
             if(resume) {
-                currentIndex = users[currentUser].topicProgress ? users[currentUser].topicProgress[topicIdx] || 0 : 0;
+                currentIndex = uData.topicProgress ? uData.topicProgress[topicIdx] || 0 : 0;
             } else {
                 currentIndex = 0;
-                if(!users[currentUser].topicProgress) users[currentUser].topicProgress = {};
-                users[currentUser].topicProgress[topicIdx] = 0;
-                localStorage.setItem('gas_users', JSON.stringify(users));
-            safeSyncToSupabase();
+                if(!uData.topicProgress) uData.topicProgress = {};
+                uData.topicProgress[topicIdx] = 0;
+                if(currentUser && users[currentUser]) {
+                    users[currentUser] = uData;
+                    localStorage.setItem('gas_users', JSON.stringify(users));
+                    safeSyncToSupabase();
+                }
             }
             
             sessionLearnedWords = [];
@@ -1108,7 +1156,15 @@ function safeSyncToSupabase(userKey) {
             const topicIdx = document.getElementById('topic-select').value;
             if(topicIdx === "") return;
             
-            const topicName = vocabTopics[topicIdx].topic;
+            ensureExtendedTopicsRegistered();
+            let topicName = '';
+            if (freeTopics && freeTopics[topicIdx]) topicName = freeTopics[topicIdx].topic;
+            else if (premiumTopics && premiumTopics[topicIdx]) topicName = premiumTopics[topicIdx].topic;
+            else if (topicIdx === 'b1_vocab' && typeof b1VocabData !== 'undefined') topicName = b1VocabData.topic;
+            else if (topicIdx === 'b2_vocab' && typeof b2VocabData !== 'undefined') topicName = b2VocabData.topic;
+            else if (topicIdx === 'toeic_650' && typeof toeic650Data !== 'undefined') topicName = toeic650Data.topic;
+            else if (vocabTopics && vocabTopics[topicIdx]) topicName = vocabTopics[topicIdx].topic;
+            else topicName = topicIdx;
             
             let users = JSON.parse(localStorage.getItem('gas_users'));
             let historyList = users[currentUser].historyList || [];
@@ -1271,6 +1327,7 @@ function safeSyncToSupabase(userKey) {
                 progressChartInstance.destroy();
             }
             
+            if (typeof Chart === 'undefined') return;
             let ctx2d = ctx.getContext('2d');
             
             let gradNew = ctx2d.createLinearGradient(0, 0, 0, 300);

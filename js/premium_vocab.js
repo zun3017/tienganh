@@ -3179,4 +3179,15 @@ const freeTopics = {
     }
 };
 
+
+// Auto register B1 and B2 if loaded before
+if (typeof b1VocabData !== 'undefined') {
+    b1VocabData.id = 'b1_vocab';
+    premiumData['b1_vocab'] = b1VocabData;
+}
+if (typeof b2VocabData !== 'undefined') {
+    b2VocabData.id = 'b2_vocab';
+    premiumData['b2_vocab'] = b2VocabData;
+}
+
 const premiumTopics = premiumData;
