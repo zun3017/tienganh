@@ -130,6 +130,27 @@
                     document.getElementById('login-cup-trigger').style.display = 'flex';
                 }, 300);
             }
+            // Force-reset auth screen to cup-visible state every time
+            function resetAuthScreen() {
+                var cup = document.getElementById('login-cup-trigger');
+                var panel = document.getElementById('login-glass-panel');
+                if (cup) cup.style.display = 'flex';
+                if (panel) {
+                    panel.style.opacity = '0';
+                    panel.style.transform = 'scale(0)';
+                    panel.style.pointerEvents = 'none';
+                }
+            }
+            // Run immediately
+            resetAuthScreen();
+            // Also run on BFCache restore (iOS Safari back/forward navigation)
+            window.addEventListener('pageshow', function(e) {
+                resetAuthScreen();
+            });
+            // Also run on DOMContentLoaded for safety
+            document.addEventListener('DOMContentLoaded', function() {
+                resetAuthScreen();
+            });
         </script>
 
         <div id="login-glass-panel" class="glass" style="max-width: 420px; width: 90%; max-height: 88vh; overflow-y: auto; box-sizing: border-box; padding: 2.5rem; border-radius: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -2px 4px rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.5); border-left: 1px solid rgba(255,255,255,0.5); background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: absolute; z-index: 102; opacity: 0; transform: scale(0); pointer-events: none; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
@@ -452,8 +473,8 @@
     <script src="js/b2_vocab_data.js"></script>
     <script src="js/premium_vocab.js"></script>
     <script src="js/toeic_650_data.js"></script>
-    <script src="js/supabase_client.js?v=4.0"></script>
-    <script src="js/app.js?v=4.0"></script>
+    <script src="js/supabase_client.js?v=4.1"></script>
+    <script src="js/app.js?v=4.1"></script>
     
     <!-- Mobile Viewport & Gesture Lock (No accidental zoom / double-tap zoom / zero-scroll) -->
     <script>
