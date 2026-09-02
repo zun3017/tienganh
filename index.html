@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, shrink-to-fit=no">
     <meta name="theme-color" content="#1e3a8a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -449,5 +449,22 @@
     <script src="js/toeic_650_data.js"></script>
     <script src="js/supabase_client.js"></script>
     <script src="js/app.js"></script>
+    
+    <!-- Mobile Viewport & Gesture Lock (No accidental zoom / double-tap zoom) -->
+    <script>
+        document.addEventListener('gesturestart', function(e) { e.preventDefault(); });
+        document.addEventListener('gesturechange', function(e) { e.preventDefault(); });
+        document.addEventListener('gestureend', function(e) { e.preventDefault(); });
+        let lastTouchEndTime = 0;
+        document.addEventListener('touchend', function(e) {
+            let now = Date.now();
+            if (now - lastTouchEndTime <= 300) {
+                if (!e.target.closest('button, select, input, a, .audio-btn, .sg-word-btn')) {
+                    e.preventDefault();
+                }
+            }
+            lastTouchEndTime = now;
+        }, false);
+    </script>
 </body>
 </html>
