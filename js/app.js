@@ -424,7 +424,7 @@ function safeSyncToSupabase(userKey) {
             }
         }
 
-        function register() {
+        async function register() {
             const u = document.getElementById('reg-username').value.trim();
             const p = document.getElementById('reg-password').value;
             const p2 = document.getElementById('reg-confirm').value;
@@ -434,42 +434,127 @@ function safeSyncToSupabase(userKey) {
             if(p !== p2) { msg.style.color = "var(--danger)"; msg.innerText = "Mật khẩu nhập lại không khớp!"; return; }
             
             let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
-            if(users[u]) { msg.style.color = "var(--danger)"; msg.innerText = "Tên đăng nhập đã tồn tại!"; return; }
+            if(users[u]) { msg.style.color = "var(--danger)"; msg.innerText = "Tên đăng nhập đã tồn tại trên máy này!"; return; }
             
+            msg.style.color = "var(--primary)";
+            msg.innerText = "Đang kiểm tra tài khoản trên hệ thống...";
+
+            // Check if username already taken on Supabase Cloud
+            if (typeof SupabaseService !== 'undefined') {
+                try {
+                    const exists = await SupabaseService.checkUserExists(u);
+                    if (exists) {
+                        msg.style.color = "var(--danger)";
+                        msg.innerText = "Tên đăng nhập đã được người khác sử dụng trên hệ thống!";
+                        return;
+                    }
+                } catch (e) {}
+            }
+
             users[u] = { password: p, dailyProgress: {}, topicProgress: {}, learnedWords: [], points: 0, unlockedTopics: [] };
             localStorage.setItem('gas_users', JSON.stringify(users));
-            safeSyncToSupabase(u);
+            
+            // Sync immediately to Supabase Cloud
+            if (typeof SupabaseService !== 'undefined') {
+                await SupabaseService.syncUser(u, users[u]);
+            }
             
             msg.style.color = "var(--success)";
             msg.innerText = "Đăng ký thành công! Đang chuyển sang Đăng nhập...";
             
             setTimeout(() => {
                 document.getElementById('username').value = u;
+                document.getElementById('password').value = p;
                 toggleAuth('login');
-            }, 1500);
+            }, 1000);
         }
 
-        function login() {
+        async function login() {
             const u = document.getElementById('username').value.trim();
             const p = document.getElementById('password').value;
             const msg = document.getElementById('auth-login-msg');
             
-            let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
-            if(!users[u] || users[u].password !== p) {
+            if(!u || !p) {
                 msg.style.color = "var(--danger)";
-                msg.innerText = "Sai tên đăng nhập hoặc mật khẩu!";
+                msg.innerText = "Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu!";
                 return;
             }
+
+            let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
+
+            // 1. Check local storage first (instant login)
+            if (users[u] && users[u].password === p) {
+                currentUser = u;
+                document.getElementById('user-display').innerText = u;
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+                msg.innerText = '';
+                
+                // Background sync latest cloud points/topics from other devices
+                if (typeof SupabaseService !== 'undefined') {
+                    SupabaseService.fetchUser(u).then(cloudUser => {
+                        if (cloudUser) {
+                            if (cloudUser.points > (users[u].points || 0)) {
+                                users[u].points = cloudUser.points;
+                            }
+                            if (cloudUser.unlocked_topics && cloudUser.unlocked_topics.length > 0) {
+                                users[u].unlockedTopics = Array.from(new Set([...(users[u].unlockedTopics || []), ...cloudUser.unlocked_topics]));
+                            }
+                            localStorage.setItem('gas_users', JSON.stringify(users));
+                            updateDashboardProgress();
+                        }
+                    });
+                }
+
+                initDashboard();
+                showScreen('screen-dashboard');
+                showMascotSpeech('Chào mừng trở lại! Hú hú!', 3000);
+                return;
+            }
+
+            // 2. If not found locally or password mismatch on device, query Supabase Cloud!
+            msg.style.color = "var(--primary)";
+            msg.innerText = "Đang đồng bộ dữ liệu đám mây...";
+
+            if (typeof SupabaseService !== 'undefined') {
+                try {
+                    const cloudUser = await SupabaseService.fetchUser(u);
+                    if (cloudUser) {
+                        if (cloudUser.password_hash === p) {
+                            // Match on Cloud! Save to this device's local storage
+                            users[u] = {
+                                password: p,
+                                dailyProgress: {},
+                                topicProgress: {},
+                                learnedWords: [],
+                                points: cloudUser.points || 0,
+                                unlockedTopics: cloudUser.unlocked_topics || []
+                            };
+                            localStorage.setItem('gas_users', JSON.stringify(users));
+
+                            currentUser = u;
+                            document.getElementById('user-display').innerText = u;
+                            document.getElementById('username').value = '';
+                            document.getElementById('password').value = '';
+                            msg.innerText = '';
+
+                            initDashboard();
+                            showScreen('screen-dashboard');
+                            showMascotSpeech('Chào mừng trở lại! Hú hú!', 3000);
+                            return;
+                        } else {
+                            msg.style.color = "var(--danger)";
+                            msg.innerText = "Mật khẩu không chính xác!";
+                            return;
+                        }
+                    }
+                } catch (e) {
+                    console.warn('Cloud login check error:', e);
+                }
+            }
             
-            currentUser = u;
-            document.getElementById('user-display').innerText = u;
-            document.getElementById('username').value = '';
-            document.getElementById('password').value = '';
-            msg.innerText = '';
-            
-            safeSyncToSupabase();
-            initDashboard();
-            showScreen('screen-dashboard'); showMascotSpeech('Chào mừng trở lại! Hú hú!', 3000);
+            msg.style.color = "var(--danger)";
+            msg.innerText = "Sai tên đăng nhập hoặc mật khẩu!";
         }
 
         function logout() {

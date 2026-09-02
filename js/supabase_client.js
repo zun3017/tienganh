@@ -48,6 +48,28 @@ const SupabaseService = {
     }
   },
 
+  // Fetch user profile from Supabase
+  async fetchUser(username) {
+    if (!SupabaseConfig.client) return null;
+    try {
+      const { data, error } = await SupabaseConfig.client
+        .from('users_profile')
+        .select('*')
+        .eq('username', username)
+        .maybeSingle();
+      if (!error && data) return data;
+    } catch (err) {
+      console.log('Fetch user offline:', err);
+    }
+    return null;
+  },
+
+  // Check if username already exists on Cloud
+  async checkUserExists(username) {
+    const user = await this.fetchUser(username);
+    return user !== null;
+  },
+
   // Sync user profile to Supabase
   async syncUser(username, userData) {
     if (!SupabaseConfig.client) return;
