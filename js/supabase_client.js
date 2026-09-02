@@ -7,8 +7,7 @@
 const SupabaseConfig = {
   projectRef: 'yqvxrtqjdrsttcgvlurp',
   supabaseUrl: 'https://yqvxrtqjdrsttcgvlurp.supabase.co',
-  // Default anon public key placeholder (or loaded from localStorage / env)
-  anonKey: localStorage.getItem('supabase_anon_key') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlxdnhydHFqZHJzdHRjZ3ZsdXJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk0MjQwMDAsImV4cCI6MjAyNTAwMDAwMH0.placeholder',
+  anonKey: 'sb_publishable_S9t2XVfd2LSfxdcRM_UFcg_kiAtJsy1',
   client: null,
   isConnected: false
 };
@@ -20,7 +19,7 @@ const SupabaseService = {
         SupabaseConfig.client = supabase.createClient(SupabaseConfig.supabaseUrl, SupabaseConfig.anonKey);
         this.checkConnection();
       } catch (e) {
-        console.warn('Supabase client init with fallback:', e);
+        console.warn('Supabase client init error:', e);
       }
     }
   },
@@ -63,13 +62,13 @@ const SupabaseService = {
     }
 
     if (online) {
-      badge.style.background = 'rgba(16, 185, 129, 0.9)';
+      badge.style.background = 'rgba(16, 185, 129, 0.95)';
       badge.style.color = '#ffffff';
-      badge.innerHTML = '⚡ Supabase Cloud (yqvxrtqjdrsttcgvlurp): 🟢 Đã kết nối';
+      badge.innerHTML = '⚡ Supabase Cloud: 🟢 Đã kết nối';
     } else {
       badge.style.background = 'rgba(30, 41, 59, 0.85)';
       badge.style.color = '#94a3b8';
-      badge.innerHTML = '⚡ Cloud Sync (yqvxrtqjdrsttcgvlurp): 💾 Chế độ Offline & LocalStorage';
+      badge.innerHTML = '⚡ Supabase Cloud: 💾 Chế độ Hybrid LocalStorage';
     }
   },
 
