@@ -41,35 +41,10 @@ const SupabaseService = {
   },
 
   updateConnectionUI(online) {
+    // Hidden completely as requested by user
     let badge = document.getElementById('supabase-status-badge');
-    if (!badge) {
-      badge = document.createElement('div');
-      badge.id = 'supabase-status-badge';
-      badge.style.position = 'fixed';
-      badge.style.bottom = '15px';
-      badge.style.left = '15px';
-      badge.style.right = 'auto';
-      badge.style.padding = '6px 14px';
-      badge.style.borderRadius = '20px';
-      badge.style.fontSize = '12px';
-      badge.style.fontWeight = 'bold';
-      badge.style.zIndex = '900';
-      badge.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-      badge.style.backdropFilter = 'blur(8px)';
-      badge.style.display = 'flex';
-      badge.style.alignItems = 'center';
-      badge.style.gap = '6px';
-      document.body.appendChild(badge);
-    }
-
-    if (online) {
-      badge.style.background = 'rgba(16, 185, 129, 0.95)';
-      badge.style.color = '#ffffff';
-      badge.innerHTML = '⚡ Supabase Cloud: 🟢 Đã kết nối';
-    } else {
-      badge.style.background = 'rgba(30, 41, 59, 0.85)';
-      badge.style.color = '#94a3b8';
-      badge.innerHTML = '⚡ Supabase Cloud: 💾 Chế độ Hybrid LocalStorage';
+    if (badge) {
+      badge.remove();
     }
   },
 

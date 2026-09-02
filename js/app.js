@@ -406,7 +406,7 @@ function safeSyncToSupabase(userKey) {
                         mascot.style.right = '';
                         mascot.style.opacity = '1';
                     }
-                    if (badge) badge.style.display = 'flex';
+                    if (badge) badge.style.display = 'none';
                 }
             }
         }
