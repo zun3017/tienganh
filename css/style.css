@@ -220,11 +220,36 @@
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
         }
         
+        /* --- GAME UI TOP NAVIGATION BAR (DESKTOP & UNIVERSAL) --- */
+        .dashboard-top-nav {
+            position: absolute;
+            top: 24px;
+            left: 28px;
+            right: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            z-index: 100;
+        }
+
+        .dashboard-top-nav .glass-btn {
+            position: static !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 22px !important;
+            font-size: 0.95rem !important;
+            border-radius: 30px !important;
+            white-space: nowrap;
+        }
+
         /* --- GAME UI STYLES (GLASSMORPHISM) --- */
         .glass-btn {
             cursor: pointer;
-            position: absolute;
-            display: flex;
+            position: relative;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
