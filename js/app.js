@@ -355,42 +355,49 @@ function safeSyncToSupabase(userKey) {
 
             document.querySelectorAll('.container').forEach(el => el.classList.remove('active-screen'));
             document.getElementById(screenId).classList.add('active-screen');
-            if(currentUser && screenId !== 'screen-auth') {
-                document.getElementById('main-header').style.display = 'flex';
+            // Header display management
+            const mainHeader = document.getElementById('main-header');
+            if (currentUser && screenId !== 'screen-auth' && screenId !== 'screen-dashboard' && screenId !== 'screen-flashcard') {
+                if (mainHeader) mainHeader.style.display = 'flex';
                 updateDashboardProgress();
-                if(screenId === 'screen-dashboard') {
-                    // Start with cloud content hidden, let user click icons
+            } else {
+                if (mainHeader) mainHeader.style.display = 'none';
+                if (screenId === 'screen-dashboard') {
+                    updateDashboardProgress();
                     hideCloudContent();
                 }
-            } else {
-                document.getElementById('main-header').style.display = 'none';
             }
 
             // Fixed non-scrolling viewport control
             if (document.body && document.body.style) {
-                if (screenId === 'screen-flashcard') {
+                if (screenId === 'screen-flashcard' || screenId === 'screen-dashboard') {
                     document.body.style.overflow = 'hidden';
                 } else {
                     document.body.style.overflow = '';
                 }
             }
 
-            if (typeof document !== 'undefined' && document.querySelector) {
-                const mascot = document.querySelector('.mascot-container');
-                if (mascot) {
-                    if (screenId === 'screen-flashcard') {
-                        mascot.style.transform = 'scale(0.65)';
-                        mascot.style.transformOrigin = 'bottom right';
-                        mascot.style.bottom = '8px';
-                        mascot.style.right = '8px';
-                        mascot.style.opacity = '0.75';
-                    } else {
+            // Mascot & Supabase badge display management
+            if (typeof document !== 'undefined') {
+                const mascot = document.querySelector ? document.querySelector('.mascot-container') : null;
+                const badge = document.getElementById('supabase-status-badge');
+                if (screenId === 'screen-flashcard') {
+                    // Hide completely during learning session for 100% focus and no button blocking!
+                    if (mascot) mascot.style.display = 'none';
+                    if (badge) badge.style.display = 'none';
+                } else if (screenId === 'screen-auth') {
+                    if (mascot) mascot.style.display = 'block';
+                    if (badge) badge.style.display = 'none';
+                } else {
+                    // Show on dashboard / other screens
+                    if (mascot) {
+                        mascot.style.display = 'block';
                         mascot.style.transform = '';
-                        mascot.style.transformOrigin = '';
                         mascot.style.bottom = '';
                         mascot.style.right = '';
                         mascot.style.opacity = '1';
                     }
+                    if (badge) badge.style.display = 'flex';
                 }
             }
         }
