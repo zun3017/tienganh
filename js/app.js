@@ -193,7 +193,8 @@ function safeSyncToSupabase(userKey) {
 
         // --- NAVIGATION & GAME UI ---
         function prepareSRS() {
-            let users = JSON.parse(localStorage.getItem('gas_users'));
+            let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
+            if (!currentUser || !users[currentUser]) return;
             let uData = users[currentUser];
             let todayDate = new Date(getTodayString());
             
@@ -285,17 +286,29 @@ function safeSyncToSupabase(userKey) {
                 title.innerText = 'Thư Viện Bài Học';
                 desc.innerText = 'Chọn bài học bạn muốn chinh phục hôm nay!';
                 
-                // Pre-select the dropdown if available
-                let topicSelect = document.getElementById('topic-select');
-                if (topicSelect) {
-                    if (section === 'cat_3000') topicSelect.value = 'default';
-                    else if (section === 'cat_toeic') topicSelect.value = 'toeic';
-                    else if (section === 'cat_ielts') topicSelect.value = 'ielts';
-                }
+                ensureExtendedTopicsRegistered();
+                initDashboard();
                 
                 container.appendChild(document.getElementById('topic-select'));
                 container.appendChild(document.getElementById('topic-actions'));
                 container.appendChild(document.getElementById('btn-history'));
+                
+                let topicSelect = document.getElementById('topic-select');
+                if (topicSelect) {
+                    if (section === 'cat_3000') {
+                        // 3000 Từ Oxford -> chọn topic 10 hoặc topic 0
+                        topicSelect.value = '10';
+                        if (!topicSelect.value) topicSelect.value = '0';
+                    } else if (section === 'cat_toeic') {
+                        topicSelect.value = 'toeic_650';
+                    } else if (section === 'cat_ielts') {
+                        topicSelect.value = 'ielts';
+                    }
+                    if (!topicSelect.value && topicSelect.options.length > 1) {
+                        topicSelect.selectedIndex = 1;
+                    }
+                }
+                onTopicSelect();
             } else if (section === 'srs') {
                 title.innerText = 'Ôn Tập Nhớ Lâu (SRS)';
                 desc.innerText = 'Hệ thống lặp lại ngắt quãng giúp bạn nhớ từ vĩnh viễn!';
@@ -611,16 +624,21 @@ function safeSyncToSupabase(userKey) {
             localStorage.setItem('gas_users', JSON.stringify(users));
             safeSyncToSupabase();
             
+            ensureExtendedTopicsRegistered();
+            initDashboard();
             updateDashboardProgress();
             alert(`Chúc mừng! Bạn đã mở khóa thành công gói từ vựng ${itemType.toUpperCase()}.`);
         }
 
         function markWordLearned() {
-            let users = JSON.parse(localStorage.getItem('gas_users'));
+            let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
+            if (!currentUser || !users[currentUser]) return;
+            let uData = users[currentUser];
             let today = getTodayString();
+            if (!uData.dailyProgress) uData.dailyProgress = {};
             
             // Migration / Initialization
-            if(users[currentUser].dailyProgress[today] === undefined) {
+            if(uData.dailyProgress[today] === undefined) {
                 users[currentUser].dailyProgress[today] = { new: 0, review: 0 };
             } else if (typeof users[currentUser].dailyProgress[today] === 'number') {
                 users[currentUser].dailyProgress[today] = { new: users[currentUser].dailyProgress[today], review: 0 };
@@ -628,6 +646,7 @@ function safeSyncToSupabase(userKey) {
             users[currentUser].dailyProgress[today].new++;
             
             const w = currentWords[currentIndex];
+            if (!w) return;
             
             // Add to history list with Date and Topic tracking
             if(!users[currentUser].historyList) users[currentUser].historyList = [];
@@ -843,7 +862,8 @@ function safeSyncToSupabase(userKey) {
         }
 
                 function srsAnswer(remembered) {
-            let users = JSON.parse(localStorage.getItem('gas_users'));
+            let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
+            if (!currentUser || !users[currentUser]) return;
             let uData = users[currentUser];
             let wordKey = currentWords[currentIndex].word;
             
@@ -1211,8 +1231,9 @@ function safeSyncToSupabase(userKey) {
 
         function reviewForgottenWords() {
             const topicIdx = document.getElementById('topic-select').value;
-            let users = JSON.parse(localStorage.getItem('gas_users'));
-            let historyList = users[currentUser].historyList || [];
+            let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
+            let uData = (currentUser && users[currentUser]) ? users[currentUser] : {};
+            let historyList = uData.historyList || [];
             
             // Lấy các từ ĐÃ HỌC TRONG CHỦ ĐỀ NÀY
             let topicHistory = historyList.filter(item => item.topicId == topicIdx);
