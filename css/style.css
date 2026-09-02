@@ -525,9 +525,17 @@ button, select, input, .glass-btn, .glass-card-floating, .card {
     }
 
     /* Auth Screen on Mobile */
+    #screen-auth {
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
     #login-glass-panel {
         width: 92% !important;
         max-width: 360px !important;
+        max-height: 85vh !important;
+        overflow-y: auto !important;
+        box-sizing: border-box !important;
         padding: 1.6rem 1.2rem !important;
         border-radius: 24px !important;
     }
@@ -685,6 +693,7 @@ button, select, input, .glass-btn, .glass-card-floating, .card {
         bottom: 0 !important;
         left: 0 !important;
         right: 0 !important;
+        transform: none !important;
         width: 100vw !important;
         max-width: 100% !important;
         height: 100vh !important;
@@ -825,24 +834,42 @@ button, select, input, .glass-btn, .glass-card-floating, .card {
 /* ==========================================================
    FIXED VIEWPORT LAYOUT FOR FLASHCARD SCREEN (NO PAGE SCROLL)
    ========================================================== */
-#screen-flashcard.active-screen {
-    position: fixed !important;
-    top: 64px !important;
-    bottom: 8px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    height: auto !important;
-    max-height: none !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: space-between !important;
-    overflow: hidden !important;
-    padding: 0.4rem 1rem 0.5rem 1rem !important;
-    box-sizing: border-box !important;
-    width: 95% !important;
-    max-width: 640px !important;
-    margin: 0 !important;
-    z-index: 50 !important;
+@media (min-width: 681px) {
+    #screen-flashcard.active-screen {
+        position: fixed !important;
+        top: 64px !important;
+        bottom: 8px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        height: auto !important;
+        max-height: none !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        overflow: hidden !important;
+        padding: 0.4rem 1rem 0.5rem 1rem !important;
+        box-sizing: border-box !important;
+        width: 95% !important;
+        max-width: 640px !important;
+        margin: 0 !important;
+        z-index: 50 !important;
+    }
+}
+
+/* Responsive Mascot for Compact Laptops / Short Viewports */
+@media (min-width: 681px) and (max-width: 1366px), (min-width: 681px) and (max-height: 768px) {
+    .mascot-container {
+        width: 90px !important;
+        height: 90px !important;
+        bottom: 15px !important;
+        right: 15px !important;
+    }
+    .mascot-speech {
+        bottom: 85px !important;
+        right: 25px !important;
+        font-size: 0.85rem !important;
+        padding: 0.6rem 0.9rem !important;
+    }
 }
 
 .flashcard-topbar {

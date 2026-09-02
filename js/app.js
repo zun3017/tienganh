@@ -43,6 +43,7 @@ function safeSyncToSupabase(userKey) {
         let isSrsMode = false;
         let srsQueue = []; // Array of words learned
         let quizQueue = [];
+        let quizTotalCount = 0;
         let targetQuizWord = null;
         let quizScore = 0;
         let quizHintTimeout = null;
@@ -437,7 +438,7 @@ function safeSyncToSupabase(userKey) {
             
             users[u] = { password: p, dailyProgress: {}, topicProgress: {}, learnedWords: [], points: 0, unlockedTopics: [] };
             localStorage.setItem('gas_users', JSON.stringify(users));
-            safeSyncToSupabase();
+            safeSyncToSupabase(u);
             
             msg.style.color = "var(--success)";
             msg.innerText = "Đăng ký thành công! Đang chuyển sang Đăng nhập...";
@@ -872,10 +873,16 @@ function safeSyncToSupabase(userKey) {
             }
             
             if(btnVoice) {
-                btnVoice.onclick = function(e) {
-                    e.stopPropagation();
-                    startVoiceRecognition(baseWordLower);
-                };
+                const hasSpeechRec = ('webkitSpeechRecognition' in window) || ('SpeechRecognition' in window);
+                if (!hasSpeechRec) {
+                    btnVoice.style.display = 'none';
+                } else {
+                    btnVoice.style.display = 'inline-flex';
+                    btnVoice.onclick = function(e) {
+                        e.stopPropagation();
+                        startVoiceRecognition(baseWordLower);
+                    };
+                }
             }
         }
 
@@ -1023,10 +1030,16 @@ function safeSyncToSupabase(userKey) {
         }
 
         function playAudio(e) {
-            e.stopPropagation(); // prevent card flip
+            if (e && e.stopPropagation) e.stopPropagation(); // prevent card flip
+            if (!currentWords || !currentWords[currentIndex]) return;
+            if (!('speechSynthesis' in window)) return;
+            try {
+                window.speechSynthesis.cancel(); // Fix Safari iOS speech queue deadlock
+            } catch(err) {}
             let baseWord = currentWords[currentIndex].word.replace(/\(.*?\)/g, '').split('/')[0].trim();
             let utterance = new SpeechSynthesisUtterance(baseWord);
             utterance.lang = 'en-US';
+            utterance.rate = 0.9;
             window.speechSynthesis.speak(utterance);
         }
 
@@ -1034,6 +1047,7 @@ function safeSyncToSupabase(userKey) {
         function triggerQuiz() {
             let p2 = [...sessionLearnedWords].sort(() => Math.random() - 0.5).map(w => ({...w, qtype: 'vi-en'}));
             quizQueue = [...p2];
+            quizTotalCount = p2.length;
             sessionLearnedWords = []; // reset counter
             quizScore = 0;
             renderNextQuizQuestion();
@@ -1043,8 +1057,9 @@ function safeSyncToSupabase(userKey) {
         function renderNextQuizQuestion() {
             if(quizQueue.length === 0) {
                 // Done with quiz
-                if(typeof SupabaseService !== 'undefined') { SupabaseService.saveQuizResult(currentUser, 'Quiz Ôn tập 40 từ', quizScore, 40); }
-                alert(`Chúc mừng! Bạn đã hoàn thành bài kiểm tra ôn tập 40 câu.\nĐiểm số của bạn: ${quizScore}/40`);
+                let totalQ = quizTotalCount > 0 ? quizTotalCount : 20;
+                if(typeof SupabaseService !== 'undefined') { SupabaseService.saveQuizResult(currentUser, `Quiz Ôn tập ${totalQ} từ`, quizScore, totalQ); }
+                alert(`Chúc mừng! Bạn đã hoàn thành bài kiểm tra ôn tập ${totalQ} câu.\nĐiểm số của bạn: ${quizScore}/${totalQ}`);
                 showScreen('screen-flashcard');
                 nextCard();
                 return;
@@ -1681,4 +1696,55 @@ function safeSyncToSupabase(userKey) {
                 btnVoice.style.background = 'white';
                 btnVoice.style.color = 'var(--primary)';
             };
+        }
+
+        // --- MOBILE TOUCH SWIPE GESTURES ---
+        function initCardSwipeGestures() {
+            const cardContainer = document.getElementById('flashcard-obj') || document.querySelector('.scene');
+            if (!cardContainer) return;
+            
+            let touchStartX = 0;
+            let touchStartY = 0;
+            let touchEndX = 0;
+            let touchEndY = 0;
+            
+            cardContainer.addEventListener('touchstart', function(e) {
+                if (!e.changedTouches || e.changedTouches.length === 0) return;
+                touchStartX = e.changedTouches[0].screenX;
+                touchStartY = e.changedTouches[0].screenY;
+            }, { passive: true });
+            
+            cardContainer.addEventListener('touchend', function(e) {
+                if (!e.changedTouches || e.changedTouches.length === 0) return;
+                touchEndX = e.changedTouches[0].screenX;
+                touchEndY = e.changedTouches[0].screenY;
+                
+                const deltaX = touchEndX - touchStartX;
+                const deltaY = touchEndY - touchStartY;
+                
+                // Horizontal swipe detected (> 45px and dominant over vertical)
+                if (Math.abs(deltaX) > 45 && Math.abs(deltaX) > Math.abs(deltaY) * 1.2) {
+                    if (deltaX < 0) {
+                        // Swiped Left -> Next Card
+                        if (isSrsMode) {
+                            srsAnswer(true);
+                        } else {
+                            nextCard();
+                        }
+                    } else {
+                        // Swiped Right -> Prev Card
+                        if (isSrsMode) {
+                            srsAnswer(false);
+                        } else {
+                            prevCard();
+                        }
+                    }
+                }
+            }, { passive: true });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initCardSwipeGestures);
+        } else {
+            initCardSwipeGestures();
         }
