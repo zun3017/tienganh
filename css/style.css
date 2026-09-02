@@ -17,14 +17,24 @@
             font-family: 'Inter', sans-serif;
         }
 
+        html, body {
+            height: 100%;
+            max-height: 100%;
+            overflow: hidden !important;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             background-color: var(--bg);
             color: var(--text);
-            min-height: 100vh; /* Allow expanding if absolutely necessary */
+            height: 100vh;
+            max-height: 100vh;
             display: flex;
             flex-direction: column;
             background-image: radial-gradient(circle at top right, #e2e8f0, #f8fafc);
-            overflow-x: hidden;
+            overflow: hidden !important;
             position: relative;
         }
 
@@ -290,21 +300,31 @@
         .float-delay-4 { animation-delay: -3.8s; }
         
         /* Top Nav */
-        header {
+        header#main-header, header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 48px;
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            padding: 1rem 2rem;
-            background: rgba(255, 255, 255, 0.8);
+            padding: 0 1.5rem;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--surface-border);
+            z-index: 100;
         }
 
         /* Flashcard 3D Flip */
         .scene {
             width: 100%;
-            height: 65vh;
-            min-height: 480px;
+            height: auto;
+            flex: 1;
+            min-height: 0;
             perspective: 1000px;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
             cursor: pointer;
         }
 
@@ -743,17 +763,23 @@ button, select, input, .glass-btn, .glass-card-floating, .card {
    FIXED VIEWPORT LAYOUT FOR FLASHCARD SCREEN (NO PAGE SCROLL)
    ========================================================== */
 #screen-flashcard.active-screen {
-    height: calc(100vh - 65px) !important;
-    max-height: calc(100vh - 65px) !important;
+    position: fixed !important;
+    top: 52px !important;
+    bottom: 8px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    height: auto !important;
+    max-height: none !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: space-between !important;
     overflow: hidden !important;
-    padding: 0.5rem 1rem 0.8rem 1rem !important;
+    padding: 0.4rem 1rem 0.5rem 1rem !important;
     box-sizing: border-box !important;
-    width: 100% !important;
+    width: 95% !important;
     max-width: 640px !important;
-    margin: 0 auto !important;
+    margin: 0 !important;
+    z-index: 50 !important;
 }
 
 .flashcard-topbar {
