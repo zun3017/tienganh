@@ -446,3 +446,284 @@
             transform: scale(0.95);
             box-shadow: none;
         }
+
+/* ==========================================================
+   MOBILE RESPONSIVE & TOUCH OPTIMIZATIONS
+   ========================================================== */
+
+/* Universal touch responsiveness */
+button, select, input, .glass-btn, .glass-card-floating, .card {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+@media (max-width: 680px) {
+    /* Safe Area & Layout */
+    body {
+        padding-top: env(safe-area-inset-top, 0);
+        padding-bottom: env(safe-area-inset-bottom, 0);
+    }
+
+    header#main-header {
+        padding: 0.6rem 1rem;
+        font-size: 0.95rem;
+    }
+
+    .container {
+        width: 95%;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        padding-bottom: 0.75rem;
+    }
+
+    /* Auth Screen on Mobile */
+    #login-glass-panel {
+        width: 92% !important;
+        max-width: 360px !important;
+        padding: 1.6rem 1.2rem !important;
+        border-radius: 24px !important;
+    }
+
+    #login-glass-panel h2 {
+        font-size: 1.8rem !important;
+    }
+
+    #login-glass-panel p {
+        font-size: 0.95rem !important;
+        margin-bottom: 1.2rem !important;
+    }
+
+    #login-glass-panel div[style*="top: -80px"] {
+        top: -60px !important;
+        left: -35px !important;
+    }
+
+    #login-glass-panel div[style*="top: -80px"] img {
+        height: 95px !important;
+    }
+
+    #login-cup-trigger img:first-child {
+        height: 38px !important;
+    }
+
+    #login-cup-trigger img:last-child {
+        height: 120px !important;
+    }
+
+    /* Dashboard Floating Buttons on Mobile */
+    .glass-btn {
+        padding: 8px 14px;
+        font-size: 0.85rem;
+        border-radius: 20px;
+    }
+
+    .glass-btn[title="Bảng Thống Kê"] {
+        top: 10px !important;
+        left: 10px !important;
+    }
+
+    .glass-btn[title="Chuỗi Học"] {
+        top: 10px !important;
+        left: auto !important;
+        right: 10px !important;
+    }
+
+    /* 4 Corner Floating 3D Cards on Mobile */
+    .glass-card-floating {
+        width: 110px !important;
+        height: 110px !important;
+        padding: 8px !important;
+        border-radius: 16px !important;
+        font-size: 0.85rem !important;
+    }
+
+    .glass-card-floating .card-icon {
+        font-size: 2.2rem !important;
+        margin-bottom: 4px !important;
+    }
+
+    .glass-card-floating[title="Cửa Hàng Tích Điểm"] {
+        top: 16% !important;
+        left: 6% !important;
+    }
+
+    .glass-card-floating[title="3000 Từ Cơ Bản"] {
+        top: 16% !important;
+        right: 6% !important;
+        left: auto !important;
+    }
+
+    .glass-card-floating[title="Trí Nhớ Siêu Phàm"] {
+        top: 66% !important;
+        left: 6% !important;
+    }
+
+    .glass-card-floating[title="Thêm Bộ Từ Mới"] {
+        top: 66% !important;
+        right: 6% !important;
+        left: auto !important;
+    }
+
+    /* Central Cloud Modal Area on Mobile */
+    #cloud-content-area {
+        width: 94% !important;
+        max-width: 94% !important;
+        max-height: 88vh !important;
+        padding: 20px 14px !important;
+        border-radius: 22px !important;
+    }
+
+    #cloud-title {
+        font-size: 1.4rem !important;
+        margin-bottom: 0.3rem !important;
+    }
+
+    #cloud-desc {
+        font-size: 0.9rem !important;
+        padding: 4px 10px !important;
+        margin-bottom: 1.2rem !important;
+    }
+
+    #cloud-content-area img[title="Đóng"] {
+        top: 10px !important;
+        right: 12px !important;
+        height: 38px !important;
+    }
+
+    /* Owl Mascot on Mobile */
+    .mascot-container {
+        width: 75px !important;
+        height: 75px !important;
+        bottom: 12px !important;
+        right: 12px !important;
+    }
+
+    .mascot-speech {
+        bottom: 80px !important;
+        right: 10px !important;
+        min-width: 170px !important;
+        max-width: 230px !important;
+        font-size: 0.85rem !important;
+        padding: 8px 12px !important;
+        border-radius: 12px !important;
+    }
+
+    /* Flashcard Screen on Mobile */
+    .scene {
+        height: 54vh !important;
+        min-height: 370px !important;
+        margin-bottom: 0.8rem !important;
+    }
+
+    .card__face {
+        padding: 0.8rem !important;
+    }
+
+    .word-en {
+        font-size: 1.9rem !important;
+        word-break: break-word;
+        line-height: 1.2;
+    }
+
+    .word-ipa {
+        font-size: 1.05rem !important;
+    }
+
+    .word-vi {
+        font-size: 1.3rem !important;
+        margin-bottom: 0.6rem !important;
+    }
+
+    .word-img {
+        height: 85px !important;
+    }
+
+    .example-en {
+        font-size: 0.95rem !important;
+        line-height: 1.3;
+    }
+
+    .example-vi {
+        font-size: 0.88rem !important;
+    }
+
+    .controls {
+        gap: 0.5rem !important;
+    }
+
+    .controls button {
+        padding: 0.8rem 0.4rem !important;
+        font-size: 0.92rem !important;
+        min-height: 46px;
+    }
+
+    /* Quiz Screen on Mobile */
+    #screen-quiz {
+        padding: 1.2rem 1rem !important;
+    }
+
+    .quiz-option {
+        padding: 0.85rem 1rem !important;
+        font-size: 0.95rem !important;
+        border-radius: 12px !important;
+    }
+
+    /* Sentence Game Modal on Mobile */
+    #sentence-game-modal > div {
+        width: 95% !important;
+        padding: 1.4rem 1rem !important;
+        border-radius: 20px !important;
+    }
+
+    #sentence-game-modal h2 {
+        font-size: 1.3rem !important;
+    }
+
+    #sg-vietnamese {
+        font-size: 0.9rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .sg-word-btn {
+        padding: 6px 12px !important;
+        font-size: 0.9rem !important;
+        margin: 3px !important;
+    }
+
+    /* Store Cards inside modal on Mobile */
+    #store-panel > div > div {
+        padding: 0.75rem 0.85rem !important;
+    }
+
+    #store-panel h4 {
+        font-size: 0.95rem !important;
+    }
+
+    #store-panel p {
+        font-size: 0.75rem !important;
+    }
+
+    #store-panel button {
+        padding: 0.5rem 0.8rem !important;
+        font-size: 0.85rem !important;
+        white-space: nowrap;
+    }
+}
+
+/* Extra small screens (iPhone SE, 320px - 360px) */
+@media (max-width: 360px) {
+    .glass-card-floating {
+        width: 95px !important;
+        height: 95px !important;
+        font-size: 0.75rem !important;
+    }
+    .glass-card-floating .card-icon {
+        font-size: 1.8rem !important;
+    }
+    .word-en {
+        font-size: 1.6rem !important;
+    }
+    .scene {
+        min-height: 330px !important;
+    }
+}
