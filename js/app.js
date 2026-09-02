@@ -296,6 +296,7 @@
                     if(!users[currentUser].dailyStudyTime[today]) users[currentUser].dailyStudyTime[today] = 0;
                     users[currentUser].dailyStudyTime[today] += elapsedSecs;
                     localStorage.setItem('gas_users', JSON.stringify(users));
+            if(typeof SupabaseService !== 'undefined') { SupabaseService.syncUser(u, users[u]); }
                 }
                 activeStudyStart = null;
             }
@@ -344,6 +345,7 @@
             
             users[u] = { password: p, dailyProgress: {}, topicProgress: {}, learnedWords: [], points: 0, unlockedTopics: [] };
             localStorage.setItem('gas_users', JSON.stringify(users));
+            if(typeof SupabaseService !== 'undefined') { SupabaseService.syncUser(u, users[u]); }
             
             msg.style.color = "var(--success)";
             msg.innerText = "Đăng ký thành công! Đang chuyển sang Đăng nhập...";
@@ -372,6 +374,7 @@
             document.getElementById('password').value = '';
             msg.innerText = '';
             
+            if(typeof SupabaseService !== 'undefined') { SupabaseService.syncUser(u, users[u]); }
             initDashboard();
             showScreen('screen-dashboard'); showMascotSpeech('Chào mừng trở lại! Hú hú!', 3000);
         }
@@ -553,6 +556,7 @@
             uData.points -= cost;
             uData.unlockedTopics.push(itemType);
             localStorage.setItem('gas_users', JSON.stringify(users));
+            if(typeof SupabaseService !== 'undefined') { SupabaseService.syncUser(u, users[u]); }
             
             updateDashboardProgress();
             alert(`Chúc mừng! Bạn đã mở khóa thành công gói từ vựng ${itemType.toUpperCase()}.`);
@@ -593,6 +597,7 @@
             }
             
             localStorage.setItem('gas_users', JSON.stringify(users));
+            if(typeof SupabaseService !== 'undefined') { SupabaseService.syncUser(u, users[u]); }
             
             if(!sessionLearnedWords.some(word => word.word === w.word)) {
                 sessionLearnedWords.push(w);
@@ -632,6 +637,7 @@
                 if(!users[currentUser].topicProgress) users[currentUser].topicProgress = {};
                 users[currentUser].topicProgress[topicIdx] = 0;
                 localStorage.setItem('gas_users', JSON.stringify(users));
+            if(typeof SupabaseService !== 'undefined') { SupabaseService.syncUser(u, users[u]); }
             }
             
             sessionLearnedWords = [];
@@ -825,6 +831,7 @@
             uData.dailyProgress[today].review++;
             
             localStorage.setItem('gas_users', JSON.stringify(users));
+            if(typeof SupabaseService !== 'undefined') { SupabaseService.syncUser(u, users[u]); }
             
             document.getElementById('controls-srs').style.visibility = 'hidden';
             
@@ -852,6 +859,7 @@
                     if(!users[currentUser].topicProgress[currentTopicId] || users[currentUser].topicProgress[currentTopicId] < currentIndex) {
                         users[currentUser].topicProgress[currentTopicId] = currentIndex;
                         localStorage.setItem('gas_users', JSON.stringify(users));
+            if(typeof SupabaseService !== 'undefined') { SupabaseService.syncUser(u, users[u]); }
                     }
                 }
                 
@@ -898,6 +906,7 @@
         function renderNextQuizQuestion() {
             if(quizQueue.length === 0) {
                 // Done with quiz
+                if(typeof SupabaseService !== 'undefined') { SupabaseService.saveQuizResult(currentUser, 'Quiz Ôn tập 40 từ', quizScore, 40); }
                 alert(`Chúc mừng! Bạn đã hoàn thành bài kiểm tra ôn tập 40 câu.\nĐiểm số của bạn: ${quizScore}/40`);
                 showScreen('screen-flashcard');
                 nextCard();
