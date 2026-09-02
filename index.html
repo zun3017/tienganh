@@ -337,11 +337,14 @@
 
     <!-- 3. FLASHCARD SCREEN -->
     <div id="screen-flashcard" class="container">
-        <button class="btn-outline" style="margin-bottom: 0.5rem;" onclick="showScreen('screen-dashboard')">⬅ Quay lại Bảng điều khiển</button>
-        
-        <h3 id="flashcard-topic-title" style="color: var(--primary); margin-bottom: 0.5rem;">Chủ đề</h3>
-        <p class="progress-text" id="flashcard-progress">Từ 1 / 100</p>
-        <div class="progress-wrapper">
+        <div class="flashcard-topbar">
+            <button class="btn-outline btn-back-dash" onclick="showScreen('screen-dashboard')">⬅ Quay lại</button>
+            <div class="flashcard-topbar-info">
+                <span id="flashcard-topic-title">Chủ đề</span>
+                <span class="progress-text" id="flashcard-progress">Từ 1 / 100</span>
+            </div>
+        </div>
+        <div class="progress-wrapper flashcard-pbar-wrap">
             <div class="progress-bar" id="flashcard-progress-bar"></div>
         </div>
         

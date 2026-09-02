@@ -365,6 +365,34 @@ function safeSyncToSupabase(userKey) {
             } else {
                 document.getElementById('main-header').style.display = 'none';
             }
+
+            // Fixed non-scrolling viewport control
+            if (document.body && document.body.style) {
+                if (screenId === 'screen-flashcard') {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+            }
+
+            if (typeof document !== 'undefined' && document.querySelector) {
+                const mascot = document.querySelector('.mascot-container');
+                if (mascot) {
+                    if (screenId === 'screen-flashcard') {
+                        mascot.style.transform = 'scale(0.65)';
+                        mascot.style.transformOrigin = 'bottom right';
+                        mascot.style.bottom = '8px';
+                        mascot.style.right = '8px';
+                        mascot.style.opacity = '0.75';
+                    } else {
+                        mascot.style.transform = '';
+                        mascot.style.transformOrigin = '';
+                        mascot.style.bottom = '';
+                        mascot.style.right = '';
+                        mascot.style.opacity = '1';
+                    }
+                }
+            }
         }
 
         // --- AUTH (Simulated Backend) ---
