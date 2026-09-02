@@ -437,29 +437,32 @@ function safeSyncToSupabase(userKey) {
         function initDashboard() {
             ensureExtendedTopicsRegistered();
             const select = document.getElementById('topic-select');
+            if (!select) return;
+            
+            let currentVal = select.value;
             select.innerHTML = '<option value="">-- Chọn chủ đề để học --</option>';
             
-            // Add Free Topics
-            for (let key in freeTopics) {
-                if (key !== 'cat_3000') {
-                    select.innerHTML += `<option value="${key}">${freeTopics[key].topic} (${freeTopics[key].words.length} từ)</option>`;
-                }
-            }
-            
+            // 1. Add Default Topics
             vocabTopics.forEach((t, index) => {
-                select.innerHTML += `<option value="${index}">${t.topic} (${t.words.length} từ)</option>`;
+                select.innerHTML += `<option value="${index}">${t.topic} (${t.words ? t.words.length : 0} từ)</option>`;
             });
             
-            // Add Unlocked Premium Topics
-            let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
-            let uData = (currentUser && users[currentUser]) ? users[currentUser] : {};
-            if (uData.unlockedTopics) {
-                uData.unlockedTopics.forEach(unlockedKey => {
-                    if (premiumTopics[unlockedKey]) {
-                        select.innerHTML += `<option value="${unlockedKey}">${premiumTopics[unlockedKey].topic} (${premiumTopics[unlockedKey].words.length} từ)</option>`;
-                    }
-                });
-            }
+            // 2. Add All Specialized & CEFR Topics (B1, B2, TOEIC, IT, Marketing, IELTS)
+            const extraKeys = [
+                { key: 'b1_vocab', name: '🟡 Tiếng Anh B1 - Trung Cấp', data: typeof b1VocabData !== 'undefined' ? b1VocabData : null },
+                { key: 'b2_vocab', name: '🔴 Tiếng Anh B2 - Trên Trung Cấp', data: typeof b2VocabData !== 'undefined' ? b2VocabData : null },
+                { key: 'toeic_650', name: '📘 Khóa TOEIC 650', data: typeof toeic650Data !== 'undefined' ? toeic650Data : null },
+                { key: 'it', name: '💻 Tiếng Anh IT', data: (typeof premiumTopics !== 'undefined' && premiumTopics['it']) ? premiumTopics['it'] : null },
+                { key: 'marketing', name: '📊 Tiếng Anh Marketing', data: (typeof premiumTopics !== 'undefined' && premiumTopics['marketing']) ? premiumTopics['marketing'] : null },
+                { key: 'ielts', name: '🎓 Luyện Thi IELTS', data: (typeof premiumTopics !== 'undefined' && premiumTopics['ielts']) ? premiumTopics['ielts'] : null }
+            ];
+            
+            extraKeys.forEach(item => {
+                let wCount = (item.data && item.data.words) ? item.data.words.length : (premiumTopics && premiumTopics[item.key] && premiumTopics[item.key].words ? premiumTopics[item.key].words.length : 0);
+                select.innerHTML += `<option value="${item.key}">${item.name} (${wCount} từ)</option>`;
+            });
+            
+            if (currentVal) select.value = currentVal;
             
             updateDashboardProgress();
             onTopicSelect();
@@ -582,6 +585,8 @@ function safeSyncToSupabase(userKey) {
 
         function startLearningStoreItem(itemType) {
             ensureExtendedTopicsRegistered();
+            hideCloudContent();
+            
             let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
             if (currentUser && users[currentUser]) {
                 if (!users[currentUser].unlockedTopics) users[currentUser].unlockedTopics = [];
@@ -591,16 +596,15 @@ function safeSyncToSupabase(userKey) {
                     safeSyncToSupabase();
                 }
             }
-            showScreen('screen-dashboard');
-            initDashboard();
-            showCloudContent('library');
+            
             let topicSelect = document.getElementById('topic-select');
             if (topicSelect) {
                 topicSelect.value = itemType;
                 onTopicSelect();
             }
-            // Directly start learning session
-            startLearning(true);
+            
+            // Vào thẳng màn hình học Flashcard ngay lập tức!
+            startLearning(true, itemType);
         }
 
         function buyItem(itemType, cost) {
@@ -683,23 +687,29 @@ function safeSyncToSupabase(userKey) {
         }
 
         // --- FLASHCARD ---
-        function startLearning(resume) {
-            const topicIdx = document.getElementById('topic-select').value;
-            if(topicIdx === "") { alert("Hãy chọn một chủ đề!"); return; }
+        function startLearning(resume, directTopicId) {
+            let topicSelect = document.getElementById('topic-select');
+            let topicIdx = directTopicId || (topicSelect ? topicSelect.value : "");
+            
+            if(!topicIdx || topicIdx === "") { alert("Hãy chọn một chủ đề!"); return; }
+            
+            if (topicSelect && topicSelect.value !== topicIdx) {
+                topicSelect.value = topicIdx;
+            }
             
             ensureExtendedTopicsRegistered();
-            let topicData;
-            if (freeTopics && freeTopics[topicIdx]) {
-                topicData = freeTopics[topicIdx];
-            } else if (premiumTopics && premiumTopics[topicIdx]) {
-                topicData = premiumTopics[topicIdx];
-            } else if (topicIdx === 'b1_vocab' && typeof b1VocabData !== 'undefined') {
+            let topicData = null;
+            if (topicIdx === 'b1_vocab' && typeof b1VocabData !== 'undefined') {
                 topicData = b1VocabData;
             } else if (topicIdx === 'b2_vocab' && typeof b2VocabData !== 'undefined') {
                 topicData = b2VocabData;
             } else if (topicIdx === 'toeic_650' && typeof toeic650Data !== 'undefined') {
                 topicData = toeic650Data;
-            } else {
+            } else if (premiumTopics && premiumTopics[topicIdx]) {
+                topicData = premiumTopics[topicIdx];
+            } else if (freeTopics && freeTopics[topicIdx]) {
+                topicData = freeTopics[topicIdx];
+            } else if (vocabTopics && vocabTopics[topicIdx]) {
                 topicData = vocabTopics[topicIdx];
             }
             
