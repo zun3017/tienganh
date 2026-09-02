@@ -145,9 +145,9 @@
             <div id="login-panel" style="width: 100%;">
                 <input type="text" id="username" placeholder="Tên đăng nhập" autocomplete="off" style="background: rgba(255,255,255,0.95); border: 2px solid rgba(255,255,255,0.8); font-weight: 500; color: #000;">
                 <input type="password" id="password" placeholder="Mật khẩu" style="background: rgba(255,255,255,0.95); border: 2px solid rgba(255,255,255,0.8); font-weight: 500; color: #000;">
-                <button onclick="login()" style="font-size: 1.1rem; padding: 1rem; border-radius: 12px; margin-top: 1rem; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); font-weight: bold;">Đăng Nhập</button>
+                <button id="btn-login-submit" onclick="login()" style="font-size: 1.1rem; padding: 1rem; border-radius: 12px; margin-top: 1rem; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); font-weight: bold;">Đăng Nhập</button>
                 <p style="text-align: center; margin-top: 1.5rem; color: #1e293b; font-weight: 600; cursor: pointer; text-decoration: underline; text-shadow: 0 1px 2px rgba(255,255,255,0.8);" onclick="toggleAuth('register')">Chưa có tài khoản? Đăng ký ngay</p>
-                <p id="auth-login-msg" style="color: var(--danger); text-align: center; margin-top: 1rem; background: rgba(255,255,255,0.9); border-radius: 8px; padding: 0.5rem; display: none; font-weight: bold;"></p>
+                <div id="auth-login-msg" style="display: none; text-align: center; margin-top: 1rem; border-radius: 10px; padding: 0.75rem 1rem; font-weight: bold; font-size: 0.95rem; line-height: 1.4;"></div>
             </div>
 
             <!-- REGISTER PANEL -->
@@ -155,9 +155,9 @@
                 <input type="text" id="reg-username" placeholder="Tên đăng ký" autocomplete="off" style="background: rgba(255,255,255,0.95); font-weight: 500; color: #000;">
                 <input type="password" id="reg-password" placeholder="Mật khẩu" style="background: rgba(255,255,255,0.95); font-weight: 500; color: #000;">
                 <input type="password" id="reg-confirm" placeholder="Nhập lại mật khẩu" style="background: rgba(255,255,255,0.95); font-weight: 500; color: #000;">
-                <button onclick="register()" style="font-size: 1.1rem; padding: 1rem; border-radius: 12px; margin-top: 1rem; font-weight: bold;">Đồng ý Đăng ký</button>
+                <button id="btn-reg-submit" onclick="register()" style="font-size: 1.1rem; padding: 1rem; border-radius: 12px; margin-top: 1rem; font-weight: bold;">Đồng ý Đăng ký</button>
                 <p style="text-align: center; margin-top: 1.5rem; color: #1e293b; font-weight: 600; cursor: pointer; text-decoration: underline; text-shadow: 0 1px 2px rgba(255,255,255,0.8);" onclick="toggleAuth('login')">Đã có tài khoản? Đăng nhập</p>
-                <p id="auth-reg-msg" style="color: var(--danger); text-align: center; margin-top: 1rem; background: rgba(255,255,255,0.9); border-radius: 8px; padding: 0.5rem; display: none; font-weight: bold;"></p>
+                <div id="auth-reg-msg" style="display: none; text-align: center; margin-top: 1rem; border-radius: 10px; padding: 0.75rem 1rem; font-weight: bold; font-size: 0.95rem; line-height: 1.4;"></div>
             </div>
         </div>
     </div>

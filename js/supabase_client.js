@@ -48,18 +48,40 @@ const SupabaseService = {
     }
   },
 
-  // Fetch user profile from Supabase
+  // Fetch user profile from Supabase (Dual-engine: SDK + Native REST API)
   async fetchUser(username) {
-    if (!SupabaseConfig.client) return null;
+    if (!username) return null;
+
+    // 1. Try Supabase Client SDK if initialized
+    if (SupabaseConfig.client) {
+      try {
+        const { data, error } = await SupabaseConfig.client
+          .from('users_profile')
+          .select('*')
+          .eq('username', username)
+          .maybeSingle();
+        if (!error && data) return data;
+      } catch (err) {
+        console.warn('SDK fetch error, trying REST API:', err);
+      }
+    }
+
+    // 2. High-reliability Native REST API fallback (works 100% independent of SDK)
     try {
-      const { data, error } = await SupabaseConfig.client
-        .from('users_profile')
-        .select('*')
-        .eq('username', username)
-        .maybeSingle();
-      if (!error && data) return data;
-    } catch (err) {
-      console.log('Fetch user offline:', err);
+      const endpoint = `${SupabaseConfig.supabaseUrl}/rest/v1/users_profile?username=eq.${encodeURIComponent(username)}&select=*`;
+      const res = await fetch(endpoint, {
+        method: 'GET',
+        headers: {
+          'apikey': SupabaseConfig.anonKey,
+          'Authorization': `Bearer ${SupabaseConfig.anonKey}`
+        }
+      });
+      if (res.ok) {
+        const rows = await res.json();
+        if (rows && rows.length > 0) return rows[0];
+      }
+    } catch (e) {
+      console.warn('Native REST fetch error:', e);
     }
     return null;
   },
@@ -70,19 +92,41 @@ const SupabaseService = {
     return user !== null;
   },
 
-  // Sync user profile to Supabase
+  // Sync user profile to Supabase (Dual-engine: SDK + Native REST API)
   async syncUser(username, userData) {
-    if (!SupabaseConfig.client) return;
+    if (!username || !userData) return;
+    const payload = {
+      username: username,
+      password_hash: userData.password,
+      points: userData.points || 0,
+      unlocked_topics: userData.unlockedTopics || [],
+      updated_at: new Date().toISOString()
+    };
+
+    // 1. Try SDK
+    if (SupabaseConfig.client) {
+      try {
+        await SupabaseConfig.client.from('users_profile').upsert(payload, { onConflict: 'username' });
+        return;
+      } catch (err) {
+        console.warn('SDK sync error, trying REST API:', err);
+      }
+    }
+
+    // 2. Native REST API fallback
     try {
-      await SupabaseConfig.client.from('users_profile').upsert({
-        username: username,
-        password_hash: userData.password,
-        points: userData.points || 0,
-        unlocked_topics: userData.unlockedTopics || [],
-        updated_at: new Date().toISOString()
-      }, { onConflict: 'username' });
-    } catch (err) {
-      console.log('Sync user offline:', err);
+      await fetch(`${SupabaseConfig.supabaseUrl}/rest/v1/users_profile`, {
+        method: 'POST',
+        headers: {
+          'apikey': SupabaseConfig.anonKey,
+          'Authorization': `Bearer ${SupabaseConfig.anonKey}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'resolution=merge-duplicates'
+        },
+        body: JSON.stringify(payload)
+      });
+    } catch (e) {
+      console.warn('Native REST sync error:', e);
     }
   },
 
@@ -124,6 +168,8 @@ const SupabaseService = {
   }
 };
 
+// Self-initialize immediately
+SupabaseService.init();
 document.addEventListener('DOMContentLoaded', () => {
   SupabaseService.init();
 });
