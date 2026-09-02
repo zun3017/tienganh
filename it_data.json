@@ -1,0 +1,1052 @@
+[
+  {
+    "word": "Algorithm (n/v/adj)",
+    "ipa": "/ˈælɡərɪðəm/",
+    "meaning": "Thuật toán",
+    "example_en": "We need a better algorithm.",
+    "example_vi": "Chúng ta cần thuật toán tốt hơn."
+  },
+  {
+    "word": "API (n/v/adj)",
+    "ipa": "/ˌeɪ piː ˈaɪ/",
+    "meaning": "Giao diện lập trình ứng dụng",
+    "example_en": "The app uses a weather API.",
+    "example_vi": "Ứng dụng dùng API thời tiết."
+  },
+  {
+    "word": "Array (n/v/adj)",
+    "ipa": "/əˈreɪ/",
+    "meaning": "Mảng",
+    "example_en": "An array stores multiple values.",
+    "example_vi": "Mảng lưu trữ nhiều giá trị."
+  },
+  {
+    "word": "Agile (n/v/adj)",
+    "ipa": "/ˈædʒaɪl/",
+    "meaning": "Phương pháp phát triển linh hoạt",
+    "example_en": "The team uses Agile methodology.",
+    "example_vi": "Nhóm sử dụng phương pháp Agile."
+  },
+  {
+    "word": "Bandwidth (n/v/adj)",
+    "ipa": "/ˈbændwɪdθ/",
+    "meaning": "Băng thông",
+    "example_en": "High bandwidth is required.",
+    "example_vi": "Cần băng thông cao."
+  },
+  {
+    "word": "Backend (n/v/adj)",
+    "ipa": "/ˌbækˈend/",
+    "meaning": "Hệ thống hậu kì",
+    "example_en": "He is a backend developer.",
+    "example_vi": "Anh ấy là lập trình viên backend."
+  },
+  {
+    "word": "Backup (n/v/adj)",
+    "ipa": "/ˈbækʌp/",
+    "meaning": "Sao lưu",
+    "example_en": "Always backup your data.",
+    "example_vi": "Luôn sao lưu dữ liệu của bạn."
+  },
+  {
+    "word": "Binary (n/v/adj)",
+    "ipa": "/ˈbaɪnəri/",
+    "meaning": "Nhị phân",
+    "example_en": "Computers use binary code.",
+    "example_vi": "Máy tính dùng mã nhị phân."
+  },
+  {
+    "word": "Bug (n/v/adj)",
+    "ipa": "/bʌɡ/",
+    "meaning": "Lỗi phần mềm (slang)",
+    "example_en": "I found a bug in the code.",
+    "example_vi": "Tôi tìm thấy một lỗi trong code."
+  },
+  {
+    "word": "Browser (n/v/adj)",
+    "ipa": "/ˈbraʊzər/",
+    "meaning": "Trình duyệt",
+    "example_en": "Which browser do you use?",
+    "example_vi": "Bạn dùng trình duyệt nào?"
+  },
+  {
+    "word": "Cache (n/v/adj)",
+    "ipa": "/kæʃ/",
+    "meaning": "Bộ nhớ đệm",
+    "example_en": "Clear the browser cache.",
+    "example_vi": "Xóa bộ nhớ đệm trình duyệt."
+  },
+  {
+    "word": "Cloud (n/v/adj)",
+    "ipa": "/klaʊd/",
+    "meaning": "Điện toán đám mây",
+    "example_en": "Data is stored in the cloud.",
+    "example_vi": "Dữ liệu lưu trên đám mây."
+  },
+  {
+    "word": "Compiler (n/v/adj)",
+    "ipa": "/kəmˈpaɪlər/",
+    "meaning": "Trình biên dịch",
+    "example_en": "The compiler found an error.",
+    "example_vi": "Trình biên dịch báo lỗi."
+  },
+  {
+    "word": "Cookie (n/v/adj)",
+    "ipa": "/ˈkʊki/",
+    "meaning": "Tệp thông tin web",
+    "example_en": "Accept all cookies.",
+    "example_vi": "Chấp nhận tất cả cookie."
+  },
+  {
+    "word": "Cybersecurity (n/v/adj)",
+    "ipa": "/ˌsaɪbərsɪˈkjʊrəti/",
+    "meaning": "An ninh mạng",
+    "example_en": "Cybersecurity is crucial now.",
+    "example_vi": "An ninh mạng giờ rất quan trọng."
+  },
+  {
+    "word": "Database (n/v/adj)",
+    "ipa": "/ˈdeɪtəbeɪs/",
+    "meaning": "Cơ sở dữ liệu",
+    "example_en": "Update the customer database.",
+    "example_vi": "Cập nhật cơ sở dữ liệu khách hàng."
+  },
+  {
+    "word": "Debug (n/v/adj)",
+    "ipa": "/diːˈbʌɡ/",
+    "meaning": "Gỡ lỗi",
+    "example_en": "It takes time to debug.",
+    "example_vi": "Gỡ lỗi tốn nhiều thời gian."
+  },
+  {
+    "word": "Deploy (n/v/adj)",
+    "ipa": "/dɪˈplɔɪ/",
+    "meaning": "Triển khai (code)",
+    "example_en": "We deploy the app on Friday.",
+    "example_vi": "Chúng tôi triển khai app vào thứ Sáu."
+  },
+  {
+    "word": "Domain (n/v/adj)",
+    "ipa": "/doʊˈmeɪn/",
+    "meaning": "Tên miền",
+    "example_en": "We bought a new domain.",
+    "example_vi": "Chúng tôi đã mua tên miền mới."
+  },
+  {
+    "word": "Encryption (n/v/adj)",
+    "ipa": "/ɪnˈkrɪpʃən/",
+    "meaning": "Mã hóa",
+    "example_en": "Use strong encryption.",
+    "example_vi": "Sử dụng mã hóa mạnh."
+  },
+  {
+    "word": "Ethernet (n/v/adj)",
+    "ipa": "/ˈiːθərnet/",
+    "meaning": "Mạng LAN",
+    "example_en": "Plug in the Ethernet cable.",
+    "example_vi": "Cắm cáp mạng LAN vào."
+  },
+  {
+    "word": "Framework (n/v/adj)",
+    "ipa": "/ˈfreɪmwɜːrk/",
+    "meaning": "Khuôn khổ lập trình",
+    "example_en": "React is a UI framework.",
+    "example_vi": "React là framework giao diện."
+  },
+  {
+    "word": "Frontend (n/v/adj)",
+    "ipa": "/ˈfrʌntend/",
+    "meaning": "Giao diện người dùng",
+    "example_en": "She works on the frontend.",
+    "example_vi": "Cô ấy làm về frontend."
+  },
+  {
+    "word": "Firewall (n/v/adj)",
+    "ipa": "/ˈfaɪərwɔːl/",
+    "meaning": "Tường lửa",
+    "example_en": "The firewall blocked the attack.",
+    "example_vi": "Tường lửa đã chặn cuộc tấn công."
+  },
+  {
+    "word": "Git (n/v/adj)",
+    "ipa": "/ɡɪt/",
+    "meaning": "Hệ thống quản lý phiên bản",
+    "example_en": "Commit your changes to Git.",
+    "example_vi": "Lưu thay đổi của bạn lên Git."
+  },
+  {
+    "word": "Hardware (n/v/adj)",
+    "ipa": "/ˈhɑːrdwɛər/",
+    "meaning": "Phần cứng",
+    "example_en": "Hardware upgrades are expensive.",
+    "example_vi": "Nâng cấp phần cứng rất đắt."
+  },
+  {
+    "word": "Hosting (n/v/adj)",
+    "ipa": "/ˈhoʊstɪŋ/",
+    "meaning": "Dịch vụ lưu trữ web",
+    "example_en": "We need reliable web hosting.",
+    "example_vi": "Chúng ta cần dịch vụ hosting ổn định."
+  },
+  {
+    "word": "HTML (n/v/adj)",
+    "ipa": "/ˌeɪtʃ tiː em ˈel/",
+    "meaning": "Ngôn ngữ đánh dấu siêu văn bản",
+    "example_en": "Learn HTML basics first.",
+    "example_vi": "Học cơ bản HTML trước."
+  },
+  {
+    "word": "IP address (n/v/adj)",
+    "ipa": "/ˌaɪ ˈpiː əˌdres/",
+    "meaning": "Địa chỉ IP",
+    "example_en": "Your IP address is hidden.",
+    "example_vi": "Địa chỉ IP của bạn bị ẩn."
+  },
+  {
+    "word": "Interface (n/v/adj)",
+    "ipa": "/ˈɪntərfeɪs/",
+    "meaning": "Giao diện",
+    "example_en": "The user interface is clean.",
+    "example_vi": "Giao diện người dùng rất gọn gàng."
+  },
+  {
+    "word": "Java (n/v/adj)",
+    "ipa": "/ˈdʒɑːvə/",
+    "meaning": "Ngôn ngữ lập trình Java",
+    "example_en": "Java is widely used.",
+    "example_vi": "Java được sử dụng rộng rãi."
+  },
+  {
+    "word": "JavaScript (n/v/adj)",
+    "ipa": "/ˈdʒɑːvəskrɪpt/",
+    "meaning": "Ngôn ngữ lập trình JS",
+    "example_en": "JavaScript adds interactivity.",
+    "example_vi": "JS thêm tính tương tác."
+  },
+  {
+    "word": "Kernel (n/v/adj)",
+    "ipa": "/ˈkɜːrnl/",
+    "meaning": "Nhân hệ điều hành",
+    "example_en": "Linux kernel is open source.",
+    "example_vi": "Nhân Linux là mã nguồn mở."
+  },
+  {
+    "word": "Latency (n/v/adj)",
+    "ipa": "/ˈleɪtənsi/",
+    "meaning": "Độ trễ",
+    "example_en": "Low latency is good for gaming.",
+    "example_vi": "Độ trễ thấp tốt cho chơi game."
+  },
+  {
+    "word": "Linux (n/v/adj)",
+    "ipa": "/ˈlɪnəks/",
+    "meaning": "Hệ điều hành Linux",
+    "example_en": "Many servers run Linux.",
+    "example_vi": "Nhiều máy chủ chạy Linux."
+  },
+  {
+    "word": "Loop (n/v/adj)",
+    "ipa": "/luːp/",
+    "meaning": "Vòng lặp",
+    "example_en": "The code is stuck in a loop.",
+    "example_vi": "Mã bị kẹt trong vòng lặp."
+  },
+  {
+    "word": "Malware (n/v/adj)",
+    "ipa": "/ˈmælwer/",
+    "meaning": "Phần mềm độc hại",
+    "example_en": "Scan your PC for malware.",
+    "example_vi": "Quét PC tìm phần mềm độc hại."
+  },
+  {
+    "word": "Module (n/v/adj)",
+    "ipa": "/ˈmɑːdʒuːl/",
+    "meaning": "Mô-đun",
+    "example_en": "Import the math module.",
+    "example_vi": "Nhập mô-đun toán học."
+  },
+  {
+    "word": "Network (n/v/adj)",
+    "ipa": "/ˈnetwɜːrk/",
+    "meaning": "Mạng lưới",
+    "example_en": "The network is down.",
+    "example_vi": "Mạng đang bị sập."
+  },
+  {
+    "word": "Node (n/v/adj)",
+    "ipa": "/noʊd/",
+    "meaning": "Điểm mạng",
+    "example_en": "Each computer is a node.",
+    "example_vi": "Mỗi máy tính là một điểm mạng."
+  },
+  {
+    "word": "Open source (n/v/adj)",
+    "ipa": "/ˌoʊpən ˈsɔːrs/",
+    "meaning": "Mã nguồn mở",
+    "example_en": "I support open source software.",
+    "example_vi": "Tôi ủng hộ phần mềm mã nguồn mở."
+  },
+  {
+    "word": "OS (n/v/adj)",
+    "ipa": "/ˌoʊ ˈes/",
+    "meaning": "Hệ điều hành",
+    "example_en": "What OS are you using?",
+    "example_vi": "Bạn dùng hệ điều hành nào?"
+  },
+  {
+    "word": "Parameter (n/v/adj)",
+    "ipa": "/pəˈræmɪtər/",
+    "meaning": "Tham số",
+    "example_en": "Pass the parameter to the function.",
+    "example_vi": "Truyền tham số cho hàm."
+  },
+  {
+    "word": "Password (n/v/adj)",
+    "ipa": "/ˈpæswɜːrd/",
+    "meaning": "Mật khẩu",
+    "example_en": "Change your password regularly.",
+    "example_vi": "Đổi mật khẩu thường xuyên."
+  },
+  {
+    "word": "Phishing (n/v/adj)",
+    "ipa": "/ˈfɪʃɪŋ/",
+    "meaning": "Lừa đảo qua mạng",
+    "example_en": "Beware of phishing emails.",
+    "example_vi": "Cẩn thận với email lừa đảo."
+  },
+  {
+    "word": "Pixel (n/v/adj)",
+    "ipa": "/ˈpɪksl/",
+    "meaning": "Điểm ảnh",
+    "example_en": "The screen has dead pixels.",
+    "example_vi": "Màn hình có điểm ảnh chết."
+  },
+  {
+    "word": "Plugin (n/v/adj)",
+    "ipa": "/ˈplʌɡɪn/",
+    "meaning": "Trình cắm",
+    "example_en": "Install this useful plugin.",
+    "example_vi": "Cài trình cắm hữu ích này."
+  },
+  {
+    "word": "Protocol (n/v/adj)",
+    "ipa": "/ˈproʊtəkɑːl/",
+    "meaning": "Giao thức",
+    "example_en": "HTTP is a protocol.",
+    "example_vi": "HTTP là một giao thức."
+  },
+  {
+    "word": "Query (n/v/adj)",
+    "ipa": "/ˈkwɪri/",
+    "meaning": "Truy vấn",
+    "example_en": "Write a SQL query.",
+    "example_vi": "Viết một truy vấn SQL."
+  },
+  {
+    "word": "RAM (n/v/adj)",
+    "ipa": "/ræm/",
+    "meaning": "Bộ nhớ truy cập ngẫu nhiên",
+    "example_en": "Add more RAM to your PC.",
+    "example_vi": "Lắp thêm RAM cho PC của bạn."
+  },
+  {
+    "word": "Repository (n/v/adj)",
+    "ipa": "/rɪˈpɑːzətɔːri/",
+    "meaning": "Kho lưu trữ mã",
+    "example_en": "Clone the GitHub repository.",
+    "example_vi": "Sao chép kho lưu trữ GitHub."
+  },
+  {
+    "word": "Router (n/v/adj)",
+    "ipa": "/ˈraʊtər/",
+    "meaning": "Bộ định tuyến",
+    "example_en": "Restart your Wi-Fi router.",
+    "example_vi": "Khởi động lại bộ định tuyến Wi-Fi."
+  },
+  {
+    "word": "Script (n/v/adj)",
+    "ipa": "/skrɪpt/",
+    "meaning": "Tập lệnh",
+    "example_en": "Run the python script.",
+    "example_vi": "Chạy tập lệnh python."
+  },
+  {
+    "word": "Server (n/v/adj)",
+    "ipa": "/ˈsɜːrvər/",
+    "meaning": "Máy chủ",
+    "example_en": "The server is offline.",
+    "example_vi": "Máy chủ đang ngoại tuyến."
+  },
+  {
+    "word": "Software (n/v/adj)",
+    "ipa": "/ˈsɔːftwer/",
+    "meaning": "Phần mềm",
+    "example_en": "Update your software.",
+    "example_vi": "Cập nhật phần mềm của bạn."
+  },
+  {
+    "word": "Spam (n/v/adj)",
+    "ipa": "/spæm/",
+    "meaning": "Thư rác",
+    "example_en": "Check your spam folder.",
+    "example_vi": "Kiểm tra thư mục thư rác."
+  },
+  {
+    "word": "SQL (n/v/adj)",
+    "ipa": "/ˌes kjuː ˈel/",
+    "meaning": "Ngôn ngữ truy vấn dữ liệu",
+    "example_en": "Learn SQL for databases.",
+    "example_vi": "Học SQL cho cơ sở dữ liệu."
+  },
+  {
+    "word": "Syntax (n/v/adj)",
+    "ipa": "/ˈsɪntæks/",
+    "meaning": "Cú pháp",
+    "example_en": "Fix the syntax error.",
+    "example_vi": "Sửa lỗi cú pháp."
+  },
+  {
+    "word": "Terminal (n/v/adj)",
+    "ipa": "/ˈtɜːrmɪnl/",
+    "meaning": "Cửa sổ dòng lệnh",
+    "example_en": "Open the terminal window.",
+    "example_vi": "Mở cửa sổ dòng lệnh."
+  },
+  {
+    "word": "Traffic (n/v/adj)",
+    "ipa": "/ˈtræfɪk/",
+    "meaning": "Lưu lượng truy cập",
+    "example_en": "Web traffic is high today.",
+    "example_vi": "Lưu lượng web hôm nay rất cao."
+  },
+  {
+    "word": "UI (n/v/adj)",
+    "ipa": "/ˌjuː ˈaɪ/",
+    "meaning": "Giao diện người dùng",
+    "example_en": "The UI is user-friendly.",
+    "example_vi": "Giao diện thân thiện người dùng."
+  },
+  {
+    "word": "UX (n/v/adj)",
+    "ipa": "/ˌjuː ˈeks/",
+    "meaning": "Trải nghiệm người dùng",
+    "example_en": "UX design is important.",
+    "example_vi": "Thiết kế UX rất quan trọng."
+  },
+  {
+    "word": "Variable (n/v/adj)",
+    "ipa": "/ˈveriəbl/",
+    "meaning": "Biến số",
+    "example_en": "Declare a new variable.",
+    "example_vi": "Khai báo một biến mới."
+  },
+  {
+    "word": "Virtual (n/v/adj)",
+    "ipa": "/ˈvɜːrtʃuəl/",
+    "meaning": "Ảo",
+    "example_en": "Virtual reality is popular.",
+    "example_vi": "Thực tế ảo đang phổ biến."
+  },
+  {
+    "word": "Virus (n/v/adj)",
+    "ipa": "/ˈvaɪrəs/",
+    "meaning": "Vi-rút",
+    "example_en": "My computer has a virus.",
+    "example_vi": "Máy tính của tôi nhiễm vi-rút."
+  },
+  {
+    "word": "Webinar (n/v/adj)",
+    "ipa": "/ˈwebɪnɑːr/",
+    "meaning": "Hội thảo trực tuyến",
+    "example_en": "Join the free webinar.",
+    "example_vi": "Tham gia hội thảo trực tuyến miễn phí."
+  },
+  {
+    "word": "Widget (n/v/adj)",
+    "ipa": "/ˈwɪdʒɪt/",
+    "meaning": "Tiện ích",
+    "example_en": "Add a weather widget.",
+    "example_vi": "Thêm tiện ích thời tiết."
+  },
+  {
+    "word": "Wireless (n/v/adj)",
+    "ipa": "/ˈwaɪərləs/",
+    "meaning": "Không dây",
+    "example_en": "Connect to wireless network.",
+    "example_vi": "Kết nối mạng không dây."
+  },
+  {
+    "word": "Zip (n/v/adj)",
+    "ipa": "/zɪp/",
+    "meaning": "Nén tệp",
+    "example_en": "Zip the folder before sending.",
+    "example_vi": "Nén thư mục trước khi gửi."
+  },
+  {
+    "word": "Agile (n/v/adj)",
+    "ipa": "/ˈædʒaɪl/",
+    "meaning": "Phương pháp linh hoạt",
+    "example_en": "Agile allows fast delivery.",
+    "example_vi": "Agile cho phép giao hàng nhanh."
+  },
+  {
+    "word": "API (n/v/adj)",
+    "ipa": "/ˌeɪ piː ˈaɪ/",
+    "meaning": "Giao diện lập trình",
+    "example_en": "REST API is common.",
+    "example_vi": "REST API rất phổ biến."
+  },
+  {
+    "word": "Avatar (n/v/adj)",
+    "ipa": "/ˈævətɑːr/",
+    "meaning": "Ảnh đại diện",
+    "example_en": "Upload a new avatar.",
+    "example_vi": "Tải lên ảnh đại diện mới."
+  },
+  {
+    "word": "Bandwidth (n/v/adj)",
+    "ipa": "/ˈbændwɪdθ/",
+    "meaning": "Băng thông mạng",
+    "example_en": "Check your bandwidth speed.",
+    "example_vi": "Kiểm tra tốc độ băng thông."
+  },
+  {
+    "word": "Beta (n/v/adj)",
+    "ipa": "/ˈbeɪtə/",
+    "meaning": "Bản thử nghiệm",
+    "example_en": "The game is in beta.",
+    "example_vi": "Trò chơi đang ở bản beta."
+  },
+  {
+    "word": "Bluetooth (n/v/adj)",
+    "ipa": "/ˈbluːtuːθ/",
+    "meaning": "Sóng Bluetooth",
+    "example_en": "Turn on Bluetooth.",
+    "example_vi": "Bật Bluetooth lên."
+  },
+  {
+    "word": "Bookmark (n/v/adj)",
+    "ipa": "/ˈbʊkmɑːrk/",
+    "meaning": "Đánh dấu trang",
+    "example_en": "Bookmark this page.",
+    "example_vi": "Đánh dấu trang này."
+  },
+  {
+    "word": "Boot (n/v/adj)",
+    "ipa": "/buːt/",
+    "meaning": "Khởi động máy",
+    "example_en": "Wait for the PC to boot.",
+    "example_vi": "Đợi máy tính khởi động."
+  },
+  {
+    "word": "Bounce rate (n/v/adj)",
+    "ipa": "/baʊns reɪt/",
+    "meaning": "Tỷ lệ thoát trang",
+    "example_en": "Our bounce rate is low.",
+    "example_vi": "Tỷ lệ thoát trang của chúng ta thấp."
+  },
+  {
+    "word": "Broadband (n/v/adj)",
+    "ipa": "/ˈbrɔːdbænd/",
+    "meaning": "Băng thông rộng",
+    "example_en": "Broadband internet is fast.",
+    "example_vi": "Internet băng thông rộng rất nhanh."
+  },
+  {
+    "word": "Buffer (n/v/adj)",
+    "ipa": "/ˈbʌfər/",
+    "meaning": "Bộ đệm",
+    "example_en": "The video is buffering.",
+    "example_vi": "Video đang tải bộ đệm."
+  },
+  {
+    "word": "Bug (n/v/adj)",
+    "ipa": "/bʌɡ/",
+    "meaning": "Lỗi (slang)",
+    "example_en": "Fix the critical bug.",
+    "example_vi": "Sửa lỗi nghiêm trọng này."
+  },
+  {
+    "word": "Cache (n/v/adj)",
+    "ipa": "/kæʃ/",
+    "meaning": "Bộ nhớ tạm",
+    "example_en": "Clear your cache.",
+    "example_vi": "Xóa bộ nhớ tạm."
+  },
+  {
+    "word": "Captcha (n/v/adj)",
+    "ipa": "/ˈkæptʃə/",
+    "meaning": "Mã xác nhận",
+    "example_en": "Enter the Captcha code.",
+    "example_vi": "Nhập mã Captcha."
+  },
+  {
+    "word": "Clickbait (n/v/adj)",
+    "ipa": "/ˈklɪkbeɪt/",
+    "meaning": "Tiêu đề câu view (slang)",
+    "example_en": "Avoid clickbait articles.",
+    "example_vi": "Tránh các bài báo câu view."
+  },
+  {
+    "word": "Client (n/v/adj)",
+    "ipa": "/ˈklaɪənt/",
+    "meaning": "Máy khách/Khách hàng",
+    "example_en": "The client sent a request.",
+    "example_vi": "Máy khách đã gửi yêu cầu."
+  },
+  {
+    "word": "Cloud (n/v/adj)",
+    "ipa": "/klaʊd/",
+    "meaning": "Đám mây",
+    "example_en": "Cloud storage is cheap.",
+    "example_vi": "Lưu trữ đám mây rất rẻ."
+  },
+  {
+    "word": "Code (n/v/adj)",
+    "ipa": "/koʊd/",
+    "meaning": "Mã lập trình",
+    "example_en": "Write clean code.",
+    "example_vi": "Viết mã nguồn sạch."
+  },
+  {
+    "word": "Compiler (n/v/adj)",
+    "ipa": "/kəmˈpaɪlər/",
+    "meaning": "Trình biên dịch",
+    "example_en": "Compiler translates code.",
+    "example_vi": "Trình biên dịch dịch mã."
+  },
+  {
+    "word": "Cookie (n/v/adj)",
+    "ipa": "/ˈkʊki/",
+    "meaning": "Tệp tin web",
+    "example_en": "Cookies track user data.",
+    "example_vi": "Cookie theo dõi dữ liệu người dùng."
+  },
+  {
+    "word": "Crash (n/v/adj)",
+    "ipa": "/kræʃ/",
+    "meaning": "Sập hệ thống",
+    "example_en": "The app just crashed.",
+    "example_vi": "Ứng dụng vừa bị sập."
+  },
+  {
+    "word": "CSS (n/v/adj)",
+    "ipa": "/ˌsiː es ˈes/",
+    "meaning": "Ngôn ngữ định dạng web",
+    "example_en": "CSS styles the webpage.",
+    "example_vi": "CSS định dạng trang web."
+  },
+  {
+    "word": "Dashboard (n/v/adj)",
+    "ipa": "/ˈdæʃbɔːrd/",
+    "meaning": "Bảng điều khiển",
+    "example_en": "View the admin dashboard.",
+    "example_vi": "Xem bảng điều khiển quản trị."
+  },
+  {
+    "word": "Data (n/v/adj)",
+    "ipa": "/ˈdeɪtə/",
+    "meaning": "Dữ liệu",
+    "example_en": "Data is the new oil.",
+    "example_vi": "Dữ liệu là nguồn tài nguyên mới."
+  },
+  {
+    "word": "Database (n/v/adj)",
+    "ipa": "/ˈdeɪtəbeɪs/",
+    "meaning": "Cơ sở dữ liệu",
+    "example_en": "Query the database.",
+    "example_vi": "Truy vấn cơ sở dữ liệu."
+  },
+  {
+    "word": "Debug (n/v/adj)",
+    "ipa": "/diːˈbʌɡ/",
+    "meaning": "Gỡ rối",
+    "example_en": "Debug the application.",
+    "example_vi": "Gỡ rối ứng dụng."
+  },
+  {
+    "word": "Default (n/v/adj)",
+    "ipa": "/dɪˈfɔːlt/",
+    "meaning": "Mặc định",
+    "example_en": "Reset to default settings.",
+    "example_vi": "Khôi phục cài đặt mặc định."
+  },
+  {
+    "word": "Deploy (n/v/adj)",
+    "ipa": "/dɪˈplɔɪ/",
+    "meaning": "Triển khai ứng dụng",
+    "example_en": "Deploy code to server.",
+    "example_vi": "Triển khai mã lên máy chủ."
+  },
+  {
+    "word": "Desktop (n/v/adj)",
+    "ipa": "/ˈdesktɑːp/",
+    "meaning": "Máy tính để bàn",
+    "example_en": "I use a desktop PC.",
+    "example_vi": "Tôi dùng máy tính để bàn."
+  },
+  {
+    "word": "Developer (n/v/adj)",
+    "ipa": "/dɪˈveləpər/",
+    "meaning": "Lập trình viên",
+    "example_en": "He is a software developer.",
+    "example_vi": "Anh ấy là lập trình viên phần mềm."
+  },
+  {
+    "word": "Directory (n/v/adj)",
+    "ipa": "/dəˈrektəri/",
+    "meaning": "Thư mục",
+    "example_en": "Create a new directory.",
+    "example_vi": "Tạo thư mục mới."
+  },
+  {
+    "word": "Domain (n/v/adj)",
+    "ipa": "/doʊˈmeɪn/",
+    "meaning": "Tên miền web",
+    "example_en": "Domain name is available.",
+    "example_vi": "Tên miền này chưa có người mua."
+  },
+  {
+    "word": "Download (n/v/adj)",
+    "ipa": "/ˈdaʊnloʊd/",
+    "meaning": "Tải xuống",
+    "example_en": "Download the latest version.",
+    "example_vi": "Tải phiên bản mới nhất."
+  },
+  {
+    "word": "Drag and drop (n/v/adj)",
+    "ipa": "/dræɡ ænd drɑːp/",
+    "meaning": "Kéo thả",
+    "example_en": "Drag and drop files here.",
+    "example_vi": "Kéo thả tệp vào đây."
+  },
+  {
+    "word": "E-commerce (n/v/adj)",
+    "ipa": "/ˈiː kɑːmɜːrs/",
+    "meaning": "Thương mại điện tử",
+    "example_en": "E-commerce is booming.",
+    "example_vi": "Thương mại điện tử đang bùng nổ."
+  },
+  {
+    "word": "Email (n/v/adj)",
+    "ipa": "/ˈiːmeɪl/",
+    "meaning": "Thư điện tử",
+    "example_en": "Send me an email.",
+    "example_vi": "Gửi email cho tôi."
+  },
+  {
+    "word": "Encryption (n/v/adj)",
+    "ipa": "/ɪnˈkrɪpʃən/",
+    "meaning": "Mã hóa dữ liệu",
+    "example_en": "End-to-end encryption.",
+    "example_vi": "Mã hóa đầu cuối."
+  },
+  {
+    "word": "Error (n/v/adj)",
+    "ipa": "/ˈerər/",
+    "meaning": "Lỗi",
+    "example_en": "404 error not found.",
+    "example_vi": "Lỗi 404 không tìm thấy."
+  },
+  {
+    "word": "Ethernet (n/v/adj)",
+    "ipa": "/ˈiːθərnet/",
+    "meaning": "Mạng cáp",
+    "example_en": "Ethernet is faster than Wi-Fi.",
+    "example_vi": "Mạng cáp nhanh hơn Wi-Fi."
+  },
+  {
+    "word": "FAQ (n/v/adj)",
+    "ipa": "/ˌef eɪ ˈkjuː/",
+    "meaning": "Câu hỏi thường gặp",
+    "example_en": "Check the FAQ section.",
+    "example_vi": "Kiểm tra phần câu hỏi thường gặp."
+  },
+  {
+    "word": "Firewall (n/v/adj)",
+    "ipa": "/ˈfaɪərwɔːl/",
+    "meaning": "Tường lửa mạng",
+    "example_en": "Update the firewall rules.",
+    "example_vi": "Cập nhật quy tắc tường lửa."
+  },
+  {
+    "word": "Folder (n/v/adj)",
+    "ipa": "/ˈfoʊldər/",
+    "meaning": "Thư mục",
+    "example_en": "Open the downloads folder.",
+    "example_vi": "Mở thư mục tải xuống."
+  },
+  {
+    "word": "Font (n/v/adj)",
+    "ipa": "/fɑːnt/",
+    "meaning": "Phông chữ",
+    "example_en": "Change the font size.",
+    "example_vi": "Thay đổi kích thước phông chữ."
+  },
+  {
+    "word": "Format (n/v/adj)",
+    "ipa": "/ˈfɔːrmæt/",
+    "meaning": "Định dạng",
+    "example_en": "Format the hard drive.",
+    "example_vi": "Định dạng ổ cứng."
+  },
+  {
+    "word": "Forum (n/v/adj)",
+    "ipa": "/ˈfɔːrəm/",
+    "meaning": "Diễn đàn",
+    "example_en": "Join the tech forum.",
+    "example_vi": "Tham gia diễn đàn công nghệ."
+  },
+  {
+    "word": "Framework (n/v/adj)",
+    "ipa": "/ˈfreɪmwɜːrk/",
+    "meaning": "Bộ khung phần mềm",
+    "example_en": "Angular is a JS framework.",
+    "example_vi": "Angular là một JS framework."
+  },
+  {
+    "word": "Frontend (n/v/adj)",
+    "ipa": "/ˈfrʌntend/",
+    "meaning": "Lập trình giao diện",
+    "example_en": "Frontend development is fun.",
+    "example_vi": "Lập trình giao diện rất vui."
+  },
+  {
+    "word": "Gateway (n/v/adj)",
+    "ipa": "/ˈɡeɪtweɪ/",
+    "meaning": "Cổng kết nối",
+    "example_en": "The payment gateway failed.",
+    "example_vi": "Cổng thanh toán bị lỗi."
+  },
+  {
+    "word": "Gigabyte (n/v/adj)",
+    "ipa": "/ˈɡɪɡəbaɪt/",
+    "meaning": "Gigabyte (GB)",
+    "example_en": "File is 2 gigabytes large.",
+    "example_vi": "Tệp nặng 2 GB."
+  },
+  {
+    "word": "Hacker (n/v/adj)",
+    "ipa": "/ˈhækər/",
+    "meaning": "Tin tặc",
+    "example_en": "Hackers stole the data.",
+    "example_vi": "Tin tặc đã đánh cắp dữ liệu."
+  },
+  {
+    "word": "Hardware (n/v/adj)",
+    "ipa": "/ˈhɑːrdwɛər/",
+    "meaning": "Phần cứng máy tính",
+    "example_en": "Computer hardware is complex.",
+    "example_vi": "Phần cứng máy tính rất phức tạp."
+  },
+  {
+    "word": "Hashtag (n/v/adj)",
+    "ipa": "/ˈhæʃtæɡ/",
+    "meaning": "Thẻ tag",
+    "example_en": "Use popular hashtags.",
+    "example_vi": "Sử dụng các thẻ tag phổ biến."
+  },
+  {
+    "word": "Homepage (n/v/adj)",
+    "ipa": "/ˈhoʊmpeɪdʒ/",
+    "meaning": "Trang chủ",
+    "example_en": "Go back to the homepage.",
+    "example_vi": "Quay lại trang chủ."
+  },
+  {
+    "word": "Host (n/v/adj)",
+    "ipa": "/hoʊst/",
+    "meaning": "Lưu trữ/Máy chủ lưu trữ",
+    "example_en": "Host your website here.",
+    "example_vi": "Lưu trữ trang web của bạn tại đây."
+  },
+  {
+    "word": "HTML (n/v/adj)",
+    "ipa": "/ˌeɪtʃ tiː em ˈel/",
+    "meaning": "Cấu trúc web",
+    "example_en": "HTML structures the page.",
+    "example_vi": "HTML định hình trang web."
+  },
+  {
+    "word": "Hyperlink (n/v/adj)",
+    "ipa": "/ˈhaɪpərlɪŋk/",
+    "meaning": "Siêu liên kết",
+    "example_en": "Click the hyperlink.",
+    "example_vi": "Nhấp vào siêu liên kết."
+  },
+  {
+    "word": "Icon (n/v/adj)",
+    "ipa": "/ˈaɪkɑːn/",
+    "meaning": "Biểu tượng",
+    "example_en": "Click the settings icon.",
+    "example_vi": "Nhấp vào biểu tượng cài đặt."
+  },
+  {
+    "word": "Inbox (n/v/adj)",
+    "ipa": "/ˈɪnbɑːks/",
+    "meaning": "Hộp thư đến",
+    "example_en": "Check your inbox.",
+    "example_vi": "Kiểm tra hộp thư đến."
+  },
+  {
+    "word": "Index (n/v/adj)",
+    "ipa": "/ˈɪndeks/",
+    "meaning": "Chỉ mục",
+    "example_en": "Index the database.",
+    "example_vi": "Đánh chỉ mục cơ sở dữ liệu."
+  },
+  {
+    "word": "Install (n/v/adj)",
+    "ipa": "/ɪnˈstɔːl/",
+    "meaning": "Cài đặt",
+    "example_en": "Install the app now.",
+    "example_vi": "Cài đặt ứng dụng ngay."
+  },
+  {
+    "word": "Interface (n/v/adj)",
+    "ipa": "/ˈɪntərfeɪs/",
+    "meaning": "Giao diện phần mềm",
+    "example_en": "Intuitive user interface.",
+    "example_vi": "Giao diện trực quan."
+  },
+  {
+    "word": "Internet (n/v/adj)",
+    "ipa": "/ˈɪntərnet/",
+    "meaning": "Mạng internet",
+    "example_en": "The internet is slow.",
+    "example_vi": "Mạng internet đang chậm."
+  },
+  {
+    "word": "IP (n/v/adj)",
+    "ipa": "/ˌaɪ ˈpiː/",
+    "meaning": "Giao thức mạng",
+    "example_en": "Find your IP address.",
+    "example_vi": "Tìm địa chỉ IP của bạn."
+  },
+  {
+    "word": "Java (n/v/adj)",
+    "ipa": "/ˈdʒɑːvə/",
+    "meaning": "Ngôn ngữ Java",
+    "example_en": "Code backend in Java.",
+    "example_vi": "Lập trình backend bằng Java."
+  },
+  {
+    "word": "JavaScript (n/v/adj)",
+    "ipa": "/ˈdʒɑːvəskrɪpt/",
+    "meaning": "Ngôn ngữ JS",
+    "example_en": "JS makes web dynamic.",
+    "example_vi": "JS làm trang web linh hoạt."
+  },
+  {
+    "word": "Keyword (n/v/adj)",
+    "ipa": "/ˈkiːwɜːrd/",
+    "meaning": "Từ khóa",
+    "example_en": "Search for a keyword.",
+    "example_vi": "Tìm kiếm bằng từ khóa."
+  },
+  {
+    "word": "Laptop (n/v/adj)",
+    "ipa": "/ˈlæptɑːp/",
+    "meaning": "Máy tính xách tay",
+    "example_en": "Buy a new laptop.",
+    "example_vi": "Mua máy tính xách tay mới."
+  },
+  {
+    "word": "Link (n/v/adj)",
+    "ipa": "/lɪŋk/",
+    "meaning": "Đường dẫn",
+    "example_en": "Send me the link.",
+    "example_vi": "Gửi đường dẫn cho tôi."
+  },
+  {
+    "word": "Linux (n/v/adj)",
+    "ipa": "/ˈlɪnəks/",
+    "meaning": "HĐH Linux",
+    "example_en": "Linux is secure.",
+    "example_vi": "Linux rất bảo mật."
+  },
+  {
+    "word": "Login (n/v/adj)",
+    "ipa": "/ˈlɔːɡɪn/",
+    "meaning": "Đăng nhập",
+    "example_en": "Login to your account.",
+    "example_vi": "Đăng nhập vào tài khoản."
+  },
+  {
+    "word": "Logout (n/v/adj)",
+    "ipa": "/ˈlɔːɡaʊt/",
+    "meaning": "Đăng xuất",
+    "example_en": "Logout when finished.",
+    "example_vi": "Đăng xuất khi hoàn tất."
+  },
+  {
+    "word": "Loop (n/v/adj)",
+    "ipa": "/luːp/",
+    "meaning": "Vòng lặp code",
+    "example_en": "A while loop.",
+    "example_vi": "Một vòng lặp while."
+  },
+  {
+    "word": "Mac (n/v/adj)",
+    "ipa": "/mæk/",
+    "meaning": "Máy Mac",
+    "example_en": "I prefer using a Mac.",
+    "example_vi": "Tôi thích dùng Mac hơn."
+  },
+  {
+    "word": "Malware (n/v/adj)",
+    "ipa": "/ˈmælwer/",
+    "meaning": "Mã độc",
+    "example_en": "Malware can destroy files.",
+    "example_vi": "Mã độc có thể phá hủy tệp."
+  },
+  {
+    "word": "Menu (n/v/adj)",
+    "ipa": "/ˈmenjuː/",
+    "meaning": "Trình đơn",
+    "example_en": "Open the drop-down menu.",
+    "example_vi": "Mở trình đơn thả xuống."
+  },
+  {
+    "word": "Microphone (n/v/adj)",
+    "ipa": "/ˈmaɪkrəfoʊn/",
+    "meaning": "Micrô",
+    "example_en": "Turn on the microphone.",
+    "example_vi": "Bật micrô lên."
+  },
+  {
+    "word": "Monitor (n/v/adj)",
+    "ipa": "/ˈmɑːnɪtər/",
+    "meaning": "Màn hình máy tính",
+    "example_en": "A 24-inch monitor.",
+    "example_vi": "Màn hình 24 inch."
+  },
+  {
+    "word": "Mouse (n/v/adj)",
+    "ipa": "/maʊs/",
+    "meaning": "Chuột máy tính",
+    "example_en": "A wireless mouse.",
+    "example_vi": "Chuột không dây."
+  },
+  {
+    "word": "Network (n/v/adj)",
+    "ipa": "/ˈnetwɜːrk/",
+    "meaning": "Mạng máy tính",
+    "example_en": "Local area network.",
+    "example_vi": "Mạng cục bộ."
+  },
+  {
+    "word": "Node (n/v/adj)",
+    "ipa": "/noʊd/",
+    "meaning": "Điểm kết nối",
+    "example_en": "A node in the graph.",
+    "example_vi": "Một điểm trong đồ thị."
+  },
+  {
+    "word": "Offline (n/v/adj)",
+    "ipa": "/ˌɔːfˈlaɪn/",
+    "meaning": "Ngoại tuyến",
+    "example_en": "You are offline.",
+    "example_vi": "Bạn đang ngoại tuyến."
+  }
+]

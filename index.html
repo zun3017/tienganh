@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A2 Vocab Master</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="bg-particle" style="width: 300px; height: 300px; top: 10%; left: 10%;"></div>
+    <div class="bg-particle" style="width: 200px; height: 200px; top: 60%; right: 5%; background: rgba(16, 185, 129, 0.1);"></div>
+    <div class="bg-particle" style="width: 250px; height: 250px; bottom: -50px; left: 20%; background: rgba(239, 68, 68, 0.1);"></div>
+    
+    <div class="mascot-container" onclick="handleMascotClick()">
+        <div class="mascot-speech" id="mascot-speech">Cố lên nhé!</div>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" style="width:100%; height:100%; filter: drop-shadow(0 15px 20px rgba(0,0,0,0.25));">
+            <!-- Body Outline/Shadow -->
+            <path d="M 25 35 C 10 55, 10 85, 20 90 C 40 95, 60 95, 80 90 C 90 85, 90 55, 75 35 Z" fill="#3b2514" />
+            <!-- Wings -->
+            <path d="M 15 50 C 5 70, 15 90, 25 85 C 25 70, 30 50, 40 45 Z" fill="#7a4b26" />
+            <path d="M 85 50 C 95 70, 85 90, 75 85 C 75 70, 70 50, 60 45 Z" fill="#7a4b26" />
+            <!-- Wing Feathers -->
+            <path d="M 12 65 L 20 62 L 18 70 Z" fill="#c47a33" />
+            <path d="M 16 75 L 24 72 L 22 80 Z" fill="#c47a33" />
+            <path d="M 88 65 L 80 62 L 82 70 Z" fill="#c47a33" />
+            <path d="M 84 75 L 76 72 L 78 80 Z" fill="#c47a33" />
+            <!-- Belly Background -->
+            <path d="M 30 50 C 30 90, 70 90, 70 50 Z" fill="#d9c2a3" />
+            <!-- Belly Zig-zags -->
+            <path d="M 32 60 L 38 65 L 44 60 L 50 65 L 56 60 L 62 65 L 68 60" fill="none" stroke="#523218" stroke-width="3" stroke-linejoin="round" />
+            <path d="M 32 70 L 38 75 L 44 70 L 50 75 L 56 70 L 62 75 L 68 70" fill="none" stroke="#523218" stroke-width="3" stroke-linejoin="round" />
+            <path d="M 35 80 L 41 85 L 47 80 L 53 85 L 59 80 L 65 85" fill="none" stroke="#523218" stroke-width="3" stroke-linejoin="round" />
+            <!-- Head Base -->
+            <ellipse cx="50" cy="38" rx="36" ry="26" fill="#8c613a" />
+            <!-- Ears -->
+            <path d="M 20 30 C 15 20, 10 15, 25 10 C 25 15, 30 20, 35 22 Z" fill="#3b2514" />
+            <path d="M 23 27 C 18 19, 15 17, 26 13 C 26 17, 30 21, 33 22 Z" fill="#8c613a" />
+            <path d="M 80 30 C 85 20, 90 15, 75 10 C 75 15, 70 20, 65 22 Z" fill="#3b2514" />
+            <path d="M 77 27 C 82 19, 85 17, 74 13 C 74 17, 70 21, 67 22 Z" fill="#8c613a" />
+            <!-- Forehead -->
+            <rect x="44" y="16" width="3" height="3" fill="#e8a82a" transform="rotate(45 45.5 17.5)"/>
+            <rect x="49" y="14" width="3" height="3" fill="#e8a82a" transform="rotate(45 50.5 15.5)"/>
+            <rect x="54" y="16" width="3" height="3" fill="#e8a82a" transform="rotate(45 55.5 17.5)"/>
+            <rect x="47" y="20" width="3" height="3" fill="#e8a82a" transform="rotate(45 48.5 21.5)"/>
+            <rect x="52" y="20" width="3" height="3" fill="#e8a82a" transform="rotate(45 53.5 21.5)"/>
+            <rect x="42" y="22" width="3" height="3" fill="#e8a82a" transform="rotate(45 43.5 23.5)"/>
+            <rect x="57" y="22" width="3" height="3" fill="#e8a82a" transform="rotate(45 58.5 23.5)"/>
+            <!-- Facial Discs -->
+            <path d="M 16 38 C 16 20, 40 18, 50 35 C 60 18, 84 20, 84 38 C 84 55, 60 60, 50 48 C 40 60, 16 55, 16 38 Z" fill="#ffffff" stroke="#e8a82a" stroke-width="2" />
+            <!-- Jagged edge -->
+            <path d="M 22 48 L 28 54 L 34 50 L 40 55 L 46 51 L 50 58 L 54 51 L 60 55 L 66 50 L 72 54 L 78 48" fill="none" stroke="#523218" stroke-width="2" stroke-linejoin="round" />
+            <!-- Eyes -->
+            <circle cx="34" cy="38" r="12" fill="#d97316" />
+            <circle cx="66" cy="38" r="12" fill="#d97316" />
+            <circle cx="34" cy="38" r="9" fill="#fac819" />
+            <circle cx="66" cy="38" r="9" fill="#fac819" />
+            <!-- Pupils -->
+            <circle cx="34" cy="38" r="5.5" fill="#1e1e1e">
+                <animate attributeName="cx" values="34;36;32;34" dur="5s" repeatCount="indefinite" />
+                <animate attributeName="cy" values="38;40;38" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <circle cx="66" cy="38" r="5.5" fill="#1e1e1e">
+                <animate attributeName="cx" values="66;68;64;66" dur="5s" repeatCount="indefinite" />
+                <animate attributeName="cy" values="38;40;38" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <!-- Highlights -->
+            <circle cx="32" cy="35" r="2" fill="#ffffff" />
+            <circle cx="64" cy="35" r="2" fill="#ffffff" />
+            <!-- Beak -->
+            <path d="M 45 42 L 55 42 L 50 56 Z" fill="#3a3a3a" />
+            <path d="M 50 42 L 55 42 L 50 56 Z" fill="#222222" />
+            <path d="M 47 43 L 53 43 L 50 54 Z" fill="#555555" />
+            <!-- Claws -->
+            <path d="M 25 85 L 22 98 L 28 92 L 32 98 L 36 92 L 40 98 L 38 85 Z" fill="#e8a82a" stroke="#523218" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M 75 85 L 78 98 L 72 92 L 68 98 L 64 92 L 60 98 L 62 85 Z" fill="#e8a82a" stroke="#523218" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+    </div>
+
+    <header id="main-header" style="display: none;">
+        <div>Chào, <span id="user-display">User</span>!</div>
+        <button class="btn-outline" style="width: auto; padding: 0.5rem 1rem; margin: 0;" onclick="logout()">Đăng xuất</button>
+    </header>
+
+    <!-- 1. AUTH SCREEN -->
+    <div id="screen-auth" class="container glass active-screen" style="position: fixed !important; top: 0 !important; left: 0 !important; max-width: 100% !important; width: 100vw !important; height: 100vh !important; margin: 0 !important; border-radius: 0 !important; padding: 0 !important; background: url('assets/login_bg.png') no-repeat center center/cover !important; justify-content: center !important; align-items: center !important; border: none !important; overflow: hidden !important; z-index: 100 !important; box-sizing: border-box !important;">
+        
+        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+        
+        <!-- Cup Trigger -->
+        <div id="login-cup-trigger" style="position: absolute; top: 1%; left: 52%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: transform 0.2s; z-index: 101;" onclick="openLoginForm()" onmouseover="this.style.transform='translateX(-50%) scale(1.08)'" onmouseout="this.style.transform='translateX(-50%) scale(1)'">
+            <style>
+                @keyframes floatCup {
+                    0% { transform: translateY(0px); }
+                    50% { transform: translateY(-12px); }
+                    100% { transform: translateY(0px); }
+                }
+            </style>
+            <img src="assets/login_text.png" style="height: 50px; margin-bottom: 5px; animation: floatCup 3s ease-in-out infinite;">
+            <img src="cúp.png" style="height: 160px; animation: floatCup 3s ease-in-out infinite; animation-delay: 0.1s; filter: drop-shadow(0 15px 30px rgba(255, 215, 0, 0.5));">
+        </div>
+
+        <script>
+            function openLoginForm() {
+                document.getElementById('login-cup-trigger').style.display = 'none';
+                let panel = document.getElementById('login-glass-panel');
+                panel.style.opacity = '1';
+                panel.style.transform = 'scale(1)';
+                panel.style.pointerEvents = 'auto';
+            }
+            function closeLoginForm() {
+                let panel = document.getElementById('login-glass-panel');
+                panel.style.opacity = '0';
+                panel.style.transform = 'scale(0)';
+                panel.style.pointerEvents = 'none';
+                setTimeout(() => {
+                    document.getElementById('login-cup-trigger').style.display = 'flex';
+                }, 300);
+            }
+        </script>
+
+        <div id="login-glass-panel" class="glass" style="max-width: 420px; width: 90%; padding: 2.5rem; border-radius: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -2px 4px rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.5); border-left: 1px solid rgba(255,255,255,0.5); background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: absolute; z-index: 102; opacity: 0; transform: scale(0); pointer-events: none; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+            
+            <div style="position: absolute; top: -80px; left: -65px; z-index: 105; animation: floatCup 3s ease-in-out infinite;">
+                <img src="cúp.png" style="height: 140px; cursor: pointer; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4)); transform: rotate(-25deg); transition: transform 0.2s;" onclick="closeLoginForm()" onmouseover="this.style.transform='scale(1.1) rotate(-35deg)'" onmouseout="this.style.transform='scale(1) rotate(-25deg)'" title="Nhấn để đóng form">
+            </div>
+            
+            <h2 style="font-size: 2.5rem; color: #1e3a8a; text-align: center; text-shadow: 0px 2px 4px rgba(255,255,255,0.9); margin-bottom: 0.5rem; font-weight: 800;">A2 Vocab Master</h2>
+            <p style="margin-bottom: 2rem; color: #1e293b; text-align: center; font-weight: 600;">Hệ thống học từ vựng Flashcard</p>
+            
+            <!-- LOGIN PANEL -->
+            <div id="login-panel" style="width: 100%;">
+                <input type="text" id="username" placeholder="Tên đăng nhập" autocomplete="off" style="background: rgba(255,255,255,0.95); border: 2px solid rgba(255,255,255,0.8); font-weight: 500; color: #000;">
+                <input type="password" id="password" placeholder="Mật khẩu" style="background: rgba(255,255,255,0.95); border: 2px solid rgba(255,255,255,0.8); font-weight: 500; color: #000;">
+                <button onclick="login()" style="font-size: 1.1rem; padding: 1rem; border-radius: 12px; margin-top: 1rem; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); font-weight: bold;">Đăng Nhập</button>
+                <p style="text-align: center; margin-top: 1.5rem; color: #1e293b; font-weight: 600; cursor: pointer; text-decoration: underline; text-shadow: 0 1px 2px rgba(255,255,255,0.8);" onclick="toggleAuth('register')">Chưa có tài khoản? Đăng ký ngay</p>
+                <p id="auth-login-msg" style="color: var(--danger); text-align: center; margin-top: 1rem; background: rgba(255,255,255,0.9); border-radius: 8px; padding: 0.5rem; display: none; font-weight: bold;"></p>
+            </div>
+
+            <!-- REGISTER PANEL -->
+            <div id="register-panel" style="width: 100%; display: none;">
+                <input type="text" id="reg-username" placeholder="Tên đăng ký" autocomplete="off" style="background: rgba(255,255,255,0.95); font-weight: 500; color: #000;">
+                <input type="password" id="reg-password" placeholder="Mật khẩu" style="background: rgba(255,255,255,0.95); font-weight: 500; color: #000;">
+                <input type="password" id="reg-confirm" placeholder="Nhập lại mật khẩu" style="background: rgba(255,255,255,0.95); font-weight: 500; color: #000;">
+                <button onclick="register()" style="font-size: 1.1rem; padding: 1rem; border-radius: 12px; margin-top: 1rem; font-weight: bold;">Đồng ý Đăng ký</button>
+                <p style="text-align: center; margin-top: 1.5rem; color: #1e293b; font-weight: 600; cursor: pointer; text-decoration: underline; text-shadow: 0 1px 2px rgba(255,255,255,0.8);" onclick="toggleAuth('login')">Đã có tài khoản? Đăng nhập</p>
+                <p id="auth-reg-msg" style="color: var(--danger); text-align: center; margin-top: 1rem; background: rgba(255,255,255,0.9); border-radius: 8px; padding: 0.5rem; display: none; font-weight: bold;"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. DASHBOARD SCREEN -->
+    <div id="screen-dashboard" class="container glass" style="position: fixed !important; top: 0 !important; left: 0 !important; max-width: 100% !important; width: 100vw !important; height: 100vh !important; margin: 0 !important; border-radius: 0 !important; padding: 0 !important; border: none !important; overflow: hidden !important; z-index: 90 !important;">
+        <div class="game-ui-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('assets/dashboard_bg_new.jpg') no-repeat center bottom/cover;">
+            
+            <!-- TOP NAV ICONS (Glass Pills) -->
+            <div class="glass-btn float-delay-1" title="Bảng Thống Kê" onclick="showCloudContent('progress')" style="top: 3%; left: 3%;">
+                <span style="font-size: 1.5rem;">📈</span> Thống Kê
+            </div>
+            <div class="glass-btn float-delay-2" title="Chuỗi Học" onclick="showCloudContent('streak')" style="top: 3%; left: 14%;">
+                <span style="font-size: 1.5rem;">🔥</span> Chuỗi Học
+            </div>
+            <div class="glass-btn float-delay-3" title="Tài Khoản" onclick="logout()" style="top: 3%; right: 3%;">
+                <span style="font-size: 1.5rem;">👤</span> Thoát
+            </div>
+            
+            <!-- FLOATING ICONS (Topics and Tools) (3D Glass Cards) -->
+            <div class="glass-card-floating float-delay-4" title="Cửa Hàng Tích Điểm" onclick="showCloudContent('store')" style="top: 25%; left: 10%; display: flex; flex-direction: column; gap: 0.5rem;">
+                <span class="card-icon" style="margin-bottom: 0;">🛒</span>
+                <span style="font-weight: 800; font-size: 1rem;">Cửa Hàng</span>
+                <span id="user-points-display" style="background: rgba(0,0,0,0.5); color: #fbbf24; padding: 2px 8px; border-radius: 12px; font-size: 0.9rem;">Điểm: 0</span>
+            </div>
+            <div class="glass-card-floating float-delay-2" title="Trí Nhớ Siêu Phàm" onclick="showCloudContent('srs')" style="top: 60%; left: 15%;">
+                <span class="card-icon">🧠</span>
+                Ôn Tập
+            </div>
+            
+            <div class="glass-card-floating float-delay-1" title="3000 Từ Cơ Bản" onclick="showCloudContent('cat_3000')" style="top: 15%; right: 15%;">
+                <span class="card-icon">📗</span>
+                3000 Từ Oxford
+            </div>
+
+            
+            <!-- MASCOTS -->
+            <div class="glass-card-floating float-delay-4" title="Thêm Bộ Từ Mới" onclick="showCloudContent('import')" style="top: 60%; right: 15%;">
+                <span class="card-icon">📁</span>
+                Thêm File Excel
+            </div>
+
+            <!-- CENTRAL CLOUD CONTENT AREA (Glassmorphism) -->
+            <div id="cloud-content-area" class="glass" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); width: 600px; max-width: 90%; max-height: 85vh; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 30px; border-radius: 30px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.4); box-shadow: 0 15px 40px rgba(0,0,0,0.3); opacity: 0; pointer-events: none; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow-y: auto;">
+                <img src="cúp.png" style="position: absolute; top: 15px; right: 20px; height: 50px; cursor: pointer; transition: transform 0.2s;" onclick="hideCloudContent()" onmouseover="this.style.transform='scale(1.2) rotate(15deg)'" onmouseout="this.style.transform='scale(1) rotate(0deg)'" title="Đóng">
+                
+                <h3 id="cloud-title" style="color: #1e3a8a; text-align: center; text-shadow: 0px 1px 2px rgba(255,255,255,0.9); margin-bottom: 0.5rem; font-size: 2rem; font-weight: 900;">WELCOME</h3>
+                <p id="cloud-desc" style="text-align: center; color: #1e293b; font-weight: 700; margin-bottom: 2rem; font-size: 1.1rem; background: rgba(255,255,255,0.7); padding: 5px 15px; border-radius: 20px;">Nhấp vào các biểu tượng lơ lửng để khám phá bài học!</p>
+                
+                <!-- Dynamic Content Container -->
+                <div id="dynamic-cloud-content" style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 1rem;"></div>
+            </div>
+        </div>
+        
+        <!-- HIDDEN LEGACY DASHBOARD (To keep app.js references working) -->
+        <div id="legacy-dashboard-components" style="display: none;">
+            
+            <!-- TIẾN ĐỘ -->
+            <div style="background: rgba(255, 255, 255, 0.8); box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05); padding: 1.5rem; border-radius: 8px; width: 100%; margin-bottom: 2rem;">
+                <h3 style="margin-bottom: 0.5rem;">Tiến độ hôm nay</h3>
+                <div class="progress-wrapper">
+                    <div id="daily-progress-bar" class="progress-bar"></div>
+                </div>
+                <p id="daily-progress-text" style="text-align: center; font-size: 0.9rem;">Đã học: 0 từ</p>
+                
+                <div id="mini-stats-container" style="display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 120px; background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(8px); padding: 1rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.5); text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                        <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: bold;">TỔNG TỪ TUẦN NÀY</div>
+                        <div id="stat-total-words" style="font-size: 1.5rem; font-weight: 800; color: var(--primary);">0</div>
+                    </div>
+                    <div style="flex: 1; min-width: 120px; background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(8px); padding: 1rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.5); text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                        <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: bold;">TRUNG BÌNH MỖI NGÀY</div>
+                        <div id="stat-avg-words" style="font-size: 1.5rem; font-weight: 800; color: #f59e0b;">0</div>
+                    </div>
+                    <div style="flex: 1; min-width: 120px; background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(8px); padding: 1rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.5); text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                        <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: bold;">THỜI GIAN HỌC HÔM NAY</div>
+                        <div id="stat-time-today" style="font-size: 1.5rem; font-weight: 800; color: #10b981;">0p</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem; position: relative;">
+                    <canvas id="progressChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+            
+            <!-- CHUỖI HỌC (STREAK) -->
+            <div id="streak-panel" style="background: rgba(255, 255, 255, 0.8); box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05); padding: 1.5rem; border-radius: 8px; width: 100%; margin-bottom: 2rem; text-align: center;">
+                <h3 style="margin-bottom: 0.5rem; color: #ea580c;">🔥 Chuỗi Học Tập (Streak)</h3>
+                <p style="font-size: 1rem; color: var(--text-muted); margin-bottom: 1rem;">Hãy học mỗi ngày để giữ lửa nhé!</p>
+                <div style="font-size: 3rem; font-weight: bold; color: #ea580c; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">1 Ngày</div>
+                <p style="margin-top: 1rem; font-size: 0.9rem;">Tuyệt vời! Bạn vừa bắt đầu hành trình.</p>
+            </div>
+            
+            <!-- THÊM FILE EXCEL -->
+            <div style="background: rgba(255, 255, 255, 0.8); box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05); padding: 1.5rem; border-radius: 8px; width: 100%; margin-bottom: 2rem; text-align: center;">
+                <h3 style="margin-bottom: 0.5rem; color: #3b82f6;">📁 Import Flashcard từ Excel</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">File Excel cần có các cột: Word, IPA, Meaning, Example_EN, Example_VI</p>
+                <input type="file" id="excel-upload" accept=".xlsx, .xls" style="display:none;" onchange="handleExcelUpload(event)">
+                <button class="btn-outline" style="border-color: #3b82f6; color: #3b82f6;" onclick="document.getElementById('excel-upload').click()">Tải lên file Excel</button>
+            </div>
+            
+            <!-- CỬA HÀNG -->
+            <div id="store-panel" style="background: rgba(255,255,255,0.85); border: 2px dashed #f59e0b; padding: 1.5rem; border-radius: 12px; width: 100%; margin-bottom: 2rem; text-align: center;">
+                <h3 style="margin-bottom: 1rem; color: #d97706; font-size: 1.5rem;">🛒 Cửa Hàng Tích Điểm</h3>
+                <p style="font-size: 0.95rem; color: #475569; margin-bottom: 1.5rem;">Bạn hiện có <strong style="color: #ea580c; font-size: 1.2rem;" id="store-points-display">0</strong> Điểm. Hãy dùng Điểm để mở khóa các gói từ vựng chuyên sâu!</p>
+                <div style="background: #fef3c7; color: #d97706; padding: 0.5rem; border-radius: 8px; font-weight: bold; margin-bottom: 1rem; animation: pulse 2s infinite;">🔥 ĐẠI TIỆC KHAI TRƯƠNG: ĐỒNG GIÁ 10 ĐIỂM! 🔥</div>
+                
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div style="background: white; border-radius: 8px; padding: 1rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <div style="text-align: left;">
+                            <h4 style="margin: 0; color: #1e293b;">💻 Tiếng Anh IT</h4>
+                            <p style="margin: 0; font-size: 0.8rem; color: #64748b;">Thuật ngữ chuyên ngành CNTT</p>
+                        </div>
+                        <button id="btn-buy-it" class="btn-outline" style="border-color: #f59e0b; color: #d97706;" onclick="buyItem('it', 10)">
+                            <strike style="color: #94a3b8; font-size: 0.8rem;">500</strike> 10 Điểm
+                        </button>
+                    </div>
+                    
+                    <div style="background: white; border-radius: 8px; padding: 1rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <div style="text-align: left;">
+                            <h4 style="margin: 0; color: #1e293b;">📊 Tiếng Anh Marketing</h4>
+                            <p style="margin: 0; font-size: 0.8rem; color: #64748b;">Digital, Brand, Sales...</p>
+                        </div>
+                        <button id="btn-buy-marketing" class="btn-outline" style="border-color: #f59e0b; color: #d97706;" onclick="buyItem('marketing', 10)">
+                            <strike style="color: #94a3b8; font-size: 0.8rem;">500</strike> 10 Điểm
+                        </button>
+                    </div>
+                    
+                    <div style="background: white; border-radius: 8px; padding: 1rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <div style="text-align: left;">
+                            <h4 style="margin: 0; color: #1e293b;">🎓 Luyện Thi IELTS</h4>
+                            <p style="margin: 0; font-size: 0.8rem; color: #64748b;">Từ vựng Academic Band 7.0+</p>
+                        </div>
+                        <button id="btn-buy-ielts" class="btn-outline" style="border-color: #f59e0b; color: #d97706;" onclick="buyItem('ielts', 10)">
+                            <strike style="color: #94a3b8; font-size: 0.8rem;">1000</strike> 10 Điểm
+                        </button>
+                    </div>
+                    
+                    <div style="background: white; border-radius: 8px; padding: 1rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <div style="text-align: left;">
+                            <h4 style="margin: 0; color: #1e293b;">📘 Khóa toeic 650</h4>
+                            <p style="margin: 0; font-size: 0.8rem; color: #64748b;">Tổng hợp từ vựng mục tiêu 650+</p>
+                        </div>
+                        <button id="btn-buy-toeic_650" class="btn-outline" style="border-color: #f59e0b; color: #d97706;" onclick="buyItem('toeic_650', 10)">
+                            <strike style="color: #94a3b8; font-size: 0.8rem;">1200</strike> 10 Điểm
+                        </button>
+                    </div>
+
+                    <div style="background: white; border-radius: 8px; padding: 1rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <div style="text-align: left;">
+                            <h4 style="margin: 0; color: #1e293b;">🟡 Tiếng Anh B1 - Trung Cấp</h4>
+                            <p style="margin: 0; font-size: 0.8rem; color: #64748b;">100 từ chuẩn CEFR B1 — Công việc, Xã hội, Y tế...</p>
+                        </div>
+                        <button id="btn-buy-b1_vocab" class="btn-outline" style="border-color: #f59e0b; color: #d97706;" onclick="buyItem('b1_vocab', 10)">
+                            <strike style="color: #94a3b8; font-size: 0.8rem;">800</strike> 10 Điểm
+                        </button>
+                    </div>
+
+                    <div style="background: white; border-radius: 8px; padding: 1rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+                        <div style="text-align: left;">
+                            <h4 style="margin: 0; color: #1e293b;">🔴 Tiếng Anh B2 - Trên Trung Cấp</h4>
+                            <p style="margin: 0; font-size: 0.8rem; color: #64748b;">86 từ chuẩn CEFR B2 — Kinh tế, Pháp luật, Văn hóa...</p>
+                        </div>
+                        <button id="btn-buy-b2_vocab" class="btn-outline" style="border-color: #f59e0b; color: #d97706;" onclick="buyItem('b2_vocab', 10)">
+                            <strike style="color: #94a3b8; font-size: 0.8rem;">1000</strike> 10 Điểm
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="srs-panel" style="background: rgba(16,185,129,0.1); border: 1px solid var(--success); padding: 1.5rem; border-radius: 8px; width: 100%; margin-bottom: 2rem; text-align: center;">
+                <h3 style="margin-bottom: 0.5rem; color: var(--success);">🧠 Ôn Bài Nhớ Lâu</h3>
+                <p id="srs-status-text" style="margin-bottom: 1rem; font-size: 0.9rem;">Đang tải dữ liệu ôn tập...</p>
+                <button id="btn-start-srs" style="background: var(--success); display: none;" onclick="startSRS()">Bắt đầu ôn tập</button>
+            </div>
+            
+            <select id="topic-select" onchange="onTopicSelect()">
+                <option value="">-- Chọn chủ đề để học --</option>
+                <!-- Injected via JS -->
+            </select>
+            
+            <div id="topic-actions" style="display: none; flex-direction: column; gap: 1rem; width: 100%; margin-top: 1rem;">
+                <p id="topic-progress-text" style="text-align: center; color: var(--success);"></p>
+                <button id="btn-resume" onclick="startLearning(true)" style="background: var(--success);">Tiếp tục học</button>
+                <button class="btn-outline" onclick="startLearning(false)">Học lại từ đầu</button>
+            </div>
+            
+            <button id="btn-history" class="btn-outline" style="border-color: #f59e0b; color: #f59e0b; display: none;" onclick="showHistoryScreen()">📚 Xem Lịch Sử Của Chủ Đề Này</button>
+        </div>
+    </div>
+
+    <!-- 3. FLASHCARD SCREEN -->
+    <div id="screen-flashcard" class="container">
+        <button class="btn-outline" style="margin-bottom: 0.5rem;" onclick="showScreen('screen-dashboard')">⬅ Quay lại Bảng điều khiển</button>
+        
+        <h3 id="flashcard-topic-title" style="color: var(--primary); margin-bottom: 0.5rem;">Chủ đề</h3>
+        <p class="progress-text" id="flashcard-progress">Từ 1 / 100</p>
+        <div class="progress-wrapper">
+            <div class="progress-bar" id="flashcard-progress-bar"></div>
+        </div>
+        
+        <div class="scene" onclick="flipCard()">
+            <div class="card" id="flashcard-obj">
+                <!-- FRONT -->
+                <div class="card__face card__face--front">
+                    <div id="card-confuse-alert" style="display: none; background: #fee2e2; color: #b91c1c; padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; margin-bottom: 10px; font-weight: bold; border: 1px solid #fca5a5;"></div>
+                    <div class="word-en" id="card-front-word">Word</div>
+                    <div class="word-ipa" id="card-front-ipa">/wɜːrd/</div>
+                    <p style="margin-top: 2rem; color: var(--text-muted); font-size: 0.8rem;">(Chạm để lật thẻ)</p>
+                </div>
+                <!-- BACK -->
+                <div class="card__face card__face--back glass">
+                    <img id="card-back-img" class="word-img" src="" alt="illustration">
+                    <div class="word-vi" id="card-back-vi">Nghĩa tiếng Việt</div>
+                    
+                    <div style="display: flex; gap: 1rem; justify-content: center; margin: 0.5rem 0;">
+                        <button class="audio-btn" onclick="playAudio(event)">🔊</button>
+                        <button id="btn-voice-practice" class="audio-btn" style="background: white; color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.1);">🎙️</button>
+                    </div>
+                    <div id="voice-result" style="display: none; text-align: center; font-size: 0.9rem; margin-bottom: 1rem; font-weight: bold; padding: 5px; border-radius: 8px;"></div>
+                    
+                    <div class="example-en" id="card-back-ex-en">Example sentence in English.</div>
+                    <div class="example-vi" id="card-back-ex-vi">Câu ví dụ dịch sang tiếng Việt.</div>
+                    <div class="synonyms" id="card-back-synonyms" style="font-size: 0.85rem; color: #059669; margin-top: 10px; display: none; font-weight: bold;"></div>
+                    
+                    <div id="card-mnemonic-box" style="display: none; background: #fef3c7; color: #b45309; padding: 10px; border-radius: 8px; font-size: 0.9rem; margin-top: 10px; text-align: left; border: 1px dashed #f59e0b;"></div>
+                    
+                    <button id="btn-sentence-game" class="btn-primary" style="display: none; margin-top: 15px; padding: 8px 16px; font-size: 0.9rem; width: 100%;"><span style="margin-right:5px;">🎮</span> Luyện Xếp Câu</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SENTENCE GAME MODAL -->
+        <div id="sentence-game-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(5px);">
+            <div style="background: white; padding: 2rem; border-radius: 16px; max-width: 500px; width: 90%; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+                <h2 style="margin-bottom: 0.5rem; color: var(--primary);">🎮 Trò Chơi Xếp Câu</h2>
+                <p id="sg-vietnamese" style="color: var(--text-muted); margin-bottom: 1.5rem; font-style: italic;"></p>
+                
+                <div id="sg-answer" style="min-height: 50px; padding: 10px; border: 2px dashed #cbd5e1; border-radius: 8px; margin-bottom: 1rem; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: center;">
+                    <!-- Selected words will appear here -->
+                </div>
+                
+                <div id="sg-choices" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 1.5rem;">
+                    <!-- Shuffled words will appear here -->
+                </div>
+                
+                <div id="sg-result" style="display: none; font-weight: bold; margin-bottom: 1rem; font-size: 1.1rem;"></div>
+                
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    <button class="btn-primary" onclick="checkSentence()">Kiểm tra</button>
+                    <button class="btn-outline" onclick="closeSentenceGame()">Đóng</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls" id="controls-normal">
+            <button class="btn-outline" onclick="prevCard()">⬅ Trước</button>
+            <button class="btn-outline" onclick="shuffleCards()">🔀 Trộn</button>
+            <button onclick="nextCard()">Tiếp ➡</button>
+        </div>
+        
+        <div class="controls" id="controls-srs" style="display: none;">
+            <button class="btn-outline" style="border-color: var(--danger); color: var(--danger);" onclick="srsAnswer(false)">🔴 Quên (Học lại)</button>
+            <button style="background: var(--success);" onclick="srsAnswer(true)">🟢 Nhớ tốt</button>
+        </div>
+    </div>
+
+    <!-- 4. QUIZ SCREEN -->
+    <div id="screen-quiz" class="container glass">
+        <h2 style="color: #f59e0b;">Kiểm Tra Ôn Tập!</h2>
+        <p style="text-align: center; margin-bottom: 1.5rem; color: var(--text-muted);">Bạn vừa học xong 20 từ. Hãy làm bài test nhỏ để đi tiếp nhé!</p>
+        
+        <div id="quiz-content" style="width: 100%;">
+            <!-- Injected via JS -->
+        </div>
+        
+        <div id="quiz-feedback" class="feedback"></div>
+        <button id="quiz-next-btn" style="margin-top: 1.5rem; display: none;" onclick="finishQuiz()">Tiếp tục học ➡</button>
+    </div>
+
+    <!-- 5. HISTORY SCREEN -->
+    <div id="screen-history" class="container glass">
+        <button class="btn-outline" style="margin-bottom: 1rem;" onclick="showScreen('screen-dashboard')">⬅ Quay lại Bảng điều khiển</button>
+        <h2 style="color: #f59e0b;">Lịch Sử Học Tập</h2>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;" id="history-count">Bạn chưa học từ nào.</p>
+        
+        <div id="history-list" style="width: 100%; max-height: 400px; overflow-y: auto; background: rgba(255, 255, 255, 0.8); box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); padding: 1rem; border-radius: 8px;">
+            <!-- Injected via JS -->
+        </div>
+        
+        <button style="margin-top: 1.5rem;" onclick="reviewForgottenWords()">🔀 Ôn tập ngẫu nhiên các từ đã học</button>
+    </div>
+
+    <!-- Load Data -->
+    <script src="js/vocab_data.js"></script>
+    <script src="js/new_vocab_a1a2.js"></script>
+    <script src="js/b1_vocab_data.js"></script>
+    <script src="js/b2_vocab_data.js"></script>
+    <script src="js/premium_vocab.js"></script>
+    <script src="js/toeic_650_data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

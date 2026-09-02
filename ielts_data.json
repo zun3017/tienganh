@@ -1,0 +1,1052 @@
+[
+  {
+    "word": "Accommodate (n/v/adj)",
+    "ipa": "/əˈkɑːmədeɪt/",
+    "meaning": "Cung cấp chỗ ở/Đáp ứng",
+    "example_en": "The hotel can accommodate 500 guests.",
+    "example_vi": "Khách sạn có thể chứa 500 khách."
+  },
+  {
+    "word": "Accumulate (n/v/adj)",
+    "ipa": "/əˈkjuːmjəleɪt/",
+    "meaning": "Tích lũy",
+    "example_en": "Dust and dirt accumulate easily.",
+    "example_vi": "Bụi bẩn dễ dàng tích tụ."
+  },
+  {
+    "word": "Acknowledge (n/v/adj)",
+    "ipa": "/əkˈnɑːlɪdʒ/",
+    "meaning": "Công nhận",
+    "example_en": "He acknowledged his mistake.",
+    "example_vi": "Anh ấy đã thừa nhận sai lầm của mình."
+  },
+  {
+    "word": "Adequate (n/v/adj)",
+    "ipa": "/ˈædɪkwət/",
+    "meaning": "Đầy đủ/Thích đáng",
+    "example_en": "An adequate supply of water.",
+    "example_vi": "Một nguồn cung cấp nước đầy đủ."
+  },
+  {
+    "word": "Adjacent (n/v/adj)",
+    "ipa": "/əˈdʒeɪsnt/",
+    "meaning": "Liền kề",
+    "example_en": "The adjacent building is a bank.",
+    "example_vi": "Tòa nhà liền kề là một ngân hàng."
+  },
+  {
+    "word": "Allocate (n/v/adj)",
+    "ipa": "/ˈæləkeɪt/",
+    "meaning": "Phân bổ",
+    "example_en": "Allocate resources efficiently.",
+    "example_vi": "Phân bổ nguồn lực một cách hiệu quả."
+  },
+  {
+    "word": "Alter (n/v/adj)",
+    "ipa": "/ˈɔːltər/",
+    "meaning": "Thay đổi",
+    "example_en": "We had to alter our plans.",
+    "example_vi": "Chúng tôi phải thay đổi kế hoạch."
+  },
+  {
+    "word": "Ambiguous (n/v/adj)",
+    "ipa": "/æmˈbɪɡjuəs/",
+    "meaning": "Mơ hồ",
+    "example_en": "The wording is intentionally ambiguous.",
+    "example_vi": "Từ ngữ được cố ý viết mơ hồ."
+  },
+  {
+    "word": "Amend (n/v/adj)",
+    "ipa": "/əˈmend/",
+    "meaning": "Sửa đổi",
+    "example_en": "Amend the document before sending.",
+    "example_vi": "Sửa đổi tài liệu trước khi gửi."
+  },
+  {
+    "word": "Anticipate (n/v/adj)",
+    "ipa": "/ænˈtɪsɪpeɪt/",
+    "meaning": "Dự đoán/Mong đợi",
+    "example_en": "We don't anticipate any problems.",
+    "example_vi": "Chúng tôi không lường trước vấn đề nào."
+  },
+  {
+    "word": "Apparent (n/v/adj)",
+    "ipa": "/əˈpærənt/",
+    "meaning": "Rõ ràng",
+    "example_en": "It became apparent that she was right.",
+    "example_vi": "Rõ ràng là cô ấy đã đúng."
+  },
+  {
+    "word": "Append (n/v/adj)",
+    "ipa": "/əˈpend/",
+    "meaning": "Nối thêm/Phụ lục",
+    "example_en": "Append a note to the end.",
+    "example_vi": "Thêm một ghi chú vào cuối."
+  },
+  {
+    "word": "Approximate (n/v/adj)",
+    "ipa": "/əˈprɑːksɪmət/",
+    "meaning": "Xấp xỉ",
+    "example_en": "The approximate cost is $50.",
+    "example_vi": "Chi phí xấp xỉ là 50 đô la."
+  },
+  {
+    "word": "Arbitrary (n/v/adj)",
+    "ipa": "/ˈɑːrbɪtreri/",
+    "meaning": "Tùy tiện",
+    "example_en": "An arbitrary decision.",
+    "example_vi": "Một quyết định tùy tiện."
+  },
+  {
+    "word": "Ascertain (n/v/adj)",
+    "ipa": "/ˌæsərˈteɪn/",
+    "meaning": "Xác minh",
+    "example_en": "We must ascertain the truth.",
+    "example_vi": "Chúng ta phải xác minh sự thật."
+  },
+  {
+    "word": "Assess (n/v/adj)",
+    "ipa": "/əˈses/",
+    "meaning": "Đánh giá",
+    "example_en": "Assess the impact of the policy.",
+    "example_vi": "Đánh giá tác động của chính sách."
+  },
+  {
+    "word": "Assimilate (n/v/adj)",
+    "ipa": "/əˈsɪməleɪt/",
+    "meaning": "Đồng hóa/Hấp thu",
+    "example_en": "Assimilate new information.",
+    "example_vi": "Hấp thụ thông tin mới."
+  },
+  {
+    "word": "Assume (n/v/adj)",
+    "ipa": "/əˈsuːm/",
+    "meaning": "Giả định/Đảm đương",
+    "example_en": "Don't assume anything.",
+    "example_vi": "Đừng giả định bất cứ điều gì."
+  },
+  {
+    "word": "Attain (n/v/adj)",
+    "ipa": "/əˈteɪn/",
+    "meaning": "Đạt được",
+    "example_en": "Attain a high level of proficiency.",
+    "example_vi": "Đạt được mức độ thông thạo cao."
+  },
+  {
+    "word": "Beneficial (n/v/adj)",
+    "ipa": "/ˌbenɪˈfɪʃl/",
+    "meaning": "Có lợi",
+    "example_en": "Exercise is beneficial to health.",
+    "example_vi": "Tập thể dục có lợi cho sức khỏe."
+  },
+  {
+    "word": "Bias (n/v/adj)",
+    "ipa": "/ˈbaɪəs/",
+    "meaning": "Sự thành kiến",
+    "example_en": "There was a clear bias in the report.",
+    "example_vi": "Có một sự thành kiến rõ ràng trong báo cáo."
+  },
+  {
+    "word": "Capacity (n/v/adj)",
+    "ipa": "/kəˈpæsəti/",
+    "meaning": "Sức chứa/Năng lực",
+    "example_en": "The stadium has a seating capacity of 50,000.",
+    "example_vi": "Sân vận động có sức chứa 50.000 người."
+  },
+  {
+    "word": "Category (n/v/adj)",
+    "ipa": "/ˈkætəɡɔːri/",
+    "meaning": "Hạng mục",
+    "example_en": "Choose a category.",
+    "example_vi": "Chọn một hạng mục."
+  },
+  {
+    "word": "Cease (n/v/adj)",
+    "ipa": "/siːs/",
+    "meaning": "Ngừng lại",
+    "example_en": "They ceased working at 5 PM.",
+    "example_vi": "Họ ngừng làm việc lúc 5 giờ chiều."
+  },
+  {
+    "word": "Coherent (n/v/adj)",
+    "ipa": "/koʊˈhɪrənt/",
+    "meaning": "Mạch lạc",
+    "example_en": "A coherent argument.",
+    "example_vi": "Một lập luận mạch lạc."
+  },
+  {
+    "word": "Coincide (n/v/adj)",
+    "ipa": "/ˌkoʊɪnˈsaɪd/",
+    "meaning": "Trùng khớp/Xảy ra đồng thời",
+    "example_en": "The festival coincides with my birthday.",
+    "example_vi": "Lễ hội trùng với sinh nhật tôi."
+  },
+  {
+    "word": "Collapse (n/v/adj)",
+    "ipa": "/kəˈlæps/",
+    "meaning": "Sụp đổ",
+    "example_en": "The bridge collapsed.",
+    "example_vi": "Cây cầu đã bị sập."
+  },
+  {
+    "word": "Commence (n/v/adj)",
+    "ipa": "/kəˈmens/",
+    "meaning": "Bắt đầu",
+    "example_en": "The meeting will commence at noon.",
+    "example_vi": "Cuộc họp sẽ bắt đầu lúc trưa."
+  },
+  {
+    "word": "Compatible (n/v/adj)",
+    "ipa": "/kəmˈpætəbl/",
+    "meaning": "Tương thích",
+    "example_en": "This software is not compatible with Mac.",
+    "example_vi": "Phần mềm này không tương thích với Mac."
+  },
+  {
+    "word": "Compensate (n/v/adj)",
+    "ipa": "/ˈkɑːmpenseɪt/",
+    "meaning": "Bù đắp",
+    "example_en": "Nothing can compensate for the loss.",
+    "example_vi": "Không gì có thể bù đắp cho sự mất mát."
+  },
+  {
+    "word": "Compile (n/v/adj)",
+    "ipa": "/kəmˈpaɪl/",
+    "meaning": "Biên soạn",
+    "example_en": "Compile a list of names.",
+    "example_vi": "Biên soạn một danh sách tên."
+  },
+  {
+    "word": "Comprehensive (n/v/adj)",
+    "ipa": "/ˌkɑːmprɪˈhensɪv/",
+    "meaning": "Toàn diện",
+    "example_en": "A comprehensive review.",
+    "example_vi": "Một đánh giá toàn diện."
+  },
+  {
+    "word": "Comprise (n/v/adj)",
+    "ipa": "/kəmˈpraɪz/",
+    "meaning": "Bao gồm",
+    "example_en": "The committee comprises ten members.",
+    "example_vi": "Ủy ban bao gồm mười thành viên."
+  },
+  {
+    "word": "Conceive (n/v/adj)",
+    "ipa": "/kənˈsiːv/",
+    "meaning": "Hình thành (ý tưởng)/Nhận thức",
+    "example_en": "He conceived the idea of the novel.",
+    "example_vi": "Anh ấy đã hình thành ý tưởng cho cuốn tiểu thuyết."
+  },
+  {
+    "word": "Conclude (n/v/adj)",
+    "ipa": "/kənˈkluːd/",
+    "meaning": "Kết luận",
+    "example_en": "What did you conclude from the data?",
+    "example_vi": "Bạn đã kết luận gì từ dữ liệu?"
+  },
+  {
+    "word": "Concurrent (n/v/adj)",
+    "ipa": "/kənˈkɜːrənt/",
+    "meaning": "Đồng thời",
+    "example_en": "Concurrent events.",
+    "example_vi": "Các sự kiện đồng thời."
+  },
+  {
+    "word": "Conduct (n/v/adj)",
+    "ipa": "/kənˈdʌkt/",
+    "meaning": "Thực hiện (nghiên cứu)/Hạnh kiểm",
+    "example_en": "Conduct a survey.",
+    "example_vi": "Thực hiện một cuộc khảo sát."
+  },
+  {
+    "word": "Confer (n/v/adj)",
+    "ipa": "/kənˈfɜːr/",
+    "meaning": "Bàn bạc/Trao tặng",
+    "example_en": "Confer with colleagues.",
+    "example_vi": "Bàn bạc với đồng nghiệp."
+  },
+  {
+    "word": "Confine (n/v/adj)",
+    "ipa": "/kənˈfaɪn/",
+    "meaning": "Giam giữ/Hạn chế",
+    "example_en": "Confine yourself to the subject.",
+    "example_vi": "Hãy hạn chế bản thân vào chủ đề này."
+  },
+  {
+    "word": "Confirm (n/v/adj)",
+    "ipa": "/kənˈfɜːrm/",
+    "meaning": "Xác nhận",
+    "example_en": "Please confirm your booking.",
+    "example_vi": "Vui lòng xác nhận việc đặt chỗ của bạn."
+  },
+  {
+    "word": "Conflict (n/v/adj)",
+    "ipa": "/ˈkɑːnflɪkt/",
+    "meaning": "Xung đột",
+    "example_en": "Armed conflict.",
+    "example_vi": "Xung đột vũ trang."
+  },
+  {
+    "word": "Conform (n/v/adj)",
+    "ipa": "/kənˈfɔːrm/",
+    "meaning": "Tuân thủ",
+    "example_en": "Conform to the rules.",
+    "example_vi": "Tuân thủ các quy tắc."
+  },
+  {
+    "word": "Consent (n/v/adj)",
+    "ipa": "/kənˈsent/",
+    "meaning": "Sự đồng ý",
+    "example_en": "Without her consent.",
+    "example_vi": "Nếu không có sự đồng ý của cô ấy."
+  },
+  {
+    "word": "Consequent (n/v/adj)",
+    "ipa": "/ˈkɑːnsɪkwent/",
+    "meaning": "Hậu quả là",
+    "example_en": "The consequent drop in sales.",
+    "example_vi": "Sự sụt giảm doanh số là hậu quả kéo theo."
+  },
+  {
+    "word": "Considerable (n/v/adj)",
+    "ipa": "/kənˈsɪdərəbl/",
+    "meaning": "Đáng kể",
+    "example_en": "A considerable amount of money.",
+    "example_vi": "Một số tiền đáng kể."
+  },
+  {
+    "word": "Consist (n/v/adj)",
+    "ipa": "/kənˈsɪst/",
+    "meaning": "Bao gồm",
+    "example_en": "The team consists of five players.",
+    "example_vi": "Đội gồm năm người chơi."
+  },
+  {
+    "word": "Constant (n/v/adj)",
+    "ipa": "/ˈkɑːnstənt/",
+    "meaning": "Liên tục/Không đổi",
+    "example_en": "Constant pain.",
+    "example_vi": "Cơn đau liên tục."
+  },
+  {
+    "word": "Constitutional (n/v/adj)",
+    "ipa": "/ˌkɑːnstɪˈtuːʃənl/",
+    "meaning": "Thuộc hiến pháp",
+    "example_en": "A constitutional amendment.",
+    "example_vi": "Một tu chính án hiến pháp."
+  },
+  {
+    "word": "Constrain (n/v/adj)",
+    "ipa": "/kənˈstreɪn/",
+    "meaning": "Bắt buộc/Hạn chế",
+    "example_en": "Constrained by a lack of funds.",
+    "example_vi": "Bị hạn chế bởi việc thiếu quỹ."
+  },
+  {
+    "word": "Construct (n/v/adj)",
+    "ipa": "/kənˈstrʌkt/",
+    "meaning": "Xây dựng/Tạo lập",
+    "example_en": "Construct a new bridge.",
+    "example_vi": "Xây dựng một cây cầu mới."
+  },
+  {
+    "word": "Consume (n/v/adj)",
+    "ipa": "/kənˈsuːm/",
+    "meaning": "Tiêu thụ",
+    "example_en": "Consume less sugar.",
+    "example_vi": "Tiêu thụ ít đường hơn."
+  },
+  {
+    "word": "Contemporary (n/v/adj)",
+    "ipa": "/kənˈtempəreri/",
+    "meaning": "Đương đại/Cùng thời",
+    "example_en": "Contemporary art.",
+    "example_vi": "Nghệ thuật đương đại."
+  },
+  {
+    "word": "Context (n/v/adj)",
+    "ipa": "/ˈkɑːntekst/",
+    "meaning": "Ngữ cảnh",
+    "example_en": "Taken out of context.",
+    "example_vi": "Bị đưa ra khỏi ngữ cảnh."
+  },
+  {
+    "word": "Contract (n/v/adj)",
+    "ipa": "/ˈkɑːntrækt/",
+    "meaning": "Hợp đồng",
+    "example_en": "Sign a contract.",
+    "example_vi": "Ký hợp đồng."
+  },
+  {
+    "word": "Contradict (n/v/adj)",
+    "ipa": "/ˌkɑːntrəˈdɪkt/",
+    "meaning": "Mâu thuẫn",
+    "example_en": "His account contradicts yours.",
+    "example_vi": "Lời kể của anh ấy mâu thuẫn với của bạn."
+  },
+  {
+    "word": "Contrary (n/v/adj)",
+    "ipa": "/ˈkɑːntreri/",
+    "meaning": "Trái ngược",
+    "example_en": "On the contrary.",
+    "example_vi": "Trái lại."
+  },
+  {
+    "word": "Contrast (n/v/adj)",
+    "ipa": "/ˈkɑːntræst/",
+    "meaning": "Sự tương phản",
+    "example_en": "In sharp contrast to his brother.",
+    "example_vi": "Trái ngược hoàn toàn với anh trai mình."
+  },
+  {
+    "word": "Contribute (n/v/adj)",
+    "ipa": "/kənˈtrɪbjuːt/",
+    "meaning": "Đóng góp",
+    "example_en": "Contribute to society.",
+    "example_vi": "Đóng góp cho xã hội."
+  },
+  {
+    "word": "Controversy (n/v/adj)",
+    "ipa": "/ˈkɑːntrəvɜːrsi/",
+    "meaning": "Sự tranh cãi",
+    "example_en": "Cause a controversy.",
+    "example_vi": "Gây ra một cuộc tranh cãi."
+  },
+  {
+    "word": "Convene (n/v/adj)",
+    "ipa": "/kənˈviːn/",
+    "meaning": "Triệu tập",
+    "example_en": "Convene a meeting.",
+    "example_vi": "Triệu tập một cuộc họp."
+  },
+  {
+    "word": "Converse (n/v/adj)",
+    "ipa": "/kənˈvɜːrs/",
+    "meaning": "Trò chuyện/Ngược lại",
+    "example_en": "Hold a converse opinion.",
+    "example_vi": "Giữ một ý kiến ngược lại."
+  },
+  {
+    "word": "Convert (n/v/adj)",
+    "ipa": "/kənˈvɜːrt/",
+    "meaning": "Chuyển đổi",
+    "example_en": "Convert dollars into euros.",
+    "example_vi": "Chuyển đổi đô la sang euro."
+  },
+  {
+    "word": "Convince (n/v/adj)",
+    "ipa": "/kənˈvɪns/",
+    "meaning": "Thuyết phục",
+    "example_en": "Convince him to stay.",
+    "example_vi": "Thuyết phục anh ấy ở lại."
+  },
+  {
+    "word": "Core (n/v/adj)",
+    "ipa": "/kɔːr/",
+    "meaning": "Cốt lõi",
+    "example_en": "The core issue.",
+    "example_vi": "Vấn đề cốt lõi."
+  },
+  {
+    "word": "Corporate (n/v/adj)",
+    "ipa": "/ˈkɔːrpərət/",
+    "meaning": "Thuộc doanh nghiệp",
+    "example_en": "Corporate culture.",
+    "example_vi": "Văn hóa doanh nghiệp."
+  },
+  {
+    "word": "Correspond (n/v/adj)",
+    "ipa": "/ˌkɔːrəˈspɑːnd/",
+    "meaning": "Tương ứng/Trao đổi thư từ",
+    "example_en": "The numbers correspond.",
+    "example_vi": "Các con số tương ứng."
+  },
+  {
+    "word": "Couple (n/v/adj)",
+    "ipa": "/ˈkʌpl/",
+    "meaning": "Một cặp/Kết hợp",
+    "example_en": "A married couple.",
+    "example_vi": "Một cặp vợ chồng."
+  },
+  {
+    "word": "Create (n/v/adj)",
+    "ipa": "/kriˈeɪt/",
+    "meaning": "Tạo ra",
+    "example_en": "Create a new folder.",
+    "example_vi": "Tạo một thư mục mới."
+  },
+  {
+    "word": "Credit (n/v/adj)",
+    "ipa": "/ˈkredɪt/",
+    "meaning": "Tín dụng/Công nhận",
+    "example_en": "Give credit where it is due.",
+    "example_vi": "Công nhận khi xứng đáng."
+  },
+  {
+    "word": "Criteria (n/v/adj)",
+    "ipa": "/kraɪˈtɪriə/",
+    "meaning": "Tiêu chí",
+    "example_en": "Meet the criteria.",
+    "example_vi": "Đáp ứng các tiêu chí."
+  },
+  {
+    "word": "Crucial (n/v/adj)",
+    "ipa": "/ˈkruːʃl/",
+    "meaning": "Cực kỳ quan trọng",
+    "example_en": "A crucial decision.",
+    "example_vi": "Một quyết định vô cùng quan trọng."
+  },
+  {
+    "word": "Culture (n/v/adj)",
+    "ipa": "/ˈkʌltʃər/",
+    "meaning": "Văn hóa",
+    "example_en": "Pop culture.",
+    "example_vi": "Văn hóa đại chúng."
+  },
+  {
+    "word": "Data (n/v/adj)",
+    "ipa": "/ˈdeɪtə/",
+    "meaning": "Dữ liệu",
+    "example_en": "Collect data.",
+    "example_vi": "Thu thập dữ liệu."
+  },
+  {
+    "word": "Debate (n/v/adj)",
+    "ipa": "/dɪˈbeɪt/",
+    "meaning": "Cuộc tranh luận",
+    "example_en": "A heated debate.",
+    "example_vi": "Một cuộc tranh luận sôi nổi."
+  },
+  {
+    "word": "Decade (n/v/adj)",
+    "ipa": "/ˈdekeɪd/",
+    "meaning": "Thập kỷ",
+    "example_en": "Over a decade ago.",
+    "example_vi": "Hơn một thập kỷ trước."
+  },
+  {
+    "word": "Decline (n/v/adj)",
+    "ipa": "/dɪˈklaɪn/",
+    "meaning": "Suy giảm/Từ chối",
+    "example_en": "A decline in sales.",
+    "example_vi": "Một sự suy giảm doanh số."
+  },
+  {
+    "word": "Deduce (n/v/adj)",
+    "ipa": "/dɪˈduːs/",
+    "meaning": "Suy luận",
+    "example_en": "Deduce from the evidence.",
+    "example_vi": "Suy luận từ bằng chứng."
+  },
+  {
+    "word": "Define (n/v/adj)",
+    "ipa": "/dɪˈfaɪn/",
+    "meaning": "Định nghĩa",
+    "example_en": "Define the term.",
+    "example_vi": "Định nghĩa thuật ngữ."
+  },
+  {
+    "word": "Definite (n/v/adj)",
+    "ipa": "/ˈdefɪnət/",
+    "meaning": "Rõ ràng/Dứt khoát",
+    "example_en": "A definite answer.",
+    "example_vi": "Một câu trả lời dứt khoát."
+  },
+  {
+    "word": "Demonstrate (n/v/adj)",
+    "ipa": "/ˈdemənstreɪt/",
+    "meaning": "Chứng minh/Biểu diễn",
+    "example_en": "Demonstrate how it works.",
+    "example_vi": "Chỉ ra cách nó hoạt động."
+  },
+  {
+    "word": "Denote (n/v/adj)",
+    "ipa": "/dɪˈnoʊt/",
+    "meaning": "Biểu thị",
+    "example_en": "Red denotes danger.",
+    "example_vi": "Màu đỏ biểu thị sự nguy hiểm."
+  },
+  {
+    "word": "Deny (n/v/adj)",
+    "ipa": "/dɪˈnaɪ/",
+    "meaning": "Phủ nhận",
+    "example_en": "Deny all the charges.",
+    "example_vi": "Phủ nhận mọi cáo buộc."
+  },
+  {
+    "word": "Depress (n/v/adj)",
+    "ipa": "/dɪˈpres/",
+    "meaning": "Làm chán nản/Làm đình trệ",
+    "example_en": "The bad news depressed him.",
+    "example_vi": "Tin xấu làm anh ấy chán nản."
+  },
+  {
+    "word": "Derive (n/v/adj)",
+    "ipa": "/dɪˈraɪv/",
+    "meaning": "Bắt nguồn từ",
+    "example_en": "Words derived from Latin.",
+    "example_vi": "Từ bắt nguồn từ tiếng Latin."
+  },
+  {
+    "word": "Design (n/v/adj)",
+    "ipa": "/dɪˈzaɪn/",
+    "meaning": "Thiết kế",
+    "example_en": "Design a new car.",
+    "example_vi": "Thiết kế một chiếc xe mới."
+  },
+  {
+    "word": "Despite (n/v/adj)",
+    "ipa": "/dɪˈspaɪt/",
+    "meaning": "Mặc dù",
+    "example_en": "Despite the rain, they went out.",
+    "example_vi": "Bất chấp trời mưa, họ vẫn đi chơi."
+  },
+  {
+    "word": "Detect (n/v/adj)",
+    "ipa": "/dɪˈtekt/",
+    "meaning": "Phát hiện",
+    "example_en": "Detect a leak.",
+    "example_vi": "Phát hiện một chỗ rò rỉ."
+  },
+  {
+    "word": "Deviate (n/v/adj)",
+    "ipa": "/ˈdiːvieɪt/",
+    "meaning": "Chệch hướng",
+    "example_en": "Deviate from the plan.",
+    "example_vi": "Đi chệch khỏi kế hoạch."
+  },
+  {
+    "word": "Device (n/v/adj)",
+    "ipa": "/dɪˈvaɪs/",
+    "meaning": "Thiết bị",
+    "example_en": "An electronic device.",
+    "example_vi": "Một thiết bị điện tử."
+  },
+  {
+    "word": "Devote (n/v/adj)",
+    "ipa": "/dɪˈvoʊt/",
+    "meaning": "Cống hiến",
+    "example_en": "Devote time to study.",
+    "example_vi": "Dành thời gian để học."
+  },
+  {
+    "word": "Dilemma (n/v/adj)",
+    "ipa": "/dɪˈlemə/",
+    "meaning": "Tiến thoái lưỡng nan",
+    "example_en": "Face a dilemma.",
+    "example_vi": "Đối mặt với một tình thế tiến thoái lưỡng nan."
+  },
+  {
+    "word": "Dimension (n/v/adj)",
+    "ipa": "/daɪˈmenʃn/",
+    "meaning": "Chiều/Kích thước",
+    "example_en": "The dimensions of the room.",
+    "example_vi": "Các kích thước của căn phòng."
+  },
+  {
+    "word": "Diminish (n/v/adj)",
+    "ipa": "/dɪˈmɪnɪʃ/",
+    "meaning": "Giảm bớt",
+    "example_en": "Diminish in importance.",
+    "example_vi": "Giảm bớt tầm quan trọng."
+  },
+  {
+    "word": "Discrete (n/v/adj)",
+    "ipa": "/dɪˈskriːt/",
+    "meaning": "Rời rạc/Riêng biệt",
+    "example_en": "Discrete units.",
+    "example_vi": "Các đơn vị rời rạc."
+  },
+  {
+    "word": "Discriminate (n/v/adj)",
+    "ipa": "/dɪˈskrɪmɪneɪt/",
+    "meaning": "Phân biệt đối xử",
+    "example_en": "Discriminate against women.",
+    "example_vi": "Phân biệt đối xử với phụ nữ."
+  },
+  {
+    "word": "Displace (n/v/adj)",
+    "ipa": "/dɪsˈpleɪs/",
+    "meaning": "Chiếm chỗ/Thay thế",
+    "example_en": "The water was displaced.",
+    "example_vi": "Nước đã bị chiếm chỗ."
+  },
+  {
+    "word": "Display (n/v/adj)",
+    "ipa": "/dɪˈspleɪ/",
+    "meaning": "Hiển thị/Trưng bày",
+    "example_en": "A fireworks display.",
+    "example_vi": "Một buổi trình diễn pháo hoa."
+  },
+  {
+    "word": "Dispose (n/v/adj)",
+    "ipa": "/dɪˈspoʊz/",
+    "meaning": "Vứt bỏ",
+    "example_en": "Dispose of the waste.",
+    "example_vi": "Xử lý rác thải."
+  },
+  {
+    "word": "Distinct (n/v/adj)",
+    "ipa": "/dɪˈstɪŋkt/",
+    "meaning": "Khác biệt/Rõ ràng",
+    "example_en": "A distinct smell.",
+    "example_vi": "Một mùi rõ rệt."
+  },
+  {
+    "word": "Distort (n/v/adj)",
+    "ipa": "/dɪˈstɔːrt/",
+    "meaning": "Xuyên tạc/Méo mó",
+    "example_en": "Distort the truth.",
+    "example_vi": "Xuyên tạc sự thật."
+  },
+  {
+    "word": "Distribute (n/v/adj)",
+    "ipa": "/dɪˈstrɪbjuːt/",
+    "meaning": "Phân phối",
+    "example_en": "Distribute the leaflets.",
+    "example_vi": "Phân phát các tờ rơi."
+  },
+  {
+    "word": "Diverse (n/v/adj)",
+    "ipa": "/daɪˈvɜːrs/",
+    "meaning": "Đa dạng",
+    "example_en": "A diverse population.",
+    "example_vi": "Một dân số đa dạng."
+  },
+  {
+    "word": "Document (n/v/adj)",
+    "ipa": "/ˈdɑːkjumənt/",
+    "meaning": "Tài liệu",
+    "example_en": "Save the document.",
+    "example_vi": "Lưu tài liệu."
+  },
+  {
+    "word": "Domain (n/v/adj)",
+    "ipa": "/doʊˈmeɪn/",
+    "meaning": "Lĩnh vực",
+    "example_en": "The domain of science.",
+    "example_vi": "Lĩnh vực khoa học."
+  },
+  {
+    "word": "Domestic (n/v/adj)",
+    "ipa": "/dəˈmestɪk/",
+    "meaning": "Trong nước/Gia đình",
+    "example_en": "Domestic flights.",
+    "example_vi": "Các chuyến bay nội địa."
+  },
+  {
+    "word": "Dominate (n/v/adj)",
+    "ipa": "/ˈdɑːmɪneɪt/",
+    "meaning": "Thống trị",
+    "example_en": "Dominate the market.",
+    "example_vi": "Thống trị thị trường."
+  },
+  {
+    "word": "Draft (n/v/adj)",
+    "ipa": "/dræft/",
+    "meaning": "Bản nháp",
+    "example_en": "A first draft.",
+    "example_vi": "Một bản nháp đầu tiên."
+  },
+  {
+    "word": "Drama (n/v/adj)",
+    "ipa": "/ˈdrɑːmə/",
+    "meaning": "Kịch tính/Vở kịch",
+    "example_en": "A TV drama.",
+    "example_vi": "Một vở kịch truyền hình."
+  },
+  {
+    "word": "Duration (n/v/adj)",
+    "ipa": "/duˈreɪʃn/",
+    "meaning": "Khoảng thời gian",
+    "example_en": "For the duration of the flight.",
+    "example_vi": "Trong suốt khoảng thời gian chuyến bay."
+  },
+  {
+    "word": "Dynamic (n/v/adj)",
+    "ipa": "/daɪˈnæmɪk/",
+    "meaning": "Năng động/Động lực",
+    "example_en": "A dynamic young team.",
+    "example_vi": "Một đội ngũ trẻ trung năng động."
+  },
+  {
+    "word": "Economy (n/v/adj)",
+    "ipa": "/ɪˈkɑːnəmi/",
+    "meaning": "Nền kinh tế",
+    "example_en": "A strong economy.",
+    "example_vi": "Một nền kinh tế vững mạnh."
+  },
+  {
+    "word": "Edit (n/v/adj)",
+    "ipa": "/ˈedɪt/",
+    "meaning": "Chỉnh sửa",
+    "example_en": "Edit the video.",
+    "example_vi": "Chỉnh sửa video."
+  },
+  {
+    "word": "Element (n/v/adj)",
+    "ipa": "/ˈelɪmənt/",
+    "meaning": "Yếu tố",
+    "example_en": "A key element.",
+    "example_vi": "Một yếu tố chính."
+  },
+  {
+    "word": "Eliminate (n/v/adj)",
+    "ipa": "/ɪˈlɪmɪneɪt/",
+    "meaning": "Loại bỏ",
+    "example_en": "Eliminate the risk.",
+    "example_vi": "Loại bỏ nguy cơ."
+  },
+  {
+    "word": "Emerge (n/v/adj)",
+    "ipa": "/ɪˈmɜːrdʒ/",
+    "meaning": "Xuất hiện/Nổi lên",
+    "example_en": "Emerge from the water.",
+    "example_vi": "Nổi lên từ mặt nước."
+  },
+  {
+    "word": "Emphasis (n/v/adj)",
+    "ipa": "/ˈemfəsɪs/",
+    "meaning": "Sự nhấn mạnh",
+    "example_en": "Place emphasis on quality.",
+    "example_vi": "Nhấn mạnh vào chất lượng."
+  },
+  {
+    "word": "Empirical (n/v/adj)",
+    "ipa": "/ɪmˈpɪrɪkl/",
+    "meaning": "Dựa trên kinh nghiệm/Thực tiễn",
+    "example_en": "Empirical evidence.",
+    "example_vi": "Bằng chứng thực nghiệm."
+  },
+  {
+    "word": "Enable (n/v/adj)",
+    "ipa": "/ɪˈneɪbl/",
+    "meaning": "Cho phép/Làm cho có thể",
+    "example_en": "Enable him to work faster.",
+    "example_vi": "Cho phép anh ấy làm việc nhanh hơn."
+  },
+  {
+    "word": "Encounter (n/v/adj)",
+    "ipa": "/ɪnˈkaʊntər/",
+    "meaning": "Gặp phải",
+    "example_en": "Encounter a problem.",
+    "example_vi": "Gặp phải một vấn đề."
+  },
+  {
+    "word": "Energy (n/v/adj)",
+    "ipa": "/ˈenərdʒi/",
+    "meaning": "Năng lượng",
+    "example_en": "Renewable energy.",
+    "example_vi": "Năng lượng tái tạo."
+  },
+  {
+    "word": "Enforce (n/v/adj)",
+    "ipa": "/ɪnˈfɔːrs/",
+    "meaning": "Thực thi (luật)",
+    "example_en": "Enforce the law.",
+    "example_vi": "Thi hành luật pháp."
+  },
+  {
+    "word": "Enhance (n/v/adj)",
+    "ipa": "/ɪnˈhæns/",
+    "meaning": "Tăng cường/Nâng cao",
+    "example_en": "Enhance the flavor.",
+    "example_vi": "Tăng cường hương vị."
+  },
+  {
+    "word": "Enormous (n/v/adj)",
+    "ipa": "/ɪˈnɔːrməs/",
+    "meaning": "To lớn/Khổng lồ",
+    "example_en": "An enormous amount.",
+    "example_vi": "Một lượng khổng lồ."
+  },
+  {
+    "word": "Ensure (n/v/adj)",
+    "ipa": "/ɪnˈʃʊr/",
+    "meaning": "Đảm bảo",
+    "example_en": "Ensure that everything is ready.",
+    "example_vi": "Đảm bảo mọi thứ đã sẵn sàng."
+  },
+  {
+    "word": "Entity (n/v/adj)",
+    "ipa": "/ˈentəti/",
+    "meaning": "Thực thể",
+    "example_en": "A separate legal entity.",
+    "example_vi": "Một thực thể pháp lý riêng biệt."
+  },
+  {
+    "word": "Environment (n/v/adj)",
+    "ipa": "/ɪnˈvaɪrənmənt/",
+    "meaning": "Môi trường",
+    "example_en": "Protect the environment.",
+    "example_vi": "Bảo vệ môi trường."
+  },
+  {
+    "word": "Equate (n/v/adj)",
+    "ipa": "/ɪˈkweɪt/",
+    "meaning": "Đánh đồng/Ngang bằng",
+    "example_en": "You can't equate wealth with happiness.",
+    "example_vi": "Bạn không thể đánh đồng sự giàu có với hạnh phúc."
+  },
+  {
+    "word": "Equipment (n/v/adj)",
+    "ipa": "/ɪˈkwɪpmənt/",
+    "meaning": "Thiết bị/Trang bị",
+    "example_en": "Office equipment.",
+    "example_vi": "Trang thiết bị văn phòng."
+  },
+  {
+    "word": "Equivalent (n/v/adj)",
+    "ipa": "/ɪˈkwɪvələnt/",
+    "meaning": "Tương đương",
+    "example_en": "The equivalent of $50.",
+    "example_vi": "Tương đương với 50 đô la."
+  },
+  {
+    "word": "Erode (n/v/adj)",
+    "ipa": "/ɪˈroʊd/",
+    "meaning": "Xói mòn",
+    "example_en": "The cliffs are eroding.",
+    "example_vi": "Các vách đá đang bị xói mòn."
+  },
+  {
+    "word": "Error (n/v/adj)",
+    "ipa": "/ˈerər/",
+    "meaning": "Lỗi sai",
+    "example_en": "A spelling error.",
+    "example_vi": "Một lỗi chính tả."
+  },
+  {
+    "word": "Establish (n/v/adj)",
+    "ipa": "/ɪˈstæblɪʃ/",
+    "meaning": "Thiết lập/Thành lập",
+    "example_en": "Establish a company.",
+    "example_vi": "Thành lập một công ty."
+  },
+  {
+    "word": "Estate (n/v/adj)",
+    "ipa": "/ɪˈsteɪt/",
+    "meaning": "Bất động sản/Điền trang",
+    "example_en": "A real estate agent.",
+    "example_vi": "Một nhân viên môi giới bất động sản."
+  },
+  {
+    "word": "Estimate (n/v/adj)",
+    "ipa": "/ˈestɪmət/",
+    "meaning": "Ước tính",
+    "example_en": "A rough estimate.",
+    "example_vi": "Một ước tính sơ bộ."
+  },
+  {
+    "word": "Evaluate (n/v/adj)",
+    "ipa": "/ɪˈvæljueɪt/",
+    "meaning": "Đánh giá",
+    "example_en": "Evaluate the results.",
+    "example_vi": "Đánh giá kết quả."
+  },
+  {
+    "word": "Eventual (n/v/adj)",
+    "ipa": "/ɪˈventʃuəl/",
+    "meaning": "Cuối cùng",
+    "example_en": "The eventual winner.",
+    "example_vi": "Người chiến thắng cuối cùng."
+  },
+  {
+    "word": "Evident (n/v/adj)",
+    "ipa": "/ˈevɪdənt/",
+    "meaning": "Hiển nhiên",
+    "example_en": "It was evident that she was tired.",
+    "example_vi": "Rõ ràng là cô ấy mệt mỏi."
+  },
+  {
+    "word": "Evolve (n/v/adj)",
+    "ipa": "/ɪˈvɑːlv/",
+    "meaning": "Tiến hóa/Phát triển",
+    "example_en": "The species evolved over millions of years.",
+    "example_vi": "Loài này đã tiến hóa qua hàng triệu năm."
+  },
+  {
+    "word": "Exceed (n/v/adj)",
+    "ipa": "/ɪkˈsiːd/",
+    "meaning": "Vượt quá",
+    "example_en": "Exceed the speed limit.",
+    "example_vi": "Vượt quá giới hạn tốc độ."
+  },
+  {
+    "word": "Exclude (n/v/adj)",
+    "ipa": "/ɪkˈskluːd/",
+    "meaning": "Loại trừ",
+    "example_en": "Exclude women from the club.",
+    "example_vi": "Loại trừ phụ nữ khỏi câu lạc bộ."
+  },
+  {
+    "word": "Exhibit (n/v/adj)",
+    "ipa": "/ɪɡˈzɪbɪt/",
+    "meaning": "Trưng bày/Thể hiện",
+    "example_en": "Exhibit a painting.",
+    "example_vi": "Trưng bày một bức tranh."
+  },
+  {
+    "word": "Expand (n/v/adj)",
+    "ipa": "/ɪkˈspænd/",
+    "meaning": "Mở rộng",
+    "example_en": "Expand the business.",
+    "example_vi": "Mở rộng kinh doanh."
+  },
+  {
+    "word": "Expert (n/v/adj)",
+    "ipa": "/ˈekspɜːrt/",
+    "meaning": "Chuyên gia",
+    "example_en": "An expert in IT.",
+    "example_vi": "Một chuyên gia trong lĩnh vực IT."
+  },
+  {
+    "word": "Explicit (n/v/adj)",
+    "ipa": "/ɪkˈsplɪsɪt/",
+    "meaning": "Rõ ràng/Minh bạch",
+    "example_en": "Explicit instructions.",
+    "example_vi": "Những chỉ dẫn rõ ràng."
+  },
+  {
+    "word": "Exploit (n/v/adj)",
+    "ipa": "/ɪkˈsplɔɪt/",
+    "meaning": "Khai thác/Bóc lột",
+    "example_en": "Exploit natural resources.",
+    "example_vi": "Khai thác tài nguyên thiên nhiên."
+  },
+  {
+    "word": "Export (n/v/adj)",
+    "ipa": "/ˈekspɔːrt/",
+    "meaning": "Xuất khẩu",
+    "example_en": "Export goods to China.",
+    "example_vi": "Xuất khẩu hàng hóa sang Trung Quốc."
+  },
+  {
+    "word": "Expose (n/v/adj)",
+    "ipa": "/ɪkˈspoʊz/",
+    "meaning": "Phơi bày/Tiếp xúc",
+    "example_en": "Expose the truth.",
+    "example_vi": "Phơi bày sự thật."
+  },
+  {
+    "word": "External (n/v/adj)",
+    "ipa": "/ɪkˈstɜːrnl/",
+    "meaning": "Bên ngoài",
+    "example_en": "External pressure.",
+    "example_vi": "Áp lực bên ngoài."
+  },
+  {
+    "word": "Extract (n/v/adj)",
+    "ipa": "/ˈekstrækt/",
+    "meaning": "Chiết xuất/Trích xuất",
+    "example_en": "Extract information.",
+    "example_vi": "Trích xuất thông tin."
+  },
+  {
+    "word": "Facilitate (n/v/adj)",
+    "ipa": "/fəˈsɪlɪteɪt/",
+    "meaning": "Tạo điều kiện/Làm cho dễ dàng",
+    "example_en": "Facilitate learning.",
+    "example_vi": "Tạo điều kiện cho việc học."
+  }
+]
