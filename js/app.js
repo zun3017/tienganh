@@ -397,6 +397,25 @@ function safeSyncToSupabase(userKey) {
                 } else if (screenId === 'screen-auth') {
                     if (mascot) mascot.style.display = 'block';
                     if (badge) badge.style.display = 'none';
+                    // Always reset auth screen: show cup, hide form
+                    const cupTrigger = document.getElementById('login-cup-trigger');
+                    const glassPanel = document.getElementById('login-glass-panel');
+                    if (cupTrigger) cupTrigger.style.display = 'flex';
+                    if (glassPanel) {
+                        glassPanel.style.opacity = '0';
+                        glassPanel.style.transform = 'scale(0)';
+                        glassPanel.style.pointerEvents = 'none';
+                    }
+                    // Clear any leftover auth messages
+                    const lm = document.getElementById('auth-login-msg');
+                    const rm = document.getElementById('auth-reg-msg');
+                    if (lm) { lm.innerText = ''; lm.style.display = 'none'; }
+                    if (rm) { rm.innerText = ''; rm.style.display = 'none'; }
+                    // Re-enable buttons if they were disabled
+                    const lb = document.getElementById('btn-login-submit');
+                    const rb = document.getElementById('btn-reg-submit');
+                    if (lb) { lb.disabled = false; lb.style.opacity = '1'; }
+                    if (rb) { rb.disabled = false; rb.style.opacity = '1'; }
                 } else {
                     // Show on dashboard / other screens
                     if (mascot) {
