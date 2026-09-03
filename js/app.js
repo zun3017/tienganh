@@ -621,7 +621,19 @@ function safeSyncToSupabase(userKey) {
         }
 
         // --- DASHBOARD ---
+        function loadCustomImportedTopics() {
+            try {
+                let customTopics = JSON.parse(localStorage.getItem('gas_custom_topics') || '[]');
+                customTopics.forEach(ct => {
+                    if (ct && ct.topic && !vocabTopics.some(t => t.topic === ct.topic)) {
+                        vocabTopics.push(ct);
+                    }
+                });
+            } catch(e) {}
+        }
+
         function initDashboard() {
+            loadCustomImportedTopics();
             ensureExtendedTopicsRegistered();
             const select = document.getElementById('topic-select');
             if (!select) return;
@@ -975,9 +987,13 @@ function safeSyncToSupabase(userKey) {
             }
             
             // Image (Sử dụng Bing Image Search API)
-            let cleanMeaning = w.meaning.replace(/ *\\([^)]*\\) */g, ""); 
+            let cleanMeaning = w.meaning.replace(/ *\([^)]*\) */g, ""); 
             let searchQuery = `${baseWord} ${cleanMeaning} illustration`;
-            document.getElementById('card-back-img').src = `https://tse1.mm.bing.net/th?q=${encodeURIComponent(searchQuery)}`;
+            let cardImg = document.getElementById('card-back-img');
+            if (cardImg) {
+                cardImg.style.display = 'block';
+                cardImg.src = `https://tse1.mm.bing.net/th?q=${encodeURIComponent(searchQuery)}`;
+            }
             
             // --- TÍNH NĂNG CHỐNG MẤT GỐC ---
             let alertBox = document.getElementById('card-confuse-alert');
@@ -1425,7 +1441,7 @@ function safeSyncToSupabase(userKey) {
                 listHtml += `<div style="background: rgba(0,0,0,0.03); padding: 0.5rem; margin-top: 1rem; border-radius: 4px; font-weight: bold; color: #f59e0b;">📅 Ngày ${niceDate} (Đã học ${items.length} từ)</div>`;
                 
                 items.forEach((w, idx) => {
-                    listHtml += `<div style="border-bottom: 1px solid rgba(255,255,255,0.1); padding: 0.8rem 0.5rem; display:flex; justify-content:space-between; align-items: center;">
+                    listHtml += `<div style="border-bottom: 1px solid rgba(0, 0, 0, 0.08); padding: 0.8rem 0.5rem; display:flex; justify-content:space-between; align-items: center;">
                         <div><strong style="color:var(--primary); font-size:1.1rem;">${w.word}</strong> <span style="font-size:0.9rem; color:var(--text-muted);">${w.ipa}</span></div>
                         <span style="color:var(--success); font-weight:600;">${w.meaning}</span>
                     </div>`;
@@ -1688,6 +1704,11 @@ function safeSyncToSupabase(userKey) {
                 
                 if(newTopic.words.length > 0) {
                     vocabTopics.push(newTopic);
+                    try {
+                        let customTopics = JSON.parse(localStorage.getItem('gas_custom_topics') || '[]');
+                        customTopics.push(newTopic);
+                        localStorage.setItem('gas_custom_topics', JSON.stringify(customTopics));
+                    } catch(e) {}
                     alert(`Đã import thành công ${newTopic.words.length} từ vựng vào chủ đề mới!`);
                     initDashboard();
                 } else {
@@ -1713,7 +1734,7 @@ function safeSyncToSupabase(userKey) {
 
         // --- SENTENCE GAME & VOICE RECOGNITION ---
         let currentSentenceWords = [];
-        let selectedWords = [];
+        let selectedWordObjects = [];
 
         function initSentenceGame(exampleEn, exampleVi) {
             let modal = document.getElementById('sentence-game-modal');
@@ -1722,10 +1743,11 @@ function safeSyncToSupabase(userKey) {
             // Clean punctuation
             let cleanEn = exampleEn.replace(/[.,!?]/g, '');
             currentSentenceWords = cleanEn.split(' ').filter(w => w.trim() !== '');
-            selectedWords = [];
+            selectedWordObjects = [];
             
-            // Shuffle words
-            let shuffled = [...currentSentenceWords].sort(() => Math.random() - 0.5);
+            // Map to objects with unique IDs to handle duplicate words properly
+            let wordObjs = currentSentenceWords.map((word, idx) => ({ id: idx, word: word }));
+            let shuffled = [...wordObjs].sort(() => Math.random() - 0.5);
             
             document.getElementById('sg-vietnamese').innerText = `Ý nghĩa: "${exampleVi}"`;
             
@@ -1736,15 +1758,16 @@ function safeSyncToSupabase(userKey) {
             answerContainer.innerHTML = '';
             document.getElementById('sg-result').style.display = 'none';
             
-            shuffled.forEach((word, index) => {
+            shuffled.forEach((item) => {
                 let btn = document.createElement('button');
                 btn.className = 'btn-outline sg-word-btn';
-                btn.innerText = word;
+                btn.innerText = item.word;
                 btn.onclick = function() {
                     if(!btn.classList.contains('used')) {
                         btn.classList.add('used');
-                        selectedWords.push(word);
-                        renderAnswer(btn, index);
+                        let selectedItem = { id: item.id, word: item.word, originalBtn: btn };
+                        selectedWordObjects.push(selectedItem);
+                        renderAnswer(selectedItem);
                     }
                 };
                 choicesContainer.appendChild(btn);
@@ -1753,23 +1776,21 @@ function safeSyncToSupabase(userKey) {
             modal.style.display = 'flex';
         }
 
-        function renderAnswer(originalBtn, index) {
+        function renderAnswer(selectedItem) {
             let answerContainer = document.getElementById('sg-answer');
-            let word = selectedWords[selectedWords.length - 1];
-            
             let ansBtn = document.createElement('button');
             ansBtn.className = 'btn-primary sg-word-btn';
-            ansBtn.innerText = word;
+            ansBtn.innerText = selectedItem.word;
             ansBtn.onclick = function() {
-                originalBtn.classList.remove('used');
+                selectedItem.originalBtn.classList.remove('used');
                 ansBtn.remove();
-                selectedWords.splice(selectedWords.indexOf(word), 1);
+                selectedWordObjects = selectedWordObjects.filter(obj => obj.id !== selectedItem.id);
             };
             answerContainer.appendChild(ansBtn);
         }
 
         function checkSentence() {
-            let answerStr = selectedWords.join(' ').toLowerCase();
+            let answerStr = selectedWordObjects.map(obj => obj.word).join(' ').toLowerCase();
             let targetStr = currentSentenceWords.join(' ').toLowerCase();
             let resultDiv = document.getElementById('sg-result');
             
@@ -1777,6 +1798,7 @@ function safeSyncToSupabase(userKey) {
             if(answerStr === targetStr) {
                 resultDiv.innerHTML = '🎉 Chính xác! Tuyệt vời!';
                 resultDiv.style.color = '#10b981';
+                if (typeof triggerConfetti === 'function') triggerConfetti();
                 setTimeout(() => { closeSentenceGame(); }, 1500);
             } else {
                 resultDiv.innerHTML = '❌ Chưa đúng rồi. Thử lại nhé!';
@@ -1892,3 +1914,12 @@ function safeSyncToSupabase(userKey) {
         } else {
             initCardSwipeGestures();
         }
+
+        // Global Escape key listener for closing modals/popups
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (typeof hideCloudContent === 'function') hideCloudContent();
+                if (typeof closeSentenceGame === 'function') closeSentenceGame();
+                if (typeof closeLoginForm === 'function') closeLoginForm();
+            }
+        });

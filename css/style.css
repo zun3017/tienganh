@@ -71,7 +71,11 @@
             display: none;
             flex-direction: column;
             align-items: center;
-            height: 100%;
+            flex: 1;
+            height: auto;
+            min-height: 0;
+            max-height: calc(100vh - 56px);
+            box-sizing: border-box;
             overflow-y: auto; /* Internal scroll only if needed */
             padding-bottom: 1rem;
         }
@@ -891,6 +895,10 @@ button, select, input, .glass-btn, .glass-card-floating, .card {
     /* Sentence Game Modal on Mobile */
     #sentence-game-modal > div {
         width: 95% !important;
+        max-height: 88vh !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        box-sizing: border-box !important;
         padding: 1.4rem 1rem !important;
         border-radius: 20px !important;
     }
@@ -1137,4 +1145,12 @@ button, select, input, .glass-btn, .glass-card-floating, .card {
     font-size: 1rem !important;
     border-radius: 12px;
     font-weight: 700;
+}
+
+#topic-actions button {
+    margin-bottom: 0 !important;
+}
+
+#cloud-content-area {
+    z-index: 1100 !important;
 }
