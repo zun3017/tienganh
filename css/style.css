@@ -105,8 +105,8 @@
             box-sizing: border-box !important;
             justify-content: center !important;
             align-items: center !important;
-            /* Desktop background */
-            background: url('assets/login_bg.jpg') no-repeat center center / cover !important;
+            /* Desktop background - path relative to css/ folder */
+            background: url('../assets/login_bg.jpg') no-repeat center center / cover !important;
         }
 
         @keyframes popIn {
@@ -621,17 +621,17 @@ button, select, input, .glass-btn, .glass-card-floating, .card {
 }
 
 @media (max-width: 680px) {
-    /* ✅ Auth screen: dùng ảnh dọc cho điện thoại (override class .auth-screen-wrap) */
+    /* ✅ Auth screen: dùng ảnh dọc cho điện thoại */
     #screen-auth,
     .auth-screen-wrap {
-        background: url("assets/login_mobile.jpg") no-repeat center top / cover !important;
+        background: url("../assets/login_mobile.jpg") no-repeat center top / cover !important;
         overflow-y: auto !important;
         -webkit-overflow-scrolling: touch !important;
     }
 
     /* ✅ Dashboard screen: dùng ảnh dọc đẹp cho điện thoại */
     #screen-dashboard .game-ui-container {
-        background-image: url("assets/mobile.jpg") !important;
+        background-image: url("../assets/mobile.jpg") !important;
         background-size: cover !important;
         background-position: center center !important;
     }
