@@ -1507,3 +1507,266 @@ button, select, input, .glass-btn, .glass-card-floating, .card {
     align-items: center;
     gap: 4px;
 }
+
+/* ==========================================================
+   WORD MATCH ARENA & LISTEN SPEED ARENA (GIAI ĐOẠN 2 & 3)
+   ========================================================== */
+
+.wm-arena-screen,
+.ls-arena-screen {
+    max-width: 800px !important;
+    width: 94% !important;
+    margin: 1.5rem auto !important;
+    padding: 1.75rem 2rem !important;
+    border-radius: 28px !important;
+    background: rgba(255, 255, 255, 0.94) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.18), inset 0 1px 2px rgba(255, 255, 255, 0.9) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.8) !important;
+    box-sizing: border-box !important;
+    position: relative;
+    z-index: 100;
+}
+
+.wm-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1.5rem;
+    gap: 12px;
+}
+
+.wm-back-btn {
+    padding: 8px 16px !important;
+    font-size: 0.9rem !important;
+    border-radius: 20px !important;
+    font-weight: 700 !important;
+    margin: 0 !important;
+    width: auto !important;
+    white-space: nowrap;
+    border: 1.5px solid #cbd5e1 !important;
+    background: white !important;
+    color: #475569 !important;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.wm-back-btn:hover {
+    background: #f1f5f9 !important;
+    border-color: #94a3b8 !important;
+    color: #1e293b !important;
+}
+
+.wm-title-box {
+    text-align: center;
+    flex: 1;
+}
+
+.wm-title {
+    margin: 0;
+    color: #7c3aed;
+    font-size: 1.35rem;
+    font-weight: 800;
+}
+
+.wm-subtitle {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.wm-stats {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.wm-stat-badge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.95rem;
+    font-weight: 800;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+}
+
+.wm-timer-badge {
+    background: rgba(124, 58, 237, 0.1);
+    color: #7c3aed;
+    border: 1.5px solid rgba(124, 58, 237, 0.3);
+}
+
+.wm-score-badge {
+    background: #fef3c7;
+    color: #b45309;
+    border: 1.5px solid #fde68a;
+}
+
+.wm-grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 541px) and (max-width: 768px) {
+    .wm-grid-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.wm-card {
+    background: #ffffff;
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    min-height: 64px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1e293b;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+    word-break: break-word;
+    line-height: 1.35;
+}
+
+.wm-card:hover {
+    transform: translateY(-2px);
+    border-color: #a78bfa;
+    box-shadow: 0 6px 16px rgba(124, 58, 237, 0.12);
+}
+
+.wm-card:active {
+    transform: scale(0.97);
+}
+
+.wm-card-selected {
+    background: #ede9fe !important;
+    border-color: #7c3aed !important;
+    color: #6d28d9 !important;
+    transform: scale(1.04) !important;
+    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.25) !important;
+}
+
+.wm-card-matched {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: scale(0.5) !important;
+    transition: all 0.35s ease !important;
+}
+
+.wm-card-wrong {
+    background: #fee2e2 !important;
+    border-color: #ef4444 !important;
+    color: #dc2626 !important;
+    animation: wmShake 0.4s ease !important;
+}
+
+@keyframes wmShake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+}
+
+.wm-footer {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.wm-restart-btn {
+    padding: 10px 28px !important;
+    font-size: 1.05rem !important;
+    border-radius: 24px !important;
+    font-weight: 700 !important;
+    width: auto !important;
+    min-width: 180px;
+    box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3) !important;
+}
+
+/* --- MOBILE RESPONSIVE OPTIMIZATIONS (< 680px) --- */
+@media (max-width: 680px) {
+    .wm-arena-screen,
+    .ls-arena-screen {
+        width: 96% !important;
+        margin: 0.5rem auto !important;
+        padding: 1rem 0.85rem !important;
+        padding-top: max(env(safe-area-inset-top, 0px) + 0.6rem, 0.85rem) !important;
+        padding-bottom: max(env(safe-area-inset-bottom, 0px) + 0.6rem, 0.85rem) !important;
+        border-radius: 20px !important;
+        max-height: calc(100vh - 1rem);
+        max-height: calc(100dvh - 1rem);
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    .wm-header {
+        margin-bottom: 0.85rem !important;
+        gap: 6px !important;
+    }
+
+    .wm-back-btn {
+        padding: 6px 12px !important;
+        font-size: 0.82rem !important;
+    }
+
+    .wm-title {
+        font-size: 1.1rem !important;
+    }
+
+    .wm-subtitle {
+        font-size: 0.75rem !important;
+    }
+
+    .wm-stat-badge {
+        padding: 4px 10px !important;
+        font-size: 0.82rem !important;
+    }
+
+    .wm-grid-container {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .wm-card {
+        min-height: 52px !important;
+        padding: 8px 10px !important;
+        font-size: 0.92rem !important;
+        border-radius: 12px !important;
+    }
+
+    .wm-restart-btn {
+        padding: 9px 22px !important;
+        font-size: 0.95rem !important;
+        min-width: 140px;
+    }
+}
+
+@media (max-width: 380px) {
+    .wm-card {
+        min-height: 46px !important;
+        font-size: 0.84rem !important;
+        padding: 6px 6px !important;
+    }
+    
+    .wm-title {
+        font-size: 0.98rem !important;
+    }
+}

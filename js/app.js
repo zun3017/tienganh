@@ -604,7 +604,7 @@ function safeSyncToSupabase(userKey) {
 
             // Header display management
             const mainHeader = document.getElementById('main-header');
-            if (currentUser && screenId !== 'screen-auth' && screenId !== 'screen-dashboard') {
+            if (currentUser && screenId !== 'screen-auth' && screenId !== 'screen-dashboard' && screenId !== 'screen-word-match' && screenId !== 'screen-listen-speed') {
                 if (mainHeader) mainHeader.style.display = 'flex';
                 updateDashboardProgress();
             } else {
@@ -617,7 +617,7 @@ function safeSyncToSupabase(userKey) {
 
             // Fixed non-scrolling viewport control
             if (document.body && document.body.style) {
-                if (screenId === 'screen-flashcard' || screenId === 'screen-dashboard') {
+                if (screenId === 'screen-flashcard' || screenId === 'screen-dashboard' || screenId === 'screen-word-match' || screenId === 'screen-listen-speed') {
                     document.body.style.overflow = 'hidden';
                 } else {
                     document.body.style.overflow = '';
@@ -628,8 +628,8 @@ function safeSyncToSupabase(userKey) {
             if (typeof document !== 'undefined') {
                 const mascot = document.querySelector ? document.querySelector('.mascot-container') : null;
                 const badge = document.getElementById('supabase-status-badge');
-                if (screenId === 'screen-flashcard') {
-                    // Hide completely during learning session for 100% focus and no button blocking!
+                if (screenId === 'screen-flashcard' || screenId === 'screen-word-match' || screenId === 'screen-listen-speed') {
+                    // Hide completely during learning/gaming session for 100% focus and no button blocking!
                     if (mascot) mascot.style.display = 'none';
                     if (badge) badge.style.display = 'none';
                 } else if (screenId === 'screen-auth') {
