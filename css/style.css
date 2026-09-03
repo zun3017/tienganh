@@ -140,24 +140,34 @@
         .password-input-wrap {
             position: relative;
             width: 100%;
+            /* Wrapper takes over the margin-bottom so input margin doesn't affect height */
+            margin-bottom: 1rem;
         }
 
         .password-input-wrap input {
             padding-right: 45px !important;
             width: 100%;
             box-sizing: border-box;
+            /* Remove bottom margin from input so wrapper height = input height only */
+            /* This ensures top:50% on eye icon aligns to true vertical center of input */
+            margin-bottom: 0 !important;
         }
 
         .password-toggle-btn {
             position: absolute;
-            right: 12px;
+            right: 10px;
             top: 50%;
             transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
             background: transparent !important;
             border: none !important;
             font-size: 1.2rem;
             cursor: pointer;
-            padding: 4px;
+            padding: 0;
             line-height: 1;
             box-shadow: none !important;
             z-index: 10;
@@ -691,25 +701,31 @@ button, select, input, .glass-btn, .glass-card-floating, .card {
     .password-input-wrap {
         position: relative;
         width: 100%;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.75rem;
     }
 
     .password-input-wrap input {
         width: 100%;
         padding-right: 45px !important;
         box-sizing: border-box;
+        margin-bottom: 0 !important;
     }
 
     .password-toggle-btn {
         position: absolute;
-        right: 12px;
+        right: 10px;
         top: 50%;
         transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
         background: transparent !important;
         border: none !important;
         font-size: 1.2rem;
         cursor: pointer;
-        padding: 4px;
+        padding: 0;
         line-height: 1;
         box-shadow: none !important;
         z-index: 10;
