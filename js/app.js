@@ -322,6 +322,158 @@ function safeSyncToSupabase(userKey) {
             startLearning(true, dayKey);
         }
 
+        // --- ICU VOCABULARY RESCUE BOX (TASK 10) ---
+        function addWordToICU(wordObj) {
+            if (!wordObj || !wordObj.word) return;
+            let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
+            if (!currentUser || !users[currentUser]) return;
+            if (!users[currentUser].icuWords) users[currentUser].icuWords = {};
+            
+            let cleanKey = wordObj.word.replace(/\(.*?\)/g, '').split('/')[0].trim();
+            let existing = users[currentUser].icuWords[cleanKey];
+            let count = existing ? (existing.forgotCount || 1) + 1 : 1;
+            
+            users[currentUser].icuWords[cleanKey] = {
+                word: cleanKey,
+                ipa: wordObj.ipa || '',
+                meaning: wordObj.meaning || '',
+                example_en: wordObj.example_en || wordObj.example || '',
+                example_vi: wordObj.example_vi || '',
+                forgotCount: count,
+                lastForgot: Date.now()
+            };
+            
+            localStorage.setItem('gas_users', JSON.stringify(users));
+            safeSyncToSupabase();
+        }
+
+        function removeWordFromICU(wordKey) {
+            let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
+            if (!currentUser || !users[currentUser] || !users[currentUser].icuWords) return;
+            delete users[currentUser].icuWords[wordKey];
+            localStorage.setItem('gas_users', JSON.stringify(users));
+            safeSyncToSupabase();
+            renderICUPanel();
+        }
+
+        function renderICUPanel() {
+            let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
+            let uData = (currentUser && users[currentUser]) ? users[currentUser] : {};
+            let icuWords = uData.icuWords || {};
+            let wordsArr = Object.values(icuWords);
+            
+            let countEl = document.getElementById('icu-total-count');
+            if (countEl) countEl.innerText = `${wordsArr.length} Từ Cần Cứu Trợ`;
+            
+            let listEl = document.getElementById('icu-words-list');
+            if (!listEl) return;
+            listEl.innerHTML = '';
+            
+            if (wordsArr.length === 0) {
+                listEl.innerHTML = '<div style="text-align:center; padding: 2rem 1rem; color:#10b981; font-weight:700;">🎉 Hộp Cứu Trợ trống trơn! Bạn đang ghi nhớ từ vựng rất tốt.</div>';
+                let btnStart = document.getElementById('btn-start-icu-study');
+                if (btnStart) btnStart.style.display = 'none';
+                return;
+            }
+            
+            let btnStart = document.getElementById('btn-start-icu-study');
+            if (btnStart) btnStart.style.display = 'block';
+            
+            wordsArr.sort((a, b) => (b.forgotCount || 1) - (a.forgotCount || 1));
+            wordsArr.forEach(item => {
+                let itemEl = document.createElement('div');
+                itemEl.className = 'icu-card-item';
+                itemEl.innerHTML = `
+                    <div style="text-align: left;">
+                        <div style="font-weight: 800; color: #1e293b; font-size: 1.05rem;">
+                            ${item.word} <span style="font-size: 0.85rem; color: #64748b; font-weight: normal;">${item.ipa}</span>
+                        </div>
+                        <div style="font-size: 0.85rem; color: #059669; font-weight: 600;">${item.meaning}</div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span class="icu-count-badge">Quên ${item.forgotCount || 1} lần</span>
+                        <button class="audio-btn" style="width: 32px; height: 32px; font-size: 0.85rem; margin: 0;" onclick="speakWordDirectly('${item.word}')" title="Nghe">🔊</button>
+                        <button style="background: none; border: none; color: #94a3b8; font-size: 1.1rem; cursor: pointer; padding: 4px;" onclick="removeWordFromICU('${item.word}')" title="Đã nhớ - Xóa khỏi ICU">✓</button>
+                    </div>
+                `;
+                listEl.appendChild(itemEl);
+            });
+        }
+
+        function startICUStudy() {
+            let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
+            let uData = (currentUser && users[currentUser]) ? users[currentUser] : {};
+            let icuWords = uData.icuWords || {};
+            let wordsArr = Object.values(icuWords);
+            if (wordsArr.length === 0) {
+                alert("Không có từ nào trong Hộp Cứu Trợ!");
+                return;
+            }
+            hideCloudContent();
+            currentWords = [...wordsArr];
+            currentIndex = 0;
+            sessionLearnedWords = [];
+            currentTopicId = 'icu_box';
+            document.getElementById('flashcard-topic-title').innerText = '🚑 Hộp Cứu Trợ ICU';
+            renderCard();
+            showScreen('screen-flashcard');
+        }
+
+        // --- STREAK FREEZE LOGIC (TASK 12) ---
+        function buyStreakFreeze(cost = 50) {
+            let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
+            if (!currentUser || !users[currentUser]) return;
+            let uData = users[currentUser];
+            if (uData.points === undefined) uData.points = 0;
+
+            if (uData.points < cost) {
+                alert(`Bạn không đủ Điểm! Cần ${cost} Điểm, nhưng bạn chỉ có ${uData.points} Điểm.`);
+                return;
+            }
+
+            uData.points -= cost;
+            uData.streakFreezes = (uData.streakFreezes || 0) + 1;
+            localStorage.setItem('gas_users', JSON.stringify(users));
+            safeSyncToSupabase();
+
+            updateDashboardProgress();
+            alert(`🎉 Chúc mừng! Bạn đã mua thành công 1 Khiên Đóng Băng Chuỗi. Hiện đang có ${uData.streakFreezes} Khiên!`);
+        }
+
+        function checkAndMaintainStreak() {
+            let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
+            if (!currentUser || !users[currentUser]) return;
+            let uData = users[currentUser];
+            let today = getTodayString();
+            let lastDate = uData.lastStudyDate || today;
+
+            if (lastDate !== today) {
+                let d1 = new Date(lastDate);
+                let d2 = new Date(today);
+                let diffDays = Math.round((d2 - d1) / (1000 * 60 * 60 * 24));
+
+                if (diffDays === 2) {
+                    // Missed 1 day
+                    if (uData.streakFreezes && uData.streakFreezes > 0) {
+                        uData.streakFreezes -= 1;
+                        uData.lastStudyDate = today;
+                        localStorage.setItem('gas_users', JSON.stringify(users));
+                        safeSyncToSupabase();
+                        if (typeof showMascotSpeech === 'function') {
+                            showMascotSpeech('🧊 Khiên Băng đã kích hoạt giữ nguyên chuỗi học của bạn ngày hôm qua!', 4000);
+                        }
+                    }
+                }
+            }
+
+            // Update streak panel freeze display
+            let freezeEl = document.getElementById('streak-freeze-status');
+            if (freezeEl) {
+                let count = uData.streakFreezes || 0;
+                freezeEl.innerHTML = `<span class="streak-freeze-pill">🧊 Đang có ${count} Khiên Bảo Vệ</span>`;
+            }
+        }
+
         let currentCloudSection = '';
         function showCloudContent(section) {
             const container = document.getElementById('dynamic-cloud-content');
@@ -385,6 +537,11 @@ function safeSyncToSupabase(userKey) {
                 desc.innerText = '300 từ vựng A0 cốt lõi chia đều 30 ngày cho người mất gốc!';
                 renderSurvival300Grid();
                 container.appendChild(document.getElementById('survival-300-panel'));
+            } else if (section === 'icu') {
+                title.innerText = 'Hộp Cứu Trợ Từ Hay Quên (ICU)';
+                desc.innerText = 'Các từ bạn phát âm chưa chuẩn hoặc bấm Quên được gom tại đây để cấp cứu!';
+                renderICUPanel();
+                container.appendChild(document.getElementById('icu-words-panel'));
             } else if (section === 'srs') {
                 title.innerText = 'Ôn Tập Nhớ Lâu (SRS)';
                 desc.innerText = 'Hệ thống lặp lại ngắt quãng giúp bạn nhớ từ vĩnh viễn!';
@@ -708,6 +865,7 @@ function safeSyncToSupabase(userKey) {
         }
 
         function initDashboard() {
+            checkAndMaintainStreak();
             updateSpeechRateUI();
             loadCustomImportedTopics();
             ensureExtendedTopicsRegistered();
@@ -733,7 +891,7 @@ function safeSyncToSupabase(userKey) {
             ];
             
             extraKeys.forEach(item => {
-                let wCount = (item.data && item.data.words) ? item.data.words.length : (premiumTopics && premiumTopics[item.key] && premiumTopics[item.key].words ? premiumTopics[item.key].words.length : 0);
+                let wCount = (item.data && item.data.words) ? item.data.words.length : ((typeof premiumTopics !== 'undefined' && premiumTopics[item.key] && premiumTopics[item.key].words) ? premiumTopics[item.key].words.length : 0);
                 select.innerHTML += `<option value="${item.key}">${item.name} (${wCount} từ)</option>`;
             });
             
@@ -1201,48 +1359,54 @@ function safeSyncToSupabase(userKey) {
             showMascotSpeech('Nhớ thật thà khi bấm nút Quên / Nhớ Tốt nhé!', 4000);
         }
 
-                function srsAnswer(remembered) {
+        function srsAnswer(remembered) {
             let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
             if (!currentUser || !users[currentUser]) return;
             let uData = users[currentUser];
-            let wordKey = currentWords[currentIndex].word;
+            let currentWordObj = currentWords[currentIndex];
+            let wordKey = currentWordObj.word.replace(/\(.*?\)/g, '').split('/')[0].trim();
             
             if(!uData.srsData) uData.srsData = {};
+            if(!uData.srsData[wordKey]) {
+                uData.srsData[wordKey] = {
+                    word: wordKey,
+                    repetition: 0,
+                    interval: 1,
+                    ease: 2.5
+                };
+            }
             let srsItem = uData.srsData[wordKey];
             
-            if(srsItem) {
-                // Initialize SM-2 fields if missing
-                if(srsItem.interval === undefined) srsItem.interval = 0;
-                if(srsItem.ease === undefined) srsItem.ease = 2.5;
-                if(srsItem.repetition === undefined) srsItem.repetition = srsItem.step || 0;
+            // SMART SRS ALGORITHM: 1d -> 3d -> 7d -> 14d -> 30d
+            const srsIntervalSchedule = [1, 3, 7, 14, 30];
+            
+            if (remembered) {
+                let currentLevel = srsItem.repetition || 0;
+                let nextLevel = Math.min(currentLevel + 1, srsIntervalSchedule.length);
+                srsItem.repetition = nextLevel;
+                srsItem.interval = srsIntervalSchedule[nextLevel - 1];
+                srsItem.step = nextLevel;
                 
-                let q = remembered ? 4 : 1; // 4 = Good, 1 = Hard/Blackout
+                // Reward 1 coin for memorization
+                if (uData.points === undefined) uData.points = 0;
+                uData.points += 1;
                 
-                if (q >= 3) {
-                    if (srsItem.repetition === 0) {
-                        srsItem.interval = 1;
-                    } else if (srsItem.repetition === 1) {
-                        srsItem.interval = 6;
-                    } else {
-                        srsItem.interval = Math.round(srsItem.interval * srsItem.ease);
-                    }
-                    srsItem.repetition++;
-                    showMascotSpeech('Xuất sắc! Nhớ thế này thì không bao giờ quên.', 2000);
-                } else {
-                    srsItem.repetition = 0;
-                    srsItem.interval = 1;
-                    showMascotSpeech('Không sao, học lại từ đầu để nhớ sâu hơn nhé!', 2000);
-                }
+                showMascotSpeech('Xuất sắc! Nhớ thế này thì không bao giờ quên (+1 🪙).', 2000);
+            } else {
+                srsItem.repetition = 0;
+                srsItem.interval = 1;
+                srsItem.step = 0;
                 
-                srsItem.ease = srsItem.ease + (0.1 - (5 - q) * (0.08 + (5 - q) * 0.02));
-                if (srsItem.ease < 1.3) srsItem.ease = 1.3;
+                // Automatically add forgotten word to ICU Box (Task 10)
+                addWordToICU(currentWordObj);
                 
-                let nextDate = new Date();
-                nextDate.setDate(nextDate.getDate() + srsItem.interval);
-                srsItem.nextDate = `${nextDate.getFullYear()}-${nextDate.getMonth()+1}-${nextDate.getDate()}`;
-                
-                srsItem.step = srsItem.repetition; // sync for legacy code
+                showMascotSpeech('Đã lưu vào Hộp Cứu Trợ ICU để ôn kỹ lại nhé!', 2000);
             }
+            
+            let nextDate = new Date();
+            nextDate.setDate(nextDate.getDate() + srsItem.interval);
+            srsItem.nextDate = `${nextDate.getFullYear()}-${nextDate.getMonth()+1}-${nextDate.getDate()}`;
+            srsItem.nextReviewTimestamp = nextDate.getTime();
             
             // Log review progress
             let today = getTodayString();
@@ -1256,6 +1420,7 @@ function safeSyncToSupabase(userKey) {
             
             localStorage.setItem('gas_users', JSON.stringify(users));
             safeSyncToSupabase();
+            updateDashboardProgress();
             
             document.getElementById('controls-srs').style.visibility = 'hidden';
             
@@ -2169,6 +2334,41 @@ function safeSyncToSupabase(userKey) {
             showScreen('screen-dashboard');
         }
 
+        // --- SPEECH SIMILARITY & 3-TIER SCORING (TASK 8) ---
+        function calculateWordSimilarity(s1, s2) {
+            let clean1 = s1.toLowerCase().replace(/[^a-z0-9]/g, '').trim();
+            let clean2 = s2.toLowerCase().replace(/[^a-z0-9]/g, '').trim();
+            if (clean1 === clean2) return 1.0;
+            if (clean1.includes(clean2) || clean2.includes(clean1)) return 0.9;
+            
+            let m = clean1.length, n = clean2.length;
+            if (m === 0 || n === 0) return 0.0;
+            
+            let matrix = [];
+            for (let i = 0; i <= m; i++) {
+                matrix[i] = [i];
+            }
+            for (let j = 0; j <= n; j++) {
+                matrix[0][j] = j;
+            }
+            for (let i = 1; i <= m; i++) {
+                for (let j = 1; j <= n; j++) {
+                    if (clean1[i - 1] === clean2[j - 1]) {
+                        matrix[i][j] = matrix[i - 1][j - 1];
+                    } else {
+                        matrix[i][j] = Math.min(
+                            matrix[i - 1][j - 1] + 1,
+                            matrix[i][j - 1] + 1,
+                            matrix[i - 1][j] + 1
+                        );
+                    }
+                }
+            }
+            let distance = matrix[m][n];
+            let maxLen = Math.max(m, n);
+            return (maxLen - distance) / maxLen;
+        }
+
         function startVoiceRecognition(targetWord, isFront = false) {
             if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
                 alert("Trình duyệt của bạn không hỗ trợ tính năng nhận diện giọng nói. Hãy dùng Google Chrome nhé!");
@@ -2183,6 +2383,7 @@ function safeSyncToSupabase(userKey) {
             
             let btnVoice = isFront ? document.getElementById('btn-voice-practice-front') : document.getElementById('btn-voice-practice');
             let voiceResultDiv = isFront ? document.getElementById('voice-result-front') : document.getElementById('voice-result');
+            let cardObj = document.getElementById('flashcard-obj');
             
             let originalText = btnVoice ? btnVoice.innerHTML : '🎙️';
             if (btnVoice) {
@@ -2201,16 +2402,55 @@ function safeSyncToSupabase(userKey) {
                 let speechResult = event.results[0][0].transcript.toLowerCase();
                 if(!voiceResultDiv) return;
                 
+                let similarity = calculateWordSimilarity(speechResult, targetWord);
                 voiceResultDiv.style.display = 'block';
-                if(speechResult.includes(targetWord.toLowerCase())) {
-                    voiceResultDiv.innerHTML = `🎉 Tuyệt vời! Bạn đọc là: "${speechResult}"`;
+                
+                if (cardObj) {
+                    cardObj.classList.remove('card-voice-success', 'card-voice-warning', 'card-voice-error');
+                }
+
+                if(similarity >= 0.85 || speechResult.includes(targetWord.toLowerCase())) {
+                    // 🟢 Match 100% / High Match
+                    voiceResultDiv.innerHTML = `🎉 Phát âm chuẩn xác! Bạn đọc là: "${speechResult}" (+2 🪙)`;
                     voiceResultDiv.style.color = '#065f46';
                     voiceResultDiv.style.background = '#d1fae5';
+                    if (cardObj) cardObj.classList.add('card-voice-success');
+                    
+                    // Reward 2 points
+                    let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
+                    if (currentUser && users[currentUser]) {
+                        if (users[currentUser].points === undefined) users[currentUser].points = 0;
+                        users[currentUser].points += 2;
+                        localStorage.setItem('gas_users', JSON.stringify(users));
+                        safeSyncToSupabase();
+                        updateDashboardProgress();
+                    }
+                    
                     if(typeof triggerConfetti === 'function') triggerConfetti();
+                    setTimeout(() => { if (cardObj) cardObj.classList.remove('card-voice-success'); }, 2000);
+                } else if (similarity >= 0.55) {
+                    // 🟡 Partial Match
+                    voiceResultDiv.innerHTML = `🟡 Gần đúng! Bạn đọc là: "${speechResult}". Hãy chú ý âm đuôi & trọng âm nhé!`;
+                    voiceResultDiv.style.color = '#b45309';
+                    voiceResultDiv.style.background = '#fef3c7';
+                    if (cardObj) cardObj.classList.add('card-voice-warning');
+                    setTimeout(() => { if (cardObj) cardObj.classList.remove('card-voice-warning'); }, 2000);
                 } else {
-                    voiceResultDiv.innerHTML = `❌ Bạn đọc là: "${speechResult}". Thử lại nhé!`;
+                    // 🔴 Low Match / Error
+                    voiceResultDiv.innerHTML = `🔴 Chưa đúng: Bạn đọc là: "${speechResult}". Đang phát âm mẫu lại...`;
                     voiceResultDiv.style.color = '#991b1b';
                     voiceResultDiv.style.background = '#fee2e2';
+                    if (cardObj) cardObj.classList.add('card-voice-error');
+                    
+                    // Auto replay at 0.75x slow speed
+                    speakWordDirectly(targetWord);
+                    
+                    // Add word to ICU
+                    if (currentWords && currentWords[currentIndex]) {
+                        addWordToICU(currentWords[currentIndex]);
+                    }
+                    
+                    setTimeout(() => { if (cardObj) cardObj.classList.remove('card-voice-error'); }, 2000);
                 }
             };
             
@@ -2231,6 +2471,243 @@ function safeSyncToSupabase(userKey) {
                     btnVoice.style.color = 'var(--primary)';
                 }
             };
+        }
+
+        // --- LISTEN SPEED ARENA (TASK 9) ---
+        let lsCurrentIndex = 0;
+        let lsQuestions = [];
+        let lsScore = 0;
+        let lsTimerInterval = null;
+        let lsTimeRemaining = 5.0;
+        let isLsAnswered = false;
+
+        function startListenSpeedGame(customList) {
+            let victoryModal = document.getElementById('ls-victory-modal');
+            if (victoryModal) victoryModal.style.display = 'none';
+
+            let pool = [];
+            if (customList && Array.isArray(customList) && customList.length >= 4) {
+                pool = [...customList];
+            } else if (currentWords && currentWords.length >= 4) {
+                pool = [...currentWords];
+            } else if (typeof survival300Words !== 'undefined' && Array.isArray(survival300Words) && survival300Words.length >= 4) {
+                pool = [...survival300Words];
+            } else if (typeof vocabTopics !== 'undefined' && vocabTopics[0] && vocabTopics[0].words) {
+                pool = [...vocabTopics[0].words];
+            }
+
+            if (pool.length < 4) {
+                alert("Cần ít nhất 4 từ vựng để bắt đầu game phản xạ nghe!");
+                return;
+            }
+
+            // Shuffle and pick 5 questions
+            let shuffledPool = [...pool].sort(() => Math.random() - 0.5);
+            let targetWords = shuffledPool.slice(0, 5);
+
+            lsQuestions = targetWords.map(w => {
+                let cleanEn = w.word.replace(/\(.*?\)/g, '').split('/')[0].trim();
+                let cleanVi = w.meaning.split(',')[0].split(';')[0].trim();
+                
+                // Pick 3 distractors
+                let distractors = pool.filter(p => p.word !== w.word)
+                                      .sort(() => Math.random() - 0.5)
+                                      .slice(0, 3)
+                                      .map(d => d.meaning.split(',')[0].split(';')[0].trim());
+                
+                let options = [cleanVi, ...distractors].sort(() => Math.random() - 0.5);
+                return {
+                    wordObj: w,
+                    word: cleanEn,
+                    meaning: cleanVi,
+                    options: options
+                };
+            });
+
+            lsCurrentIndex = 0;
+            lsScore = 0;
+            isLsAnswered = false;
+
+            let scoreEl = document.getElementById('ls-score-display');
+            if (scoreEl) scoreEl.innerText = '🪙 +0';
+
+            showScreen('screen-listen-speed');
+            renderListenSpeedQuestion();
+        }
+
+        function renderListenSpeedQuestion() {
+            if (lsCurrentIndex >= lsQuestions.length) {
+                finishListenSpeedVictory();
+                return;
+            }
+
+            isLsAnswered = false;
+            let currentQ = lsQuestions[lsCurrentIndex];
+
+            let counterEl = document.getElementById('ls-question-counter');
+            if (counterEl) counterEl.innerText = `Câu ${lsCurrentIndex + 1} / ${lsQuestions.length}`;
+
+            let feedbackEl = document.getElementById('ls-feedback-text');
+            if (feedbackEl) {
+                feedbackEl.innerText = '';
+                feedbackEl.style.color = '#64748b';
+            }
+
+            let grid = document.getElementById('ls-options-grid');
+            if (grid) {
+                grid.innerHTML = '';
+                currentQ.options.forEach(optText => {
+                    let btn = document.createElement('button');
+                    btn.className = 'listen-opt-btn';
+                    btn.innerText = optText;
+                    btn.onclick = function() {
+                        handleListenSpeedChoice(optText, btn);
+                    };
+                    grid.appendChild(btn);
+                });
+            }
+
+            // Reset Timer Bar
+            let bar = document.getElementById('ls-timer-bar');
+            if (bar) {
+                bar.style.width = '100%';
+                bar.style.background = '#10b981';
+            }
+
+            // Speak audio immediately
+            playListenSpeedAudio();
+
+            // Start 5-second countdown timer
+            if (lsTimerInterval) clearInterval(lsTimerInterval);
+            lsTimeRemaining = 5.0;
+            let startTime = Date.now();
+            lsTimerInterval = setInterval(() => {
+                let elapsed = (Date.now() - startTime) / 1000;
+                lsTimeRemaining = Math.max(0, 5.0 - elapsed);
+                let pct = (lsTimeRemaining / 5.0) * 100;
+                if (bar) {
+                    bar.style.width = `${pct}%`;
+                    if (pct < 35) {
+                        bar.style.background = '#ef4444';
+                    } else if (pct < 65) {
+                        bar.style.background = '#f59e0b';
+                    }
+                }
+
+                if (lsTimeRemaining <= 0) {
+                    clearInterval(lsTimerInterval);
+                    if (!isLsAnswered) {
+                        handleListenSpeedTimeout();
+                    }
+                }
+            }, 50);
+        }
+
+        function playListenSpeedAudio() {
+            if (lsCurrentIndex >= lsQuestions.length) return;
+            let currentQ = lsQuestions[lsCurrentIndex];
+            speakWordDirectly(currentQ.word);
+        }
+
+        function handleListenSpeedChoice(chosenMeaning, btnEl) {
+            if (isLsAnswered) return;
+            isLsAnswered = true;
+            if (lsTimerInterval) clearInterval(lsTimerInterval);
+
+            let currentQ = lsQuestions[lsCurrentIndex];
+            let feedbackEl = document.getElementById('ls-feedback-text');
+
+            if (chosenMeaning === currentQ.meaning) {
+                // Correct!
+                btnEl.classList.add('correct');
+                let gained = lsTimeRemaining >= 3.0 ? 10 : 5;
+                lsScore += gained;
+                let scoreEl = document.getElementById('ls-score-display');
+                if (scoreEl) scoreEl.innerText = `🪙 +${lsScore}`;
+
+                if (feedbackEl) {
+                    feedbackEl.innerText = `🎉 Chính xác! (${currentQ.word})`;
+                    feedbackEl.style.color = '#10b981';
+                }
+
+                setTimeout(() => {
+                    lsCurrentIndex++;
+                    renderListenSpeedQuestion();
+                }, 800);
+            } else {
+                // Wrong!
+                btnEl.classList.add('wrong');
+                document.querySelectorAll('.listen-opt-btn').forEach(b => {
+                    if (b.innerText === currentQ.meaning) b.classList.add('correct');
+                });
+
+                if (feedbackEl) {
+                    feedbackEl.innerText = `❌ Đáp án đúng: "${currentQ.meaning}" (${currentQ.word})`;
+                    feedbackEl.style.color = '#ef4444';
+                }
+
+                // Add to ICU
+                addWordToICU(currentQ.wordObj);
+
+                setTimeout(() => {
+                    lsCurrentIndex++;
+                    renderListenSpeedQuestion();
+                }, 1400);
+            }
+        }
+
+        function handleListenSpeedTimeout() {
+            if (isLsAnswered) return;
+            isLsAnswered = true;
+            let currentQ = lsQuestions[lsCurrentIndex];
+            let feedbackEl = document.getElementById('ls-feedback-text');
+
+            document.querySelectorAll('.listen-opt-btn').forEach(b => {
+                if (b.innerText === currentQ.meaning) b.classList.add('correct');
+            });
+
+            if (feedbackEl) {
+                feedbackEl.innerText = `⏰ Hết 5 giây! Đáp án là: "${currentQ.meaning}" (${currentQ.word})`;
+                feedbackEl.style.color = '#ef4444';
+            }
+
+            addWordToICU(currentQ.wordObj);
+
+            setTimeout(() => {
+                lsCurrentIndex++;
+                renderListenSpeedQuestion();
+            }, 1400);
+        }
+
+        function finishListenSpeedVictory() {
+            if (lsTimerInterval) clearInterval(lsTimerInterval);
+            let finalCoins = 25;
+
+            let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
+            if (currentUser && users[currentUser]) {
+                if (users[currentUser].points === undefined) users[currentUser].points = 0;
+                users[currentUser].points += finalCoins;
+                localStorage.setItem('gas_users', JSON.stringify(users));
+                safeSyncToSupabase();
+                updateDashboardProgress();
+            }
+
+            let resultScoreEl = document.getElementById('ls-result-score');
+            if (resultScoreEl) resultScoreEl.innerText = `🪙 +${lsScore} Đ`;
+
+            let resultCoinsEl = document.getElementById('ls-result-coins');
+            if (resultCoinsEl) resultCoinsEl.innerText = `+${finalCoins} 🪙`;
+
+            let modal = document.getElementById('ls-victory-modal');
+            if (modal) modal.style.display = 'flex';
+
+            if (typeof triggerConfetti === 'function') triggerConfetti();
+        }
+
+        function closeListenSpeedVictory() {
+            let modal = document.getElementById('ls-victory-modal');
+            if (modal) modal.style.display = 'none';
+            showScreen('screen-dashboard');
         }
 
         // --- MOBILE TOUCH SWIPE GESTURES ---
