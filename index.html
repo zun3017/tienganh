@@ -144,15 +144,25 @@
                     if (btnEl) btnEl.innerText = '👁️';
                 }
             }
-            // Force-reset auth screen to cup-visible state every time
+            // Force-reset auth screen (open by default on mobile, cup trigger on desktop)
             function resetAuthScreen() {
+                var isMobile = window.innerWidth <= 680;
                 var cup = document.getElementById('login-cup-trigger');
                 var panel = document.getElementById('login-glass-panel');
-                if (cup) cup.style.display = 'flex';
-                if (panel) {
-                    panel.style.opacity = '0';
-                    panel.style.transform = 'scale(0)';
-                    panel.style.pointerEvents = 'none';
+                if (isMobile) {
+                    if (cup) cup.style.display = 'none';
+                    if (panel) {
+                        panel.style.opacity = '1';
+                        panel.style.transform = 'scale(1)';
+                        panel.style.pointerEvents = 'auto';
+                    }
+                } else {
+                    if (cup) cup.style.display = 'flex';
+                    if (panel) {
+                        panel.style.opacity = '0';
+                        panel.style.transform = 'scale(0)';
+                        panel.style.pointerEvents = 'none';
+                    }
                 }
             }
             // Run immediately
@@ -176,11 +186,6 @@
             <!-- Modern Close Button (Top-Right) -->
             <button type="button" class="btn-close-form" onclick="closeLoginForm()" style="position: absolute; top: 16px; right: 16px; width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: bold; cursor: pointer; color: #1e293b; z-index: 110; transition: all 0.2s;" onmouseover="this.style.background='rgba(239,68,68,0.9)'; this.style.color='white';" onmouseout="this.style.background='rgba(255,255,255,0.7)'; this.style.color='#1e293b';" title="Đóng">✕</button>
 
-            <!-- Decorative Cup (Desktop only) -->
-            <div style="position: absolute; top: -80px; left: -65px; z-index: 105; animation: floatCup 3s ease-in-out infinite;">
-                <img src="cup.png" style="height: 140px; cursor: pointer; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4)); transform: rotate(-25deg); transition: transform 0.2s;" onclick="closeLoginForm()" onmouseover="this.style.transform='scale(1.1) rotate(-35deg)'" onmouseout="this.style.transform='scale(1) rotate(-25deg)'" title="Nhấn để đóng form">
-            </div>
-            
             <h2 style="font-size: 2.3rem; color: #1e3a8a; text-align: center; text-shadow: 0px 2px 4px rgba(255,255,255,0.9); margin-bottom: 0.3rem; font-weight: 800;">A2 Vocab Master</h2>
             <p style="margin-bottom: 1.8rem; color: #1e293b; text-align: center; font-weight: 600; font-size: 0.95rem;">Hệ thống học từ vựng Flashcard</p>
             

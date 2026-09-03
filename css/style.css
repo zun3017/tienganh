@@ -645,10 +645,6 @@ button, select, input, .glass-btn, .glass-card-floating, .card {
         margin-bottom: 1.2rem !important;
     }
 
-    #login-glass-panel div[style*="top: -80px"] {
-        display: none !important;
-    }
-
     #login-cup-trigger img:first-child {
         height: 38px !important;
     }
