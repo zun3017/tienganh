@@ -1263,3 +1263,90 @@ button, select, input, .glass-btn, .glass-card-floating, .card {
 #cloud-content-area {
     z-index: 1100 !important;
 }
+
+/* --- WORD MATCH ARENA STYLES --- */
+#screen-word-match.active-screen {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.wm-grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    width: 100%;
+}
+
+@media (max-width: 680px) {
+    .wm-grid-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+}
+
+.wm-card {
+    background: rgba(255, 255, 255, 0.85);
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    border-radius: 16px;
+    padding: 16px 12px;
+    min-height: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #1e293b;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s, background 0.2s, border-color 0.2s, opacity 0.4s;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.wm-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(124, 58, 237, 0.15);
+    border-color: #c4b5fd;
+}
+
+.wm-card:active {
+    transform: scale(0.96);
+}
+
+.wm-card-selected {
+    background: rgba(124, 58, 237, 0.15) !important;
+    border-color: #7c3aed !important;
+    color: #6d28d9 !important;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.3), 0 8px 20px rgba(124, 58, 237, 0.25) !important;
+    transform: scale(1.02) !important;
+}
+
+.wm-card-matched {
+    opacity: 0 !important;
+    transform: scale(0.6) !important;
+    pointer-events: none !important;
+    transition: all 0.45s ease-out !important;
+}
+
+.wm-card-wrong {
+    animation: shakeCard 0.4s ease-in-out !important;
+    background: rgba(239, 68, 68, 0.15) !important;
+    border-color: #ef4444 !important;
+    color: #dc2626 !important;
+}
+
+@keyframes shakeCard {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.85); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}

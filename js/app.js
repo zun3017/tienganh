@@ -253,6 +253,75 @@ function safeSyncToSupabase(userKey) {
             }
         }
 
+        function renderSurvival300Grid() {
+            const grid = document.getElementById('survival-days-grid');
+            const progressBadge = document.getElementById('survival-overall-progress');
+            if (!grid) return;
+            grid.innerHTML = '';
+            
+            if (typeof survival300Topics === 'undefined' || !Array.isArray(survival300Topics)) {
+                grid.innerHTML = '<p style="text-align:center; color:#64748b;">Đang nạp dữ liệu lộ trình 30 ngày...</p>';
+                return;
+            }
+            
+            let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
+            let uData = (currentUser && users[currentUser]) ? users[currentUser] : {};
+            let tProg = uData.topicProgress || {};
+            
+            let completedDays = 0;
+            survival300Topics.forEach(dayItem => {
+                let dayKey = `survival_day_${dayItem.day}`;
+                let progress = tProg[dayKey] || 0;
+                let isDone = progress >= 9;
+                if (isDone) completedDays++;
+                
+                let dayCard = document.createElement('div');
+                dayCard.style.cssText = `
+                    background: ${isDone ? 'linear-gradient(135deg, #ecfdf5, #d1fae5)' : '#ffffff'};
+                    border: 1px solid ${isDone ? '#34d399' : '#e2e8f0'};
+                    border-radius: 12px;
+                    padding: 10px 8px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    align-items: center;
+                    text-align: center;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+                    transition: transform 0.2s, box-shadow 0.2s;
+                `;
+                dayCard.onmouseover = function() { this.style.transform = 'translateY(-2px)'; this.style.boxShadow = '0 6px 12px rgba(0,0,0,0.08)'; };
+                dayCard.onmouseout = function() { this.style.transform = 'translateY(0)'; this.style.boxShadow = '0 2px 4px rgba(0,0,0,0.03)'; };
+                
+                let cleanTitle = dayItem.title.replace(/Ngày \d+:\s*/, '');
+                dayCard.innerHTML = `
+                    <div style="font-weight: 800; color: #059669; font-size: 0.95rem; margin-bottom: 2px;">Ngày ${dayItem.day}</div>
+                    <div style="font-size: 0.75rem; color: #475569; line-height: 1.2; margin-bottom: 8px; min-height: 28px; display: flex; align-items: center; justify-content: center;">${cleanTitle}</div>
+                    <div style="font-size: 0.75rem; font-weight: 600; color: ${isDone ? '#059669' : '#64748b'}; margin-bottom: 8px;">
+                        ${isDone ? '✓ Đã xong (10/10)' : `Tiến độ: ${progress}/10`}
+                    </div>
+                    <button class="${isDone ? 'btn-outline' : 'btn-primary'}" style="padding: 4px 10px; font-size: 0.75rem; border-radius: 12px; width: 100%;" onclick="startLearningSurvivalDay(${dayItem.day})">
+                        ${isDone ? 'Ôn lại' : (progress > 0 ? 'Học tiếp' : 'Bắt đầu')}
+                    </button>
+                `;
+                grid.appendChild(dayCard);
+            });
+            
+            if (progressBadge) {
+                progressBadge.innerText = `Tiến độ: ${completedDays}/30 Ngày`;
+            }
+        }
+
+        function startLearningSurvivalDay(dayNum) {
+            hideCloudContent();
+            let dayKey = `survival_day_${dayNum}`;
+            let topicSelect = document.getElementById('topic-select');
+            if (topicSelect) {
+                topicSelect.value = dayKey;
+                onTopicSelect();
+            }
+            startLearning(true, dayKey);
+        }
+
         let currentCloudSection = '';
         function showCloudContent(section) {
             const container = document.getElementById('dynamic-cloud-content');
@@ -311,6 +380,11 @@ function safeSyncToSupabase(userKey) {
                     }
                 }
                 onTopicSelect();
+            } else if (section === 'survival') {
+                title.innerText = 'Lộ Trình 30 Ngày Sinh Tồn';
+                desc.innerText = '300 từ vựng A0 cốt lõi chia đều 30 ngày cho người mất gốc!';
+                renderSurvival300Grid();
+                container.appendChild(document.getElementById('survival-300-panel'));
             } else if (section === 'srs') {
                 title.innerText = 'Ôn Tập Nhớ Lâu (SRS)';
                 desc.innerText = 'Hệ thống lặp lại ngắt quãng giúp bạn nhớ từ vĩnh viễn!';
@@ -663,6 +737,19 @@ function safeSyncToSupabase(userKey) {
                 select.innerHTML += `<option value="${item.key}">${item.name} (${wCount} từ)</option>`;
             });
             
+            // 3. Add 30-Day Survival Road Topics
+            if (typeof survival300Topics !== 'undefined' && Array.isArray(survival300Topics)) {
+                let survivalOptGroup = document.createElement('optgroup');
+                survivalOptGroup.label = '🌱 Lộ Trình 30 Ngày Sinh Tồn (A0 Mất Gốc)';
+                survival300Topics.forEach(dayItem => {
+                    let opt = document.createElement('option');
+                    opt.value = `survival_day_${dayItem.day}`;
+                    opt.innerText = `${dayItem.topic} (${dayItem.words.length} từ)`;
+                    survivalOptGroup.appendChild(opt);
+                });
+                select.appendChild(survivalOptGroup);
+            }
+            
             if (currentVal) select.value = currentVal;
             
             updateDashboardProgress();
@@ -900,7 +987,11 @@ function safeSyncToSupabase(userKey) {
             
             ensureExtendedTopicsRegistered();
             let topicData = null;
-            if (topicIdx === 'b1_vocab' && typeof b1VocabData !== 'undefined') {
+            if (topicIdx.startsWith && topicIdx.startsWith('survival_day_')) {
+                let dayNum = parseInt(topicIdx.replace('survival_day_', ''), 10);
+                let foundDay = (typeof survival300Topics !== 'undefined') ? survival300Topics.find(t => t.day === dayNum) : null;
+                if (foundDay) topicData = foundDay;
+            } else if (topicIdx === 'b1_vocab' && typeof b1VocabData !== 'undefined') {
                 topicData = b1VocabData;
             } else if (topicIdx === 'b2_vocab' && typeof b2VocabData !== 'undefined') {
                 topicData = b2VocabData;
@@ -1044,15 +1135,32 @@ function safeSyncToSupabase(userKey) {
                 }
             }
             
+            let btnVoiceFront = document.getElementById('btn-voice-practice-front');
+            let voiceResultFront = document.getElementById('voice-result-front');
+            if(voiceResultFront) voiceResultFront.style.display = 'none';
+
+            const hasSpeechRec = ('webkitSpeechRecognition' in window) || ('SpeechRecognition' in window);
+            
+            if(btnVoiceFront) {
+                if (!hasSpeechRec) {
+                    btnVoiceFront.style.display = 'none';
+                } else {
+                    btnVoiceFront.style.display = 'inline-flex';
+                    btnVoiceFront.onclick = function(e) {
+                        e.stopPropagation();
+                        startVoiceRecognition(baseWordLower, true);
+                    };
+                }
+            }
+
             if(btnVoice) {
-                const hasSpeechRec = ('webkitSpeechRecognition' in window) || ('SpeechRecognition' in window);
                 if (!hasSpeechRec) {
                     btnVoice.style.display = 'none';
                 } else {
                     btnVoice.style.display = 'inline-flex';
                     btnVoice.onclick = function(e) {
                         e.stopPropagation();
-                        startVoiceRecognition(baseWordLower);
+                        startVoiceRecognition(baseWordLower, false);
                     };
                 }
             }
@@ -1845,7 +1953,223 @@ function safeSyncToSupabase(userKey) {
             if(modal) modal.style.display = 'none';
         }
 
-        function startVoiceRecognition(targetWord) {
+        // --- WORD MATCH ARENA (TASK 4, 5, 6) ---
+        let wmSelectedCard = null;
+        let wmMatchedCount = 0;
+        let wmTimerInterval = null;
+        let wmStartTime = null;
+        let wmScoreEarned = 0;
+        let isWmProcessing = false;
+
+        function startWordMatchGame(customList) {
+            let victoryModal = document.getElementById('wm-victory-modal');
+            if (victoryModal) victoryModal.style.display = 'none';
+
+            let pool = [];
+            if (customList && Array.isArray(customList) && customList.length >= 6) {
+                pool = [...customList];
+            } else if (currentWords && currentWords.length >= 6) {
+                pool = [...currentWords];
+            } else if (typeof survival300Words !== 'undefined' && Array.isArray(survival300Words) && survival300Words.length >= 6) {
+                pool = [...survival300Words];
+            } else if (typeof vocabTopics !== 'undefined' && vocabTopics[0] && vocabTopics[0].words) {
+                pool = [...vocabTopics[0].words];
+            }
+
+            if (pool.length < 6) {
+                alert("Cần ít nhất 6 từ vựng để bắt đầu đấu trường nối từ!");
+                return;
+            }
+
+            // Shuffle pool and pick 6 words
+            let selectedSix = [...pool].sort(() => Math.random() - 0.5).slice(0, 6);
+
+            // Generate 12 cards
+            let cards = [];
+            selectedSix.forEach((w, idx) => {
+                let cleanEn = w.word.replace(/\(.*?\)/g, '').split('/')[0].trim();
+                let cleanVi = w.meaning.split(',')[0].split(';')[0].trim();
+                cards.push({
+                    id: `wm_en_${idx}`,
+                    pairId: idx,
+                    type: 'en',
+                    text: cleanEn,
+                    fullWord: cleanEn
+                });
+                cards.push({
+                    id: `wm_vi_${idx}`,
+                    pairId: idx,
+                    type: 'vi',
+                    text: cleanVi,
+                    fullWord: cleanEn
+                });
+            });
+
+            // Shuffle the 12 cards
+            cards.sort(() => Math.random() - 0.5);
+
+            // Reset state
+            wmSelectedCard = null;
+            wmMatchedCount = 0;
+            wmScoreEarned = 0;
+            isWmProcessing = false;
+
+            // Render cards to grid
+            let grid = document.getElementById('wm-grid');
+            if (grid) {
+                grid.innerHTML = '';
+                cards.forEach(c => {
+                    let cardEl = document.createElement('div');
+                    cardEl.className = 'wm-card';
+                    cardEl.innerText = c.text;
+                    cardEl.setAttribute('data-id', c.id);
+                    cardEl.setAttribute('data-pair-id', c.pairId);
+                    cardEl.setAttribute('data-type', c.type);
+                    cardEl.onclick = function() {
+                        handleWordMatchCardClick(c, cardEl);
+                    };
+                    grid.appendChild(cardEl);
+                });
+            }
+
+            // Score display
+            let scoreEl = document.getElementById('wm-score');
+            if (scoreEl) scoreEl.innerText = '🪙 +0';
+
+            // Timer
+            if (wmTimerInterval) clearInterval(wmTimerInterval);
+            wmStartTime = Date.now();
+            let timerEl = document.getElementById('wm-timer');
+            if (timerEl) timerEl.innerText = '⏱️ 00:00';
+            wmTimerInterval = setInterval(() => {
+                let elapsed = Math.floor((Date.now() - wmStartTime) / 1000);
+                let mins = String(Math.floor(elapsed / 60)).padStart(2, '0');
+                let secs = String(elapsed % 60).padStart(2, '0');
+                if (timerEl) timerEl.innerText = `⏱️ ${mins}:${secs}`;
+            }, 1000);
+
+            showScreen('screen-word-match');
+            if (typeof showMascotSpeech === 'function') {
+                showMascotSpeech('Nhanh tay nối 6 cặp từ vựng nhé!', 2500);
+            }
+        }
+
+        function handleWordMatchCardClick(cardData, cardEl) {
+            if (isWmProcessing || cardEl.classList.contains('wm-card-matched')) return;
+
+            // Clicking same card -> deselect
+            if (wmSelectedCard && wmSelectedCard.el === cardEl) {
+                cardEl.classList.remove('wm-card-selected');
+                wmSelectedCard = null;
+                return;
+            }
+
+            // If First card selected
+            if (!wmSelectedCard) {
+                wmSelectedCard = { data: cardData, el: cardEl };
+                cardEl.classList.add('wm-card-selected');
+                // If English card -> speak
+                if (cardData.type === 'en') {
+                    speakWordDirectly(cardData.fullWord);
+                }
+                return;
+            }
+
+            // Second card clicked -> Check match
+            let first = wmSelectedCard;
+            cardEl.classList.add('wm-card-selected');
+
+            // MATCHED
+            if (first.data.pairId === cardData.pairId && first.data.type !== cardData.type) {
+                isWmProcessing = true;
+                speakWordDirectly(cardData.fullWord);
+
+                setTimeout(() => {
+                    first.el.classList.add('wm-card-matched');
+                    cardEl.classList.add('wm-card-matched');
+                    first.el.classList.remove('wm-card-selected');
+                    cardEl.classList.remove('wm-card-selected');
+
+                    wmMatchedCount += 1;
+                    wmScoreEarned += 5;
+                    let scoreEl = document.getElementById('wm-score');
+                    if (scoreEl) scoreEl.innerText = `🪙 +${wmScoreEarned}`;
+
+                    wmSelectedCard = null;
+                    isWmProcessing = false;
+
+                    // CHECK VICTORY (6 pairs matched)
+                    if (wmMatchedCount === 6) {
+                        finishWordMatchVictory();
+                    }
+                }, 300);
+            } else {
+                // WRONG MATCH
+                isWmProcessing = true;
+                first.el.classList.add('wm-card-wrong');
+                cardEl.classList.add('wm-card-wrong');
+
+                setTimeout(() => {
+                    first.el.classList.remove('wm-card-wrong', 'wm-card-selected');
+                    cardEl.classList.remove('wm-card-wrong', 'wm-card-selected');
+                    wmSelectedCard = null;
+                    isWmProcessing = false;
+                }, 500);
+            }
+        }
+
+        function speakWordDirectly(wordText) {
+            if (!('speechSynthesis' in window)) return;
+            try {
+                window.speechSynthesis.cancel();
+            } catch(e) {}
+            let utterance = new SpeechSynthesisUtterance(wordText);
+            utterance.lang = 'en-US';
+            utterance.rate = preferredSpeechRate || 1.0;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function finishWordMatchVictory() {
+            if (wmTimerInterval) clearInterval(wmTimerInterval);
+            let elapsed = Math.floor((Date.now() - wmStartTime) / 1000);
+            let mins = String(Math.floor(elapsed / 60)).padStart(2, '0');
+            let secs = String(elapsed % 60).padStart(2, '0');
+            let timeStr = `${mins}:${secs}`;
+
+            let finalCoins = 20;
+            
+            // Add points to user profile (Task 6)
+            let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
+            if (currentUser && users[currentUser]) {
+                if (users[currentUser].points === undefined) users[currentUser].points = 0;
+                users[currentUser].points += finalCoins;
+                localStorage.setItem('gas_users', JSON.stringify(users));
+                safeSyncToSupabase();
+                updateDashboardProgress();
+            }
+
+            let resultTimeEl = document.getElementById('wm-result-time');
+            if (resultTimeEl) resultTimeEl.innerText = timeStr;
+
+            let resultCoinsEl = document.getElementById('wm-result-coins');
+            if (resultCoinsEl) resultCoinsEl.innerText = `+${finalCoins} 🪙`;
+
+            let modal = document.getElementById('wm-victory-modal');
+            if (modal) modal.style.display = 'flex';
+
+            if (typeof triggerConfetti === 'function') triggerConfetti();
+            if (typeof showMascotSpeech === 'function') {
+                showMascotSpeech(`🏆 Đỉnh quá! Hoàn thành trong ${timeStr}, nhận ngay +${finalCoins} xu!`, 4000);
+            }
+        }
+
+        function closeWordMatchVictory() {
+            let modal = document.getElementById('wm-victory-modal');
+            if (modal) modal.style.display = 'none';
+            showScreen('screen-dashboard');
+        }
+
+        function startVoiceRecognition(targetWord, isFront = false) {
             if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
                 alert("Trình duyệt của bạn không hỗ trợ tính năng nhận diện giọng nói. Hãy dùng Google Chrome nhé!");
                 return;
@@ -1857,17 +2181,24 @@ function safeSyncToSupabase(userKey) {
             recognition.interimResults = false;
             recognition.maxAlternatives = 1;
             
-            let btnVoice = document.getElementById('btn-voice-practice');
-            let originalText = btnVoice.innerHTML;
-            btnVoice.innerHTML = '🔴 Đang nghe...';
-            btnVoice.style.background = '#ef4444';
-            btnVoice.style.color = 'white';
+            let btnVoice = isFront ? document.getElementById('btn-voice-practice-front') : document.getElementById('btn-voice-practice');
+            let voiceResultDiv = isFront ? document.getElementById('voice-result-front') : document.getElementById('voice-result');
             
-            recognition.start();
+            let originalText = btnVoice ? btnVoice.innerHTML : '🎙️';
+            if (btnVoice) {
+                btnVoice.innerHTML = '🔴 Đang nghe...';
+                btnVoice.style.background = '#ef4444';
+                btnVoice.style.color = 'white';
+            }
+            
+            try {
+                recognition.start();
+            } catch(e) {
+                console.warn('SpeechRecognition start error:', e);
+            }
             
             recognition.onresult = function(event) {
                 let speechResult = event.results[0][0].transcript.toLowerCase();
-                let voiceResultDiv = document.getElementById('voice-result');
                 if(!voiceResultDiv) return;
                 
                 voiceResultDiv.style.display = 'block';
@@ -1884,17 +2215,21 @@ function safeSyncToSupabase(userKey) {
             };
             
             recognition.onspeechend = function() {
-                recognition.stop();
-                btnVoice.innerHTML = originalText;
-                btnVoice.style.background = 'white';
-                btnVoice.style.color = 'var(--primary)';
+                try { recognition.stop(); } catch(e) {}
+                if (btnVoice) {
+                    btnVoice.innerHTML = originalText;
+                    btnVoice.style.background = 'white';
+                    btnVoice.style.color = 'var(--primary)';
+                }
             };
             
             recognition.onerror = function(event) {
-                alert("Lỗi Micro: " + event.error);
-                btnVoice.innerHTML = originalText;
-                btnVoice.style.background = 'white';
-                btnVoice.style.color = 'var(--primary)';
+                console.warn("Micro error:", event.error);
+                if (btnVoice) {
+                    btnVoice.innerHTML = originalText;
+                    btnVoice.style.background = 'white';
+                    btnVoice.style.color = 'var(--primary)';
+                }
             };
         }
 
