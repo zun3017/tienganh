@@ -48,6 +48,7 @@ function safeSyncToSupabase(userKey) {
         let quizScore = 0;
         let quizHintTimeout = null;
         let currentTopicId = null;
+        let preferredSpeechRate = parseFloat(localStorage.getItem('preferred_speech_rate') || '1.0');
         
         // --- TÍNH NĂNG ĐẶC TRỊ MẤT GỐC ---
         const confusingPairs = {
@@ -633,6 +634,7 @@ function safeSyncToSupabase(userKey) {
         }
 
         function initDashboard() {
+            updateSpeechRateUI();
             loadCustomImportedTopics();
             ensureExtendedTopicsRegistered();
             const select = document.getElementById('topic-select');
@@ -973,6 +975,17 @@ function safeSyncToSupabase(userKey) {
             document.getElementById('card-front-word').innerText = w.word;
             document.getElementById('card-front-ipa').innerText = w.ipa;
             
+            let syllablesEl = document.getElementById('card-front-syllables');
+            if (syllablesEl) {
+                if (w.syllables && w.syllables.trim() !== '') {
+                    syllablesEl.innerText = `[ ${w.syllables} ]`;
+                    syllablesEl.style.display = 'inline-block';
+                } else {
+                    syllablesEl.style.display = 'none';
+                }
+            }
+            updateSpeechRateUI();
+            
             // Back
             document.getElementById('card-back-vi').innerText = w.meaning;
             document.getElementById('card-back-ex-en').innerText = w.example_en;
@@ -1188,7 +1201,27 @@ function safeSyncToSupabase(userKey) {
             renderCard();
         }
 
-        function playAudio(e) {
+        function setSpeechRate(rate, e) {
+            if (e && e.stopPropagation) e.stopPropagation();
+            preferredSpeechRate = rate;
+            localStorage.setItem('preferred_speech_rate', rate.toString());
+            updateSpeechRateUI();
+            playAudio(e, rate);
+        }
+
+        function updateSpeechRateUI() {
+            let currentRate = preferredSpeechRate || 1.0;
+            document.querySelectorAll('.btn-speed-rate').forEach(btn => {
+                let btnRate = parseFloat(btn.getAttribute('data-rate'));
+                if (Math.abs(btnRate - currentRate) < 0.05) {
+                    btn.classList.add('active-rate');
+                } else {
+                    btn.classList.remove('active-rate');
+                }
+            });
+        }
+
+        function playAudio(e, customRate) {
             if (e && e.stopPropagation) e.stopPropagation(); // prevent card flip
             if (!currentWords || !currentWords[currentIndex]) return;
             if (!('speechSynthesis' in window)) return;
@@ -1198,7 +1231,8 @@ function safeSyncToSupabase(userKey) {
             let baseWord = currentWords[currentIndex].word.replace(/\(.*?\)/g, '').split('/')[0].trim();
             let utterance = new SpeechSynthesisUtterance(baseWord);
             utterance.lang = 'en-US';
-            utterance.rate = 0.9;
+            let rate = customRate !== undefined ? customRate : (preferredSpeechRate || 1.0);
+            utterance.rate = rate;
             window.speechSynthesis.speak(utterance);
         }
 

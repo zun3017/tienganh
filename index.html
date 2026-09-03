@@ -413,16 +413,30 @@
                     <div id="card-confuse-alert" style="display: none; background: #fee2e2; color: #b91c1c; padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; margin-bottom: 10px; font-weight: bold; border: 1px solid #fca5a5;"></div>
                     <div class="word-en" id="card-front-word">Word</div>
                     <div class="word-ipa" id="card-front-ipa">/wɜːrd/</div>
-                    <p style="margin-top: 2rem; color: var(--text-muted); font-size: 0.8rem;">(Chạm để lật thẻ)</p>
+                    <div class="word-syllables" id="card-front-syllables" style="display: none; font-size: 1.15rem; color: #4f46e5; font-weight: 700; margin-top: 6px; letter-spacing: 1.5px; background: rgba(79, 70, 229, 0.08); padding: 4px 12px; border-radius: 20px;"></div>
+                    
+                    <div class="audio-controls-row" onclick="event.stopPropagation()" style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px;">
+                        <button class="audio-btn" onclick="playAudio(event)" title="Phát âm từ này" style="margin: 0; width: 36px; height: 36px; font-size: 1rem;">🔊</button>
+                        <div class="speed-toggle-group" style="display: inline-flex; background: rgba(0,0,0,0.06); padding: 3px; border-radius: 20px; gap: 4px;">
+                            <button class="btn-speed-rate" data-rate="0.75" onclick="setSpeechRate(0.75, event)" style="padding: 3px 10px; font-size: 0.8rem; border-radius: 15px; border: none; background: transparent; color: #4b5563; font-weight: 600; box-shadow: none; cursor: pointer;">🐢 0.75x</button>
+                            <button class="btn-speed-rate" data-rate="1.0" onclick="setSpeechRate(1.0, event)" style="padding: 3px 10px; font-size: 0.8rem; border-radius: 15px; border: none; background: transparent; color: #4b5563; font-weight: 600; box-shadow: none; cursor: pointer;">🐇 1.0x</button>
+                        </div>
+                    </div>
+
+                    <p style="margin-top: 1.5rem; color: var(--text-muted); font-size: 0.8rem;">(Chạm để lật thẻ)</p>
                 </div>
                 <!-- BACK -->
                 <div class="card__face card__face--back glass">
                     <img id="card-back-img" class="word-img" src="" alt="illustration" onerror="this.style.display='none'">
                     <div class="word-vi" id="card-back-vi">Nghĩa tiếng Việt</div>
                     
-                    <div style="display: flex; gap: 1rem; justify-content: center; margin: 0.5rem 0;">
-                        <button class="audio-btn" onclick="playAudio(event)">🔊</button>
-                        <button id="btn-voice-practice" class="audio-btn" style="background: white; color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.1);">🎙️</button>
+                    <div style="display: flex; gap: 8px; justify-content: center; align-items: center; margin: 0.5rem 0;" onclick="event.stopPropagation()">
+                        <button class="audio-btn" onclick="playAudio(event)" style="margin: 0; width: 36px; height: 36px; font-size: 1rem;" title="Nghe phát âm">🔊</button>
+                        <div class="speed-toggle-group" style="display: inline-flex; background: rgba(0,0,0,0.06); padding: 3px; border-radius: 20px; gap: 4px;">
+                            <button class="btn-speed-rate" data-rate="0.75" onclick="setSpeechRate(0.75, event)" style="padding: 3px 10px; font-size: 0.8rem; border-radius: 15px; border: none; background: transparent; color: #4b5563; font-weight: 600; box-shadow: none; cursor: pointer;">🐢 0.75x</button>
+                            <button class="btn-speed-rate" data-rate="1.0" onclick="setSpeechRate(1.0, event)" style="padding: 3px 10px; font-size: 0.8rem; border-radius: 15px; border: none; background: transparent; color: #4b5563; font-weight: 600; box-shadow: none; cursor: pointer;">🐇 1.0x</button>
+                        </div>
+                        <button id="btn-voice-practice" class="audio-btn" style="background: white; color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin: 0; width: 36px; height: 36px; font-size: 1rem;" title="Luyện nói">🎙️</button>
                     </div>
                     <div id="voice-result" style="display: none; text-align: center; font-size: 0.9rem; margin-bottom: 1rem; font-weight: bold; padding: 5px; border-radius: 8px;"></div>
                     
