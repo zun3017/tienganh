@@ -553,6 +553,7 @@ function safeSyncToSupabase(userKey) {
                 container.appendChild(document.getElementById('excel-upload').parentNode);
             }
             
+            cloudArea.style.display = 'flex';
             cloudArea.style.opacity = '1';
             cloudArea.style.transform = 'translate(-50%, -50%) scale(1)';
             cloudArea.style.pointerEvents = 'auto';
@@ -564,6 +565,11 @@ function safeSyncToSupabase(userKey) {
             cloudArea.style.opacity = '0';
             cloudArea.style.transform = 'translate(-50%, -50%) scale(0.9)';
             cloudArea.style.pointerEvents = 'none';
+            setTimeout(() => {
+                if (cloudArea.style.opacity === '0') {
+                    cloudArea.style.display = 'none';
+                }
+            }, 300);
         }
 
         let activeStudyStart = null;
@@ -2133,12 +2139,16 @@ function safeSyncToSupabase(userKey) {
             let pool = [];
             if (customList && Array.isArray(customList) && customList.length >= 6) {
                 pool = [...customList];
-            } else if (currentWords && currentWords.length >= 6) {
+            } else if (typeof currentWords !== 'undefined' && currentWords && currentWords.length >= 6) {
                 pool = [...currentWords];
             } else if (typeof survival300Words !== 'undefined' && Array.isArray(survival300Words) && survival300Words.length >= 6) {
                 pool = [...survival300Words];
-            } else if (typeof vocabTopics !== 'undefined' && vocabTopics[0] && vocabTopics[0].words) {
-                pool = [...vocabTopics[0].words];
+            } else if (typeof window !== 'undefined' && window.survival300Words && Array.isArray(window.survival300Words) && window.survival300Words.length >= 6) {
+                pool = [...window.survival300Words];
+            } else if (typeof survival300Topics !== 'undefined' && Array.isArray(survival300Topics) && survival300Topics[0] && survival300Topics[0].words) {
+                pool = survival300Topics.flatMap(t => t.words || []);
+            } else if (typeof vocabTopics !== 'undefined' && Array.isArray(vocabTopics) && vocabTopics[0] && vocabTopics[0].words) {
+                pool = vocabTopics.flatMap(t => t.words || []);
             }
 
             if (pool.length < 6) {
@@ -2488,12 +2498,16 @@ function safeSyncToSupabase(userKey) {
             let pool = [];
             if (customList && Array.isArray(customList) && customList.length >= 4) {
                 pool = [...customList];
-            } else if (currentWords && currentWords.length >= 4) {
+            } else if (typeof currentWords !== 'undefined' && currentWords && currentWords.length >= 4) {
                 pool = [...currentWords];
             } else if (typeof survival300Words !== 'undefined' && Array.isArray(survival300Words) && survival300Words.length >= 4) {
                 pool = [...survival300Words];
-            } else if (typeof vocabTopics !== 'undefined' && vocabTopics[0] && vocabTopics[0].words) {
-                pool = [...vocabTopics[0].words];
+            } else if (typeof window !== 'undefined' && window.survival300Words && Array.isArray(window.survival300Words) && window.survival300Words.length >= 4) {
+                pool = [...window.survival300Words];
+            } else if (typeof survival300Topics !== 'undefined' && Array.isArray(survival300Topics) && survival300Topics[0] && survival300Topics[0].words) {
+                pool = survival300Topics.flatMap(t => t.words || []);
+            } else if (typeof vocabTopics !== 'undefined' && Array.isArray(vocabTopics) && vocabTopics[0] && vocabTopics[0].words) {
+                pool = vocabTopics.flatMap(t => t.words || []);
             }
 
             if (pool.length < 4) {

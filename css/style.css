@@ -320,14 +320,15 @@
         /* --- GAME UI TOP NAVIGATION BAR (DESKTOP & UNIVERSAL) --- */
         .dashboard-top-nav {
             position: absolute;
-            top: 24px;
-            left: 28px;
-            right: 28px;
+            top: 20px;
+            left: 20px;
+            right: 20px;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            gap: 20px;
-            z-index: 100;
+            gap: 14px;
+            z-index: 1000;
+            pointer-events: auto !important;
         }
 
         .dashboard-top-nav .glass-btn {
@@ -336,15 +337,17 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            padding: 10px 22px !important;
-            font-size: 0.95rem !important;
+            padding: 9px 20px !important;
+            font-size: 0.92rem !important;
             border-radius: 30px !important;
             white-space: nowrap;
+            cursor: pointer !important;
+            pointer-events: auto !important;
         }
 
         /* --- GAME UI STYLES (GLASSMORPHISM) --- */
         .glass-btn {
-            cursor: pointer;
+            cursor: pointer !important;
             position: relative;
             display: inline-flex;
             align-items: center;
@@ -365,28 +368,30 @@
             text-shadow: 0 1px 2px rgba(0,0,0,0.5);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             animation: floatCup 4s ease-in-out infinite;
+            z-index: 100;
+            pointer-events: auto !important;
         }
         
         .glass-btn:hover {
-            transform: scale(1.1) translateY(-5px) !important;
+            transform: scale(1.08) translateY(-4px) !important;
             background: rgba(255, 255, 255, 0.25);
             box-shadow: 0 15px 35px 0 rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.5);
             animation-play-state: paused;
         }
 
         .glass-card-floating {
-            cursor: pointer;
+            cursor: pointer !important;
             position: absolute;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            width: 140px;
-            height: 140px;
+            width: 132px;
+            height: 125px;
             padding: 10px;
             text-align: center;
             border-radius: 20px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 100%);
+            background: linear-gradient(135deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 100%);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.4);
@@ -395,24 +400,27 @@
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), inset 0 2px 10px rgba(255,255,255,0.2);
             color: white;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             animation: floatCup 5s ease-in-out infinite;
+            z-index: 100;
+            pointer-events: auto !important;
         }
         
         .glass-card-floating .card-icon {
-            font-size: 3rem;
-            margin-bottom: 10px;
+            font-size: 2.6rem;
+            margin-bottom: 6px;
             filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
         }
 
         .glass-card-floating:hover {
-            transform: scale(1.15) translateY(-10px) !important;
-            background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 100%);
+            transform: scale(1.12) translateY(-8px) !important;
+            background: linear-gradient(135deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.12) 100%);
             box-shadow: 0 25px 45px rgba(0, 0, 0, 0.4), 0 0 30px rgba(255, 215, 0, 0.6);
             border-color: rgba(255, 215, 0, 0.8);
             animation-play-state: paused;
+            z-index: 105 !important;
         }
         
         /* Different delays so they don't bounce identically */
@@ -804,72 +812,95 @@ button, select, input, .glass-btn, .glass-card-floating, .card {
 /* Top Navigation Bar on Dashboard */
 .dashboard-top-nav {
     position: absolute;
-    top: max(env(safe-area-inset-top, 12px), 12px);
-    left: 12px;
-    right: 12px;
+    top: max(env(safe-area-inset-top, 10px), 10px);
+    left: 8px;
+    right: 8px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
-    gap: 8px;
-    z-index: 100;
+    gap: 6px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    z-index: 1000;
+    padding-bottom: 4px;
+}
+
+.dashboard-top-nav::-webkit-scrollbar {
+    display: none;
 }
 
 .dashboard-top-nav .glass-btn {
     position: static !important;
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 7px 12px !important;
-    font-size: 0.85rem !important;
-    border-radius: 20px !important;
+    gap: 5px;
+    padding: 6px 11px !important;
+    font-size: 0.78rem !important;
+    border-radius: 18px !important;
     white-space: nowrap;
+    flex-shrink: 0;
+    cursor: pointer !important;
+    pointer-events: auto !important;
 }
 
-    /* 4 Corner Anti-Collision Floating 3D Cards on Mobile */
+    /* 6 Symmetrical 3D Floating Cards on Mobile (Anti-Collision Architecture) */
     .glass-card-floating {
-        width: 100px !important;
-        height: 100px !important;
-        padding: 6px !important;
-        border-radius: 18px !important;
-        font-size: 0.8rem !important;
+        width: 88px !important;
+        height: 88px !important;
+        padding: 5px !important;
+        border-radius: 16px !important;
+        font-size: 0.7rem !important;
         margin: 0 !important;
+        z-index: 100 !important;
+        cursor: pointer !important;
+        pointer-events: auto !important;
     }
 
     .glass-card-floating .card-icon {
-        font-size: 1.8rem !important;
+        font-size: 1.5rem !important;
         margin-bottom: 2px !important;
     }
 
-    /* Top-Left Quadrant */
+    /* Left Column (3 cards) */
     .glass-card-floating[title="Cửa Hàng Tích Điểm"] {
-        top: 20% !important;
-        left: 6% !important;
+        top: 17% !important;
+        left: 4% !important;
         right: auto !important;
         bottom: auto !important;
     }
-
-    /* Top-Right Quadrant */
-    .glass-card-floating[title="3000 Từ Cơ Bản"] {
-        top: 20% !important;
-        right: 6% !important;
-        left: auto !important;
+    .glass-card-floating[title="Luyện Phản Xạ Nghe 5 Giây"] {
+        top: 42% !important;
+        left: 4% !important;
+        right: auto !important;
         bottom: auto !important;
     }
-
-    /* Bottom-Left Quadrant */
     .glass-card-floating[title="Trí Nhớ Siêu Phàm"] {
-        top: 52% !important;
-        left: 6% !important;
-        bottom: auto !important;
+        top: 67% !important;
+        left: 4% !important;
         right: auto !important;
+        bottom: auto !important;
     }
 
-    /* Bottom-Right Quadrant */
-    .glass-card-floating[title="Thêm Bộ Từ Mới"] {
-        top: 52% !important;
-        right: 6% !important;
-        bottom: auto !important;
+    /* Right Column (3 cards) */
+    .glass-card-floating[title="3000 Từ Cơ Bản"] {
+        top: 17% !important;
+        right: 4% !important;
         left: auto !important;
+        bottom: auto !important;
+    }
+    .glass-card-floating[title="Game Nối Từ Siêu Tốc"] {
+        top: 42% !important;
+        right: 4% !important;
+        left: auto !important;
+        bottom: auto !important;
+    }
+    .glass-card-floating[title="Thêm Bộ Từ Mới"] {
+        top: 67% !important;
+        right: 4% !important;
+        left: auto !important;
+        bottom: auto !important;
     }
 
     /* Central Cloud Modal Area on Mobile */

@@ -519,3 +519,8 @@ const survival300Topics = [
 
 // Mảng phẳng 300 từ cho tra cứu nhanh
 const survival300Words = survival300Topics.flatMap(t => t.words);
+
+if (typeof window !== 'undefined') {
+  window.survival300Topics = survival300Topics;
+  window.survival300Words = survival300Words;
+}
