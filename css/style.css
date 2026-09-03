@@ -645,12 +645,22 @@ button, select, input, .glass-btn, .glass-card-floating, .card {
         margin-bottom: 1.2rem !important;
     }
 
+    /* Cup trigger trên mobile - to rõ và dễ bấm */
+    #login-cup-trigger {
+        top: 5% !important;
+        padding: 12px 20px !important;
+        border-radius: 20px !important;
+        background: rgba(0,0,0,0.25) !important;
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+    }
+
     #login-cup-trigger img:first-child {
-        height: 38px !important;
+        height: 42px !important;
     }
 
     #login-cup-trigger img:last-child {
-        height: 120px !important;
+        height: 130px !important;
     }
 
     .password-input-wrap {
