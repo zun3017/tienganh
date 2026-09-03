@@ -86,30 +86,53 @@
             animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* Auth Screen - full-screen background, controlled via CSS not inline style */
-        .auth-screen-wrap {
+        /* Full-screen containers (Auth & Dashboard) - override .container's max-height: calc(100vh - 56px) */
+        .auth-screen-wrap,
+        #screen-dashboard {
             position: fixed !important;
             top: 0 !important;
             left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
             max-width: 100% !important;
             width: 100vw !important;
+            height: 100% !important;
             height: 100vh !important;
+            height: 100dvh !important;
+            min-height: 100vh !important;
+            min-height: 100dvh !important;
+            max-height: none !important;
             margin: 0 !important;
             border-radius: 0 !important;
             padding: 0 !important;
             border: none !important;
+            box-sizing: border-box !important;
+        }
+
+        .auth-screen-wrap {
             overflow-y: auto !important;
             overflow-x: hidden !important;
             -webkit-overflow-scrolling: touch !important;
             z-index: 100 !important;
-            box-sizing: border-box !important;
             justify-content: center !important;
             align-items: center !important;
-            /* Desktop background - path relative to css/ folder */
             background: url('../assets/login_bg.jpg') no-repeat center center / cover !important;
-            /* Ensure covers full viewport even on devices with dynamic bars */
-            min-height: 100vh;
-            min-height: 100dvh;
+        }
+
+        #screen-dashboard {
+            overflow: hidden !important;
+            z-index: 90 !important;
+        }
+
+        #screen-dashboard .game-ui-container {
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: url('../assets/dashboard_bg_new.jpg') no-repeat center bottom / cover;
         }
 
         @keyframes popIn {
