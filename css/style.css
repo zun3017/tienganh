@@ -107,6 +107,9 @@
             align-items: center !important;
             /* Desktop background - path relative to css/ folder */
             background: url('../assets/login_bg.jpg') no-repeat center center / cover !important;
+            /* Ensure covers full viewport even on devices with dynamic bars */
+            min-height: 100vh;
+            min-height: 100dvh;
         }
 
         @keyframes popIn {
