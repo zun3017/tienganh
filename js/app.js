@@ -471,13 +471,17 @@ function safeSyncToSupabase(userKey) {
             const msg = document.getElementById('auth-reg-msg');
             const regBtn = document.getElementById('btn-reg-submit');
             
-            if(!u || !p || !p2) { setAuthFeedback(msg, "⚠️ Vui lòng nhập đủ thông tin!", "error"); return; }
-            if(p !== p2) { setAuthFeedback(msg, "⚠️ Mật khẩu nhập lại không khớp!", "error"); return; }
+            const unlockRegBtn = () => {
+                if (regBtn) { regBtn.disabled = false; regBtn.style.opacity = '1'; regBtn.innerText = 'Đồng ý Đăng ký'; }
+            };
+
+            if(!u || !p || !p2) { unlockRegBtn(); setAuthFeedback(msg, "⚠️ Vui lòng nhập đủ thông tin!", "error"); return; }
+            if(p !== p2) { unlockRegBtn(); setAuthFeedback(msg, "⚠️ Mật khẩu nhập lại không khớp!", "error"); return; }
             
             let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
-            if(users[u]) { setAuthFeedback(msg, "❌ Tên đăng nhập đã tồn tại trên thiết bị!", "error"); return; }
+            if(users[u]) { unlockRegBtn(); setAuthFeedback(msg, "❌ Tên đăng nhập đã tồn tại trên thiết bị!", "error"); return; }
             
-            if (regBtn) { regBtn.disabled = true; regBtn.style.opacity = '0.7'; }
+            if (regBtn) { regBtn.disabled = true; regBtn.style.opacity = '0.7'; regBtn.innerText = '⏳ Đang đăng ký...'; }
             setAuthFeedback(msg, "⏳ Đang kiểm tra tài khoản trên đám mây...", "loading");
 
             // Check if username already taken on Supabase Cloud
@@ -486,7 +490,7 @@ function safeSyncToSupabase(userKey) {
                     const exists = await SupabaseService.checkUserExists(u);
                     if (exists) {
                         setAuthFeedback(msg, "❌ Tên đăng nhập này đã được sử dụng trên hệ thống! Hãy chọn tên khác.", "error");
-                        if (regBtn) { regBtn.disabled = false; regBtn.style.opacity = '1'; }
+                        unlockRegBtn();
                         return;
                     }
                 } catch (e) {}
@@ -503,9 +507,11 @@ function safeSyncToSupabase(userKey) {
             setAuthFeedback(msg, "✅ Đăng ký thành công! Đang chuyển sang Đăng nhập...", "success");
             
             setTimeout(() => {
-                if (regBtn) { regBtn.disabled = false; regBtn.style.opacity = '1'; }
+                unlockRegBtn();
                 document.getElementById('username').value = u;
                 document.getElementById('password').value = p;
+                document.getElementById('reg-password').value = '';
+                document.getElementById('reg-confirm').value = '';
                 toggleAuth('login');
             }, 1000);
         }
@@ -1467,10 +1473,11 @@ function safeSyncToSupabase(userKey) {
 
         // Init checks
         // Event listeners for Enter key
-        document.getElementById('password').addEventListener('keypress', function(e) { if (e.key === 'Enter') login(); });
-        document.getElementById('username').addEventListener('keypress', function(e) { if (e.key === 'Enter') login(); });
-        document.getElementById('reg-password').addEventListener('keypress', function(e) { if (e.key === 'Enter') register(); });
-        document.getElementById('reg-confirm').addEventListener('keypress', function(e) { if (e.key === 'Enter') register(); });
+        document.getElementById('password')?.addEventListener('keypress', function(e) { if (e.key === 'Enter') login(); });
+        document.getElementById('username')?.addEventListener('keypress', function(e) { if (e.key === 'Enter') login(); });
+        document.getElementById('reg-username')?.addEventListener('keypress', function(e) { if (e.key === 'Enter') register(); });
+        document.getElementById('reg-password')?.addEventListener('keypress', function(e) { if (e.key === 'Enter') register(); });
+        document.getElementById('reg-confirm')?.addEventListener('keypress', function(e) { if (e.key === 'Enter') register(); });
 
         if(localStorage.getItem('gas_users') === null) {
             localStorage.setItem('gas_users', JSON.stringify({}));

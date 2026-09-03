@@ -107,6 +107,40 @@
             transform: scale(1.02);
         }
 
+        .password-input-wrap {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-input-wrap input {
+            padding-right: 45px !important;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .password-toggle-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent !important;
+            border: none !important;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 4px;
+            line-height: 1;
+            box-shadow: none !important;
+            z-index: 10;
+            opacity: 0.65;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+
+        .password-toggle-btn:hover {
+            opacity: 1;
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: none !important;
+        }
+
         button {
             background: var(--primary);
             border: none;
@@ -560,18 +594,18 @@ button, select, input, .glass-btn, .glass-card-floating, .card {
 }
 
 @media (max-width: 680px) {
-    /* ✅ Auth screen: dùng ảnh dọc cho điện thoại */
+    /* ✅ Auth screen: dùng ảnh dọc nhẹ, nén chất lượng cao cho điện thoại */
     #screen-auth {
-        background-image: url("../assets/login_mobile.png") !important;
+        background-image: url("../assets/login_mobile.jpg") !important;
         background-size: cover !important;
         background-position: center top !important;
         overflow-y: auto !important;
         -webkit-overflow-scrolling: touch !important;
     }
 
-    /* ✅ Dashboard screen: dùng ảnh dọc đẹp cho điện thoại */
+    /* ✅ Dashboard screen: dùng ảnh dọc nhẹ, nén chất lượng cao cho điện thoại */
     #screen-dashboard .game-ui-container {
-        background-image: url("../assets/mobile.png") !important;
+        background-image: url("../assets/mobile.jpg") !important;
         background-size: cover !important;
         background-position: center center !important;
     }
@@ -608,12 +642,7 @@ button, select, input, .glass-btn, .glass-card-floating, .card {
     }
 
     #login-glass-panel div[style*="top: -80px"] {
-        top: -60px !important;
-        left: -35px !important;
-    }
-
-    #login-glass-panel div[style*="top: -80px"] img {
-        height: 95px !important;
+        display: none !important;
     }
 
     #login-cup-trigger img:first-child {
@@ -622,6 +651,41 @@ button, select, input, .glass-btn, .glass-card-floating, .card {
 
     #login-cup-trigger img:last-child {
         height: 120px !important;
+    }
+
+    .password-input-wrap {
+        position: relative;
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    .password-input-wrap input {
+        width: 100%;
+        padding-right: 45px !important;
+        box-sizing: border-box;
+    }
+
+    .password-toggle-btn {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: transparent !important;
+        border: none !important;
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 4px;
+        line-height: 1;
+        box-shadow: none !important;
+        z-index: 10;
+        opacity: 0.65;
+        transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .password-toggle-btn:hover {
+        opacity: 1;
+        transform: translateY(-50%) scale(1.1);
+        box-shadow: none !important;
     }
 
 /* Top Navigation Bar on Dashboard */

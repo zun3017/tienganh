@@ -101,10 +101,8 @@
     <!-- 1. AUTH SCREEN -->
     <div id="screen-auth" class="container glass active-screen" style="position: fixed !important; top: 0 !important; left: 0 !important; max-width: 100% !important; width: 100vw !important; height: 100vh !important; margin: 0 !important; border-radius: 0 !important; padding: 0 !important; background: url('assets/login_bg.jpg') no-repeat center center/cover !important; justify-content: center !important; align-items: center !important; border: none !important; overflow-y: auto !important; overflow-x: hidden !important; -webkit-overflow-scrolling: touch !important; z-index: 100 !important; box-sizing: border-box !important;">
         
-        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-        
         <!-- Cup Trigger -->
-        <div id="login-cup-trigger" style="position: absolute; top: 1%; left: 52%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: transform 0.2s; z-index: 101;" onclick="openLoginForm()" onmouseover="this.style.transform='translateX(-50%) scale(1.08)'" onmouseout="this.style.transform='translateX(-50%) scale(1)'">
+        <div id="login-cup-trigger" style="position: absolute; top: 4%; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: all 0.2s; z-index: 101; padding: 16px 28px; border-radius: 24px;" onclick="openLoginForm()" onmouseover="this.style.transform='translateX(-50%) scale(1.06)'" onmouseout="this.style.transform='translateX(-50%) scale(1)'">
             <style>
                 @keyframes floatCup {
                     0% { transform: translateY(0px); }
@@ -114,6 +112,7 @@
             </style>
             <img src="assets/login_text.png" style="height: 50px; margin-bottom: 5px; animation: floatCup 3s ease-in-out infinite;">
             <img src="cup.png" style="height: 160px; animation: floatCup 3s ease-in-out infinite; animation-delay: 0.1s; filter: drop-shadow(0 15px 30px rgba(255, 215, 0, 0.5));">
+            <div style="margin-top: 8px; font-size: 0.85rem; font-weight: 700; color: #fbbf24; text-shadow: 0 2px 4px rgba(0,0,0,0.8); background: rgba(0,0,0,0.5); padding: 5px 14px; border-radius: 20px; border: 1px solid rgba(251,191,36,0.4); backdrop-filter: blur(6px); display: flex; align-items: center; gap: 6px;">✨ Chạm để Đăng nhập ✨</div>
         </div>
 
         <script>
@@ -132,6 +131,18 @@
                 setTimeout(() => {
                     document.getElementById('login-cup-trigger').style.display = 'flex';
                 }, 300);
+            }
+            // Toggle Password Visibility
+            function togglePasswordVisibility(inputId, btnEl) {
+                var inp = document.getElementById(inputId);
+                if (!inp) return;
+                if (inp.type === 'password') {
+                    inp.type = 'text';
+                    if (btnEl) btnEl.innerText = '🙈';
+                } else {
+                    inp.type = 'password';
+                    if (btnEl) btnEl.innerText = '👁️';
+                }
             }
             // Force-reset auth screen to cup-visible state every time
             function resetAuthScreen() {
@@ -154,32 +165,49 @@
             document.addEventListener('DOMContentLoaded', function() {
                 resetAuthScreen();
             });
+            // Escape key listener to close form
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeLoginForm();
+            });
         </script>
 
-        <div id="login-glass-panel" class="glass" style="max-width: 420px; width: 90%; max-height: 88vh; overflow-y: auto; box-sizing: border-box; padding: 2.5rem; border-radius: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -2px 4px rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.5); border-left: 1px solid rgba(255,255,255,0.5); background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: absolute; z-index: 102; opacity: 0; transform: scale(0); pointer-events: none; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+        <div id="login-glass-panel" class="glass" style="max-width: 420px; width: 90%; max-height: 88vh; overflow-y: auto; box-sizing: border-box; padding: 2.5rem 2rem 2rem 2rem; border-radius: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -2px 4px rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.5); border-left: 1px solid rgba(255,255,255,0.5); background: rgba(255, 255, 255, 0.45); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: absolute; z-index: 102; opacity: 0; transform: scale(0); pointer-events: none; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
             
+            <!-- Modern Close Button (Top-Right) -->
+            <button type="button" class="btn-close-form" onclick="closeLoginForm()" style="position: absolute; top: 16px; right: 16px; width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: bold; cursor: pointer; color: #1e293b; z-index: 110; transition: all 0.2s;" onmouseover="this.style.background='rgba(239,68,68,0.9)'; this.style.color='white';" onmouseout="this.style.background='rgba(255,255,255,0.7)'; this.style.color='#1e293b';" title="Đóng">✕</button>
+
+            <!-- Decorative Cup (Desktop only) -->
             <div style="position: absolute; top: -80px; left: -65px; z-index: 105; animation: floatCup 3s ease-in-out infinite;">
                 <img src="cup.png" style="height: 140px; cursor: pointer; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4)); transform: rotate(-25deg); transition: transform 0.2s;" onclick="closeLoginForm()" onmouseover="this.style.transform='scale(1.1) rotate(-35deg)'" onmouseout="this.style.transform='scale(1) rotate(-25deg)'" title="Nhấn để đóng form">
             </div>
             
-            <h2 style="font-size: 2.5rem; color: #1e3a8a; text-align: center; text-shadow: 0px 2px 4px rgba(255,255,255,0.9); margin-bottom: 0.5rem; font-weight: 800;">A2 Vocab Master</h2>
-            <p style="margin-bottom: 2rem; color: #1e293b; text-align: center; font-weight: 600;">Hệ thống học từ vựng Flashcard</p>
+            <h2 style="font-size: 2.3rem; color: #1e3a8a; text-align: center; text-shadow: 0px 2px 4px rgba(255,255,255,0.9); margin-bottom: 0.3rem; font-weight: 800;">A2 Vocab Master</h2>
+            <p style="margin-bottom: 1.8rem; color: #1e293b; text-align: center; font-weight: 600; font-size: 0.95rem;">Hệ thống học từ vựng Flashcard</p>
             
             <!-- LOGIN PANEL -->
             <div id="login-panel" style="width: 100%;">
-                <input type="text" id="username" placeholder="Tên đăng nhập" autocomplete="off" style="background: rgba(255,255,255,0.95); border: 2px solid rgba(255,255,255,0.8); font-weight: 500; color: #000;">
-                <input type="password" id="password" placeholder="Mật khẩu" style="background: rgba(255,255,255,0.95); border: 2px solid rgba(255,255,255,0.8); font-weight: 500; color: #000;">
-                <button id="btn-login-submit" onclick="login()" style="font-size: 1.1rem; padding: 1rem; border-radius: 12px; margin-top: 1rem; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); font-weight: bold;">Đăng Nhập</button>
+                <input type="text" id="username" placeholder="Tên đăng nhập" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" style="background: rgba(255,255,255,0.95); border: 2px solid rgba(255,255,255,0.8); font-weight: 500; color: #000; margin-bottom: 0.75rem;">
+                <div class="password-input-wrap">
+                    <input type="password" id="password" placeholder="Mật khẩu" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false" style="background: rgba(255,255,255,0.95); border: 2px solid rgba(255,255,255,0.8); font-weight: 500; color: #000;">
+                    <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('password', this)" title="Ẩn/Hiện mật khẩu">👁️</button>
+                </div>
+                <button id="btn-login-submit" onclick="login()" style="font-size: 1.1rem; padding: 1rem; border-radius: 12px; margin-top: 1rem; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); font-weight: bold; width: 100%;">Đăng Nhập</button>
                 <p style="text-align: center; margin-top: 1.5rem; color: #1e293b; font-weight: 600; cursor: pointer; text-decoration: underline; text-shadow: 0 1px 2px rgba(255,255,255,0.8);" onclick="toggleAuth('register')">Chưa có tài khoản? Đăng ký ngay</p>
                 <div id="auth-login-msg" style="display: none; text-align: center; margin-top: 1rem; border-radius: 10px; padding: 0.75rem 1rem; font-weight: bold; font-size: 0.95rem; line-height: 1.4;"></div>
             </div>
 
             <!-- REGISTER PANEL -->
             <div id="register-panel" style="width: 100%; display: none;">
-                <input type="text" id="reg-username" placeholder="Tên đăng ký" autocomplete="off" style="background: rgba(255,255,255,0.95); font-weight: 500; color: #000;">
-                <input type="password" id="reg-password" placeholder="Mật khẩu" style="background: rgba(255,255,255,0.95); font-weight: 500; color: #000;">
-                <input type="password" id="reg-confirm" placeholder="Nhập lại mật khẩu" style="background: rgba(255,255,255,0.95); font-weight: 500; color: #000;">
-                <button id="btn-reg-submit" onclick="register()" style="font-size: 1.1rem; padding: 1rem; border-radius: 12px; margin-top: 1rem; font-weight: bold;">Đồng ý Đăng ký</button>
+                <input type="text" id="reg-username" placeholder="Tên đăng ký" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" style="background: rgba(255,255,255,0.95); font-weight: 500; color: #000; margin-bottom: 0.75rem;">
+                <div class="password-input-wrap">
+                    <input type="password" id="reg-password" placeholder="Mật khẩu" autocomplete="new-password" autocapitalize="none" autocorrect="off" spellcheck="false" style="background: rgba(255,255,255,0.95); font-weight: 500; color: #000;">
+                    <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('reg-password', this)" title="Ẩn/Hiện mật khẩu">👁️</button>
+                </div>
+                <div class="password-input-wrap">
+                    <input type="password" id="reg-confirm" placeholder="Nhập lại mật khẩu" autocomplete="new-password" autocapitalize="none" autocorrect="off" spellcheck="false" style="background: rgba(255,255,255,0.95); font-weight: 500; color: #000;">
+                    <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('reg-confirm', this)" title="Ẩn/Hiện mật khẩu">👁️</button>
+                </div>
+                <button id="btn-reg-submit" onclick="register()" style="font-size: 1.1rem; padding: 1rem; border-radius: 12px; margin-top: 1rem; font-weight: bold; width: 100%;">Đồng ý Đăng ký</button>
                 <p style="text-align: center; margin-top: 1.5rem; color: #1e293b; font-weight: 600; cursor: pointer; text-decoration: underline; text-shadow: 0 1px 2px rgba(255,255,255,0.8);" onclick="toggleAuth('login')">Đã có tài khoản? Đăng nhập</p>
                 <div id="auth-reg-msg" style="display: none; text-align: center; margin-top: 1rem; border-radius: 10px; padding: 0.75rem 1rem; font-weight: bold; font-size: 0.95rem; line-height: 1.4;"></div>
             </div>
