@@ -1243,8 +1243,14 @@ function safeSyncToSupabase(userKey) {
             
             // Back
             document.getElementById('card-back-vi').innerText = w.meaning;
-            document.getElementById('card-back-ex-en').innerText = w.example_en;
-            document.getElementById('card-back-ex-vi').innerText = w.example_vi;
+            let exEn = w.example_en || w.example || '';
+            let exVi = w.example_vi || '';
+            document.getElementById('card-back-ex-en').innerText = exEn;
+            document.getElementById('card-back-ex-vi').innerText = exVi;
+            let exWrap = document.getElementById('card-back-ex-wrap');
+            if (exWrap) {
+                exWrap.style.display = (exEn && exEn.trim()) ? 'block' : 'none';
+            }
             
             let synBox = document.getElementById('card-back-synonyms');
             if (w.synonyms && w.synonyms.trim() !== "") {
@@ -1512,6 +1518,41 @@ function safeSyncToSupabase(userKey) {
             utterance.lang = 'en-US';
             let rate = customRate !== undefined ? customRate : (preferredSpeechRate || 1.0);
             utterance.rate = rate;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function playExampleAudio(e, customRate) {
+            if (e && e.stopPropagation) e.stopPropagation(); // prevent card flip
+            if (!currentWords || !currentWords[currentIndex]) return;
+            let w = currentWords[currentIndex];
+            let sentence = w.example_en || w.example || '';
+            if (!sentence || !sentence.trim()) return;
+            if (!('speechSynthesis' in window)) return;
+            try {
+                window.speechSynthesis.cancel(); // Fix Safari iOS speech queue deadlock
+            } catch(err) {}
+
+            let utterance = new SpeechSynthesisUtterance(sentence.trim());
+            utterance.lang = 'en-US';
+            let rate = customRate !== undefined ? customRate : (preferredSpeechRate || 1.0);
+            utterance.rate = rate;
+
+            const exEl = document.getElementById('card-back-ex-en');
+            const exWrap = document.getElementById('card-back-ex-wrap');
+            const btnEl = document.getElementById('btn-example-audio');
+            if (exEl) exEl.classList.add('example-speaking');
+            if (exWrap) exWrap.classList.add('example-wrap-speaking');
+            if (btnEl) btnEl.classList.add('speaking');
+
+            function clearSpeakingState() {
+                if (exEl) exEl.classList.remove('example-speaking');
+                if (exWrap) exWrap.classList.remove('example-wrap-speaking');
+                if (btnEl) btnEl.classList.remove('speaking');
+            }
+
+            utterance.onend = clearSpeakingState;
+            utterance.onerror = clearSpeakingState;
+
             window.speechSynthesis.speak(utterance);
         }
 

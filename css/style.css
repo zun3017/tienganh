@@ -1255,15 +1255,109 @@ button, select, input, .glass-btn, .glass-card-floating, .card {
     margin: 0;
 }
 
+#screen-flashcard .example-wrapper {
+    margin: 0.4rem 0 0.2rem 0;
+    padding: 0.5rem 0.85rem;
+    background: rgba(248, 250, 252, 0.9);
+    border: 1.5px dashed #cbd5e1;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+    -webkit-user-select: none;
+    text-align: center;
+    position: relative;
+    box-sizing: border-box;
+}
+
+#screen-flashcard .example-wrapper:hover {
+    background: rgba(238, 242, 255, 0.95);
+    border-color: #818cf8;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+}
+
+#screen-flashcard .example-wrapper:active {
+    transform: scale(0.99);
+}
+
+#screen-flashcard .example-wrap-speaking {
+    background: #eef2ff !important;
+    border-color: #6366f1 !important;
+    border-style: solid !important;
+    box-shadow: 0 0 16px rgba(99, 102, 241, 0.25) !important;
+}
+
+#screen-flashcard .example-en-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
 #screen-flashcard .example-en {
-    font-size: 1rem;
-    margin-bottom: 0.3rem;
+    font-size: 1.05rem;
+    font-style: italic;
+    color: #1e293b;
     line-height: 1.35;
+    margin: 0;
+    transition: color 0.2s ease;
+}
+
+#screen-flashcard .example-speaking {
+    color: #4f46e5 !important;
+    font-weight: 700 !important;
+}
+
+#screen-flashcard .example-audio-btn {
+    background: #e0e7ff;
+    color: #4338ca;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(67, 56, 202, 0.15);
+    padding: 0;
+}
+
+#screen-flashcard .example-audio-btn:hover {
+    background: #4f46e5;
+    color: white;
+    transform: scale(1.1);
+}
+
+#screen-flashcard .example-audio-btn.speaking {
+    background: #10b981 !important;
+    color: white !important;
+    animation: pulseAudio 1s infinite;
+}
+
+@keyframes pulseAudio {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+    70% { transform: scale(1.1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
 }
 
 #screen-flashcard .example-vi {
-    font-size: 0.9rem;
-    margin-bottom: 0.4rem;
+    font-size: 0.88rem;
+    color: #64748b;
+    margin: 3px 0 0 0;
+    line-height: 1.3;
+}
+
+#screen-flashcard .example-hint {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    margin-top: 2px;
+    font-weight: 500;
 }
 
 #screen-flashcard .controls {
