@@ -21,7 +21,7 @@
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="css/style.css?v=5.4">
+    <link rel="stylesheet" href="css/style.css?v=5.7">
 </head>
 <body>
     <div class="bg-particle" style="width: 300px; height: 300px; top: 10%; left: 10%;"></div>
@@ -241,13 +241,18 @@
             
             <!-- FLOATING ICONS (Topics and Tools) (3D Glass Cards - Balanced 2-Column Symmetrical Layout) -->
             <!-- LEFT COLUMN: Learning & Tools -->
-            <div class="glass-card-floating float-delay-1" title="Cửa Hàng Tích Điểm" onclick="showCloudContent('store')" style="top: 25%; left: 6%; z-index: 100; display: flex; flex-direction: column; gap: 0.3rem;">
+            <div class="glass-card-floating float-delay-1" title="Cửa Hàng Tích Điểm" onclick="showCloudContent('store')" style="top: 20%; left: 6%; z-index: 100; display: flex; flex-direction: column; gap: 0.3rem;">
                 <span class="card-icon" style="margin-bottom: 0;">🛒</span>
                 <span style="font-weight: 800; font-size: 0.95rem;">Cửa Hàng</span>
                 <span id="user-points-display" style="background: rgba(0,0,0,0.5); color: #fbbf24; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; white-space: nowrap;">Điểm: 0</span>
             </div>
 
-            <div class="glass-card-floating float-delay-3" title="Trí Nhớ Siêu Phàm" onclick="showCloudContent('srs')" style="top: 62%; left: 6%; z-index: 100;">
+            <div class="glass-card-floating float-delay-2" title="Ngữ Pháp Thực Chiến" onclick="openGrammarCenter()" style="top: 45%; left: 6%; z-index: 100;">
+                <span class="card-icon">📐</span>
+                <span>Ngữ Pháp</span>
+            </div>
+
+            <div class="glass-card-floating float-delay-3" title="Trí Nhớ Siêu Phàm" onclick="showCloudContent('srs')" style="top: 70%; left: 6%; z-index: 100;">
                 <span class="card-icon">🧠</span>
                 <span>Ôn Tập</span>
             </div>
@@ -633,6 +638,56 @@
         </div>
     </div>
 
+    <!-- 6B. GRAMMAR ACADEMY SCREEN (HỌC VIỆN NGỮ PHÁP THỰC CHIẾN) -->
+    <div id="screen-grammar" class="container glass grammar-academy-screen" style="display: none;">
+        <!-- LIST VIEW -->
+        <div id="grammar-list-view" style="width: 100%;">
+            <div class="grammar-header">
+                <button class="btn-outline wm-back-btn" onclick="showScreen('screen-dashboard')" type="button">⬅ Quay lại</button>
+                <div class="grammar-title-box">
+                    <h2 class="grammar-main-title">📐 Ngữ Pháp Thực Chiến</h2>
+                    <span class="grammar-main-subtitle">Từ Mất Gốc A0 đến Giao Tiếp &amp; Luyện Thi (Công thức + Ví dụ phát âm 🔊 + Bài tập)</span>
+                </div>
+                <div class="grammar-header-right">
+                    <div id="grammar-progress-badge" class="grammar-progress-pill">✅ 0/16 bài</div>
+                    <button class="btn-owl-ai-top" onclick="askOwlAboutGrammar()" type="button">🦉 Hỏi Cú AI</button>
+                </div>
+            </div>
+
+            <!-- Filter Tabs & Search -->
+            <div class="grammar-toolbar">
+                <div class="grammar-unit-tabs" id="grammar-unit-tabs">
+                    <button class="grammar-tab active" onclick="filterGrammarUnit('ALL', this)" type="button">📚 Tất cả (16)</button>
+                    <button class="grammar-tab" onclick="filterGrammarUnit('Phần 1: Gốc Rễ A0', this)" type="button">🌱 Gốc Rễ A0 (4)</button>
+                    <button class="grammar-tab" onclick="filterGrammarUnit('Phần 2: 6 Thì Cốt Lõi', this)" type="button">⏱️ 6 Thì Cốt Lõi (6)</button>
+                    <button class="grammar-tab" onclick="filterGrammarUnit('Phần 3: Giao Tiếp Thực Tế', this)" type="button">💬 Giao Tiếp (3)</button>
+                    <button class="grammar-tab" onclick="filterGrammarUnit('Phần 4: Nâng Cấp & Thi', this)" type="button">🚀 Nâng Cấp &amp; Thi (3)</button>
+                </div>
+                <div class="grammar-search-box">
+                    <input type="text" id="grammar-search-input" placeholder="🔍 Tìm nhanh chủ điểm: hiện tại đơn, bị động, in on at, so sánh..." oninput="renderGrammarCards()" autocomplete="off">
+                </div>
+            </div>
+
+            <!-- Lesson Cards Grid -->
+            <div id="grammar-cards-grid" class="grammar-cards-grid">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+
+        <!-- LESSON DETAIL + INTERACTIVE QUIZ VIEW -->
+        <div id="grammar-detail-view" style="display: none; width: 100%;">
+            <div class="grammar-detail-header">
+                <button class="btn-outline wm-back-btn" onclick="backToGrammarList()" type="button">⬅ Danh sách bài</button>
+                <div id="grammar-detail-unit-badge" class="grammar-unit-badge">Phần 1: Gốc Rễ A0</div>
+                <button class="btn-owl-ai-top" onclick="askOwlAboutCurrentGrammarLesson()" type="button">🦉 Hỏi Cú AI bài này</button>
+            </div>
+
+            <div id="grammar-detail-body" class="grammar-detail-body">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </div>
+
     <!-- 7. OWL AI TUTOR MODAL (TRỢ LÝ CÚ THÔNG THÁI AI CHO NGƯỜI MẤT GỐC) -->
     <div id="owl-ai-modal" class="owl-ai-backdrop" style="display: none;" onclick="if(event.target === this) closeOwlAIChat()">
         <div class="owl-ai-window">
@@ -683,8 +738,9 @@
     <script src="js/premium_vocab.js"></script>
     <script src="js/toeic_650_data.js"></script>
     <script src="js/survival_300_data.js"></script>
-    <script src="js/supabase_client.js?v=5.6"></script>
-    <script src="js/app.js?v=5.6"></script>
+    <script src="js/grammar_data.js?v=5.7"></script>
+    <script src="js/supabase_client.js?v=5.7"></script>
+    <script src="js/app.js?v=5.7"></script>
     
     <!-- Mobile Viewport & Gesture Lock (No accidental zoom / double-tap zoom / zero-scroll) -->
     <script>

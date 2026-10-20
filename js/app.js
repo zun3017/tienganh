@@ -907,7 +907,7 @@ Nguyên tắc vàng khi trả lời:
 
             // Header display management
             const mainHeader = document.getElementById('main-header');
-            if (currentUser && screenId !== 'screen-auth' && screenId !== 'screen-dashboard' && screenId !== 'screen-word-match') {
+            if (currentUser && screenId !== 'screen-auth' && screenId !== 'screen-dashboard' && screenId !== 'screen-word-match' && screenId !== 'screen-grammar') {
                 if (mainHeader) mainHeader.style.display = 'flex';
                 updateDashboardProgress();
             } else {
@@ -931,7 +931,7 @@ Nguyên tắc vàng khi trả lời:
             if (typeof document !== 'undefined') {
                 const mascot = document.querySelector ? document.querySelector('.mascot-container') : null;
                 const badge = document.getElementById('supabase-status-badge');
-                if (screenId === 'screen-flashcard' || screenId === 'screen-word-match') {
+                if (screenId === 'screen-flashcard' || screenId === 'screen-word-match' || screenId === 'screen-grammar') {
                     // Hide completely during learning/gaming session for 100% focus and no button blocking!
                     if (mascot) mascot.style.display = 'none';
                     if (badge) badge.style.display = 'none';
@@ -2962,3 +2962,378 @@ Nguyên tắc vàng khi trả lời:
                 if (typeof closeLoginForm === 'function') closeLoginForm();
             }
         });
+
+        // ==========================================================
+        // HỌC VIỆN NGỮ PHÁP THỰC CHIẾN (GRAMMAR ACADEMY ENGINE)
+        // ==========================================================
+        let currentGrammarUnitFilter = 'ALL';
+        let currentGrammarLessonId = null;
+        let currentGrammarQuizState = {}; // { [qIdx]: selectedOptIdx }
+
+        function getUserGrammarProgress() {
+            try {
+                let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
+                if (currentUser && users[currentUser]) {
+                    return users[currentUser].grammarProgress || {};
+                }
+            } catch (e) {}
+            return {};
+        }
+
+        function saveUserGrammarProgress(lessonId, score, total) {
+            try {
+                let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
+                if (!currentUser || !users[currentUser]) return false;
+                if (!users[currentUser].grammarProgress) {
+                    users[currentUser].grammarProgress = {};
+                }
+                const wasAlreadyCompleted = !!users[currentUser].grammarProgress[lessonId]?.completed;
+                const bestScore = Math.max(score, users[currentUser].grammarProgress[lessonId]?.score || 0);
+                users[currentUser].grammarProgress[lessonId] = {
+                    completed: true,
+                    score: bestScore,
+                    total: total,
+                    updatedAt: getTodayString()
+                };
+
+                let rewardedCoins = 0;
+                if (!wasAlreadyCompleted) {
+                    rewardedCoins = 15;
+                    users[currentUser].points = (users[currentUser].points || 0) + rewardedCoins;
+                }
+                localStorage.setItem('gas_users', JSON.stringify(users));
+                safeSyncToSupabase();
+                updateDashboardProgress();
+                return rewardedCoins;
+            } catch (e) {
+                console.warn('Save grammar progress error:', e);
+            }
+            return 0;
+        }
+
+        function openGrammarCenter() {
+            if (typeof hideCloudContent === 'function') hideCloudContent();
+            showScreen('screen-grammar');
+            backToGrammarList();
+        }
+
+        function filterGrammarUnit(unitName, btnEl) {
+            currentGrammarUnitFilter = unitName;
+            const tabs = document.querySelectorAll('#grammar-unit-tabs .grammar-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            if (btnEl) btnEl.classList.add('active');
+            renderGrammarCards();
+        }
+
+        function renderGrammarCards() {
+            const grid = document.getElementById('grammar-cards-grid');
+            const badge = document.getElementById('grammar-progress-badge');
+            const searchInput = document.getElementById('grammar-search-input');
+            if (!grid || typeof grammarCurriculum === 'undefined') return;
+
+            const query = (searchInput ? searchInput.value : '').trim().toLowerCase();
+            const progress = getUserGrammarProgress();
+
+            let completedCount = 0;
+            grammarCurriculum.forEach(item => {
+                if (progress[item.id] && progress[item.id].completed) completedCount++;
+            });
+            if (badge) {
+                badge.innerText = `✅ ${completedCount}/${grammarCurriculum.length} bài`;
+            }
+
+            const filtered = grammarCurriculum.filter(item => {
+                const matchUnit = (currentGrammarUnitFilter === 'ALL') || (item.unit === currentGrammarUnitFilter);
+                if (!matchUnit) return false;
+                if (!query) return true;
+                const haystack = `${item.title} ${item.summary} ${item.coreIdea} ${item.unit} ${item.level} ${item.memoryTip}`.toLowerCase();
+                return haystack.includes(query);
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: #64748b; font-weight: 600;">Không tìm thấy chủ điểm ngữ pháp nào khớp với từ khóa "${query}".</div>`;
+                return;
+            }
+
+            grid.innerHTML = '';
+            filtered.forEach(lesson => {
+                const p = progress[lesson.id];
+                const isDone = p && p.completed;
+                const card = document.createElement('div');
+                card.className = `grammar-lesson-card ${isDone ? 'grammar-card-done' : ''}`;
+                card.onclick = () => openGrammarLesson(lesson.id);
+
+                card.innerHTML = `
+                    <div class="grammar-card-top">
+                        <div class="grammar-card-icon">${lesson.icon}</div>
+                        <div class="grammar-card-badges">
+                            <span class="grammar-level-tag">${lesson.level}</span>
+                            <span class="grammar-status-tag ${isDone ? 'done' : 'todo'}">
+                                ${isDone ? `✅ Đã học (${p.score}/${p.total})` : '📖 Học ngay'}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="grammar-card-unit">${lesson.unit}</div>
+                    <h3 class="grammar-card-title">${lesson.title}</h3>
+                    <p class="grammar-card-summary">${lesson.summary}</p>
+                    <div class="grammar-card-footer">
+                        <span>📐 ${lesson.formulas.length} Công thức</span>
+                        <span>🔊 ${lesson.examples.length} Ví dụ</span>
+                        <span>✍️ ${lesson.quiz.length} Bài tập</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function backToGrammarList() {
+            currentGrammarLessonId = null;
+            const listView = document.getElementById('grammar-list-view');
+            const detailView = document.getElementById('grammar-detail-view');
+            if (listView) listView.style.display = 'block';
+            if (detailView) detailView.style.display = 'none';
+            renderGrammarCards();
+        }
+
+        function openGrammarLesson(lessonId) {
+            if (typeof grammarCurriculum === 'undefined') return;
+            const lessonIndex = grammarCurriculum.findIndex(item => item.id === lessonId);
+            if (lessonIndex === -1) return;
+            const lesson = grammarCurriculum[lessonIndex];
+
+            currentGrammarLessonId = lessonId;
+            currentGrammarQuizState = {};
+
+            const listView = document.getElementById('grammar-list-view');
+            const detailView = document.getElementById('grammar-detail-view');
+            const unitBadge = document.getElementById('grammar-detail-unit-badge');
+            const body = document.getElementById('grammar-detail-body');
+
+            if (listView) listView.style.display = 'none';
+            if (detailView) detailView.style.display = 'block';
+            if (unitBadge) unitBadge.innerText = `${lesson.unit} • ${lesson.level}`;
+            if (!body) return;
+
+            const formulasHtml = lesson.formulas.map(f => `
+                <div class="grammar-formula-item">
+                    <div class="grammar-formula-type">${f.type}</div>
+                    <div class="grammar-formula-rule">${f.rule}</div>
+                    <div class="grammar-formula-note">📌 ${f.note}</div>
+                </div>
+            `).join('');
+
+            const examplesHtml = lesson.examples.map((ex, idx) => {
+                const escapedEn = ex.en.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                return `
+                    <div class="grammar-example-item" onclick="speakGrammarExample('${escapedEn}', this, event)" title="Chạm để nghe phát âm câu ví dụ">
+                        <div class="grammar-ex-top">
+                            <div class="grammar-ex-en">${idx + 1}. ${ex.en}</div>
+                            <button type="button" class="example-audio-btn" onclick="speakGrammarExample('${escapedEn}', this.closest('.grammar-example-item'), event)" title="Nghe phát âm">🔊</button>
+                        </div>
+                        <div class="grammar-ex-vi">🇻🇳 ${ex.vi}</div>
+                        <div class="grammar-ex-breakdown">🔍 Phân tích: ${ex.breakdown}</div>
+                    </div>
+                `;
+            }).join('');
+
+            const quizHtml = lesson.quiz.map((qItem, qIdx) => {
+                const optionsHtml = qItem.options.map((opt, optIdx) => {
+                    const letter = ['A', 'B', 'C', 'D'][optIdx] || '';
+                    return `
+                        <button type="button" class="grammar-quiz-opt" id="gquiz-opt-${qIdx}-${optIdx}" onclick="answerGrammarQuiz('${lesson.id}', ${qIdx}, ${optIdx})">
+                            <span class="grammar-opt-letter">${letter}</span>
+                            <span>${opt}</span>
+                        </button>
+                    `;
+                }).join('');
+
+                return `
+                    <div class="grammar-quiz-card" id="gquiz-card-${qIdx}">
+                        <div class="grammar-quiz-q"><strong>Câu ${qIdx + 1}:</strong> ${qItem.q}</div>
+                        <div class="grammar-quiz-options">${optionsHtml}</div>
+                        <div class="grammar-quiz-explain" id="gquiz-exp-${qIdx}" style="display: none;"></div>
+                    </div>
+                `;
+            }).join('');
+
+            const prevLesson = lessonIndex > 0 ? grammarCurriculum[lessonIndex - 1] : null;
+            const nextLesson = lessonIndex < grammarCurriculum.length - 1 ? grammarCurriculum[lessonIndex + 1] : null;
+
+            body.innerHTML = `
+                <div class="grammar-lesson-hero">
+                    <div class="grammar-hero-icon">${lesson.icon}</div>
+                    <div>
+                        <h2 class="grammar-lesson-title">${lesson.title}</h2>
+                        <p class="grammar-lesson-summary">${lesson.summary}</p>
+                    </div>
+                </div>
+
+                <!-- 1. BẢN CHẤT CỐT LÕI -->
+                <div class="grammar-section-box grammar-core-box">
+                    <h3 class="grammar-sec-heading">🎯 1. Hiểu Bản Chất Trong 1 Phút (Dành Cho Người Mất Gốc)</h3>
+                    <p class="grammar-core-text">${lesson.coreIdea}</p>
+                </div>
+
+                <!-- 2. BẢNG CÔNG THỨC -->
+                <div class="grammar-section-box">
+                    <h3 class="grammar-sec-heading">📐 2. Công Thức Đóng Khung Cần Nhớ</h3>
+                    <div class="grammar-formulas-grid">${formulasHtml}</div>
+                </div>
+
+                <!-- 3. MẸO NHỚ SIÊU TỐC -->
+                <div class="grammar-tip-banner">
+                    ${lesson.memoryTip}
+                </div>
+
+                <!-- 4. VÍ DỤ THỰC TẾ CÓ PHÁT ÂM -->
+                <div class="grammar-section-box">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 0.75rem;">
+                        <h3 class="grammar-sec-heading" style="margin: 0;">🔊 3. Ví Dụ Thực Tế (Chạm Vào Câu Để Nghe Phát Âm)</h3>
+                        <span style="font-size: 0.8rem; color: #059669; font-weight: 700;">💡 Tốc độ đọc: ${preferredSpeechRate === 0.75 ? '🐢 0.75x Chậm' : '🐇 1.0x Chuẩn'}</span>
+                    </div>
+                    <div class="grammar-examples-list">${examplesHtml}</div>
+                </div>
+
+                <!-- 5. BÀI TẬP THỰC CHIẾN -->
+                <div class="grammar-section-box grammar-quiz-section">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 1rem;">
+                        <div>
+                            <h3 class="grammar-sec-heading" style="margin: 0;">✍️ 4. Bài Tập Thực Chiến (${lesson.quiz.length} Câu Có Giải Thích Chi Tiết)</h3>
+                            <p style="margin: 4px 0 0 0; font-size: 0.85rem; color: #64748b;">Chọn đáp án để xem giải thích ngay lập tức. Hoàn thành bài tập nhận ngay <strong>+15 🪙</strong>!</p>
+                        </div>
+                        <button type="button" class="btn-outline" style="width: auto; margin: 0; padding: 6px 14px; font-size: 0.82rem; border-radius: 16px;" onclick="openGrammarLesson('${lesson.id}')">🔄 Làm lại bài tập</button>
+                    </div>
+                    <div class="grammar-quiz-list">${quizHtml}</div>
+                    <div id="grammar-quiz-summary-box" class="grammar-quiz-summary-box" style="display: none;"></div>
+                </div>
+
+                <!-- FOOTER NAVIGATION -->
+                <div class="grammar-lesson-nav-footer">
+                    ${prevLesson ? `<button type="button" class="btn-outline grammar-nav-btn" onclick="openGrammarLesson('${prevLesson.id}')">⬅ Bài trước: ${prevLesson.title.split(':')[0]}</button>` : `<div></div>`}
+                    ${nextLesson ? `<button type="button" class="btn-primary grammar-nav-btn" onclick="openGrammarLesson('${nextLesson.id}')">Bài tiếp theo: ${nextLesson.title.split(':')[0]} ➡</button>` : `<button type="button" class="btn-primary grammar-nav-btn" onclick="backToGrammarList()">🏆 Hoàn tất giáo trình</button>`}
+                </div>
+            `;
+
+            const screenEl = document.getElementById('screen-grammar');
+            if (screenEl) screenEl.scrollTop = 0;
+            window.scrollTo(0, 0);
+        }
+
+        function speakGrammarExample(text, containerEl, event) {
+            if (event) event.stopPropagation();
+            if (!text || !('speechSynthesis' in window)) return;
+
+            try {
+                window.speechSynthesis.cancel();
+            } catch (e) {}
+
+            document.querySelectorAll('.grammar-example-item.speaking').forEach(el => el.classList.remove('speaking'));
+            if (containerEl) containerEl.classList.add('speaking');
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            utterance.rate = preferredSpeechRate || 1.0;
+
+            const voices = window.speechSynthesis.getVoices();
+            const preferredVoice = voices.find(v => v.lang === 'en-US' && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Siri') || v.name.includes('Samantha')))
+                                || voices.find(v => v.lang.startsWith('en-'));
+            if (preferredVoice) utterance.voice = preferredVoice;
+
+            utterance.onend = () => {
+                if (containerEl) containerEl.classList.remove('speaking');
+            };
+            utterance.onerror = () => {
+                if (containerEl) containerEl.classList.remove('speaking');
+            };
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function answerGrammarQuiz(lessonId, qIdx, optIdx) {
+            if (typeof grammarCurriculum === 'undefined') return;
+            const lesson = grammarCurriculum.find(item => item.id === lessonId);
+            if (!lesson || !lesson.quiz[qIdx]) return;
+
+            // Prevent re-answering the same question unless reset
+            if (currentGrammarQuizState[qIdx] !== undefined) return;
+            currentGrammarQuizState[qIdx] = optIdx;
+
+            const qItem = lesson.quiz[qIdx];
+            const isCorrect = (optIdx === qItem.answer);
+
+            for (let i = 0; i < qItem.options.length; i++) {
+                const btn = document.getElementById(`gquiz-opt-${qIdx}-${i}`);
+                if (!btn) continue;
+                btn.disabled = true;
+                if (i === qItem.answer) {
+                    btn.classList.add('correct');
+                } else if (i === optIdx && !isCorrect) {
+                    btn.classList.add('wrong');
+                }
+            }
+
+            const expEl = document.getElementById(`gquiz-exp-${qIdx}`);
+            if (expEl) {
+                expEl.style.display = 'block';
+                expEl.className = `grammar-quiz-explain ${isCorrect ? 'exp-correct' : 'exp-wrong'}`;
+                expEl.innerHTML = `${isCorrect ? '✅ <strong>Chính xác!</strong>' : '❌ <strong>Chưa đúng!</strong>'} 💡 <strong>Giải thích:</strong> ${qItem.explain}`;
+            }
+
+            // Check if all questions in this lesson have been answered
+            const answeredCount = Object.keys(currentGrammarQuizState).length;
+            if (answeredCount === lesson.quiz.length) {
+                let correctCount = 0;
+                lesson.quiz.forEach((q, idx) => {
+                    if (currentGrammarQuizState[idx] === q.answer) correctCount++;
+                });
+
+                const coinsEarned = saveUserGrammarProgress(lessonId, correctCount, lesson.quiz.length);
+                const summaryBox = document.getElementById('grammar-quiz-summary-box');
+                if (summaryBox) {
+                    summaryBox.style.display = 'block';
+                    summaryBox.innerHTML = `
+                        <div style="font-size: 1.2rem; font-weight: 800; color: #065f46; margin-bottom: 4px;">
+                            🎉 Hoàn thành bài luyện tập: Đúng ${correctCount}/${lesson.quiz.length} câu!
+                            ${coinsEarned > 0 ? `<span style="color: #d97706;">(+${coinsEarned} 🪙 Điểm thưởng!)</span>` : ''}
+                        </div>
+                        <div style="font-size: 0.9rem; color: #047857;">
+                            Bạn có thể bấm <strong>"🦉 Hỏi Cú AI bài này"</strong> ở góc trên nếu muốn Cú giải thích thêm hoặc cho thêm ví dụ nhé!
+                        </div>
+                    `;
+                }
+                if (correctCount >= 3 && typeof triggerConfetti === 'function') {
+                    triggerConfetti();
+                }
+            }
+        }
+
+        function askOwlAboutGrammar() {
+            openOwlAIChat();
+            setTimeout(() => {
+                const input = document.getElementById('owl-chat-input');
+                if (input) {
+                    input.value = 'Cú ơi, tớ bị mất gốc ngữ pháp tiếng Anh thì nên bắt đầu học từ đâu và nhớ các thì như thế nào cho dễ nhất?';
+                    sendOwlAIMessage();
+                }
+            }, 200);
+        }
+
+        function askOwlAboutCurrentGrammarLesson() {
+            if (!currentGrammarLessonId || typeof grammarCurriculum === 'undefined') {
+                askOwlAboutGrammar();
+                return;
+            }
+            const lesson = grammarCurriculum.find(item => item.id === currentGrammarLessonId);
+            if (!lesson) {
+                askOwlAboutGrammar();
+                return;
+            }
+            openOwlAIChat();
+            setTimeout(() => {
+                const input = document.getElementById('owl-chat-input');
+                if (input) {
+                    input.value = `Cú ơi, mình đang học "${lesson.title}". Hãy tóm tắt thật dễ hiểu cho người mất gốc, cho mình 3 câu ví dụ giao tiếp đời thường và đố mình 1 câu bài tập nhỏ về bài này nhé!`;
+                    sendOwlAIMessage();
+                }
+            }, 200);
+        }
