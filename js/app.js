@@ -915,7 +915,7 @@ Nguyên tắc vàng khi trả lời:
 
             // Header display management
             const mainHeader = document.getElementById('main-header');
-            if (currentUser && screenId !== 'screen-auth' && screenId !== 'screen-dashboard' && screenId !== 'screen-word-match' && screenId !== 'screen-grammar') {
+            if (currentUser && screenId !== 'screen-auth' && screenId !== 'screen-dashboard' && screenId !== 'screen-flashcard' && screenId !== 'screen-word-match' && screenId !== 'screen-grammar') {
                 if (mainHeader) mainHeader.style.display = 'flex';
                 updateDashboardProgress();
             } else {
@@ -923,6 +923,8 @@ Nguyên tắc vàng khi trả lời:
                 if (screenId === 'screen-dashboard') {
                     updateDashboardProgress();
                     hideCloudContent();
+                } else if (screenId === 'screen-flashcard') {
+                    updateDashboardProgress();
                 }
             }
 
@@ -3098,7 +3100,7 @@ Nguyên tắc vàng khi trả lời:
             currentGrammarLessonId = null;
             const listView = document.getElementById('grammar-list-view');
             const detailView = document.getElementById('grammar-detail-view');
-            if (listView) listView.style.display = 'block';
+            if (listView) listView.style.display = 'flex';
             if (detailView) detailView.style.display = 'none';
             renderGrammarCards();
         }
@@ -3118,7 +3120,7 @@ Nguyên tắc vàng khi trả lời:
             const body = document.getElementById('grammar-detail-body');
 
             if (listView) listView.style.display = 'none';
-            if (detailView) detailView.style.display = 'block';
+            if (detailView) detailView.style.display = 'flex';
             if (unitBadge) unitBadge.innerText = `${lesson.unit} • ${lesson.level}`;
             if (!body) return;
 
@@ -3222,6 +3224,7 @@ Nguyên tắc vàng khi trả lời:
                 </div>
             `;
 
+            body.scrollTop = 0;
             const screenEl = document.getElementById('screen-grammar');
             if (screenEl) screenEl.scrollTop = 0;
             window.scrollTo(0, 0);
