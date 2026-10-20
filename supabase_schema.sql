@@ -1,7 +1,7 @@
 -- ===================================================================
 -- SUPABASE DATABASE SCHEMA FOR WEB TIẾNG ANH (A2 VOCAB & TOEIC HUB)
--- Project ID: yqvxrtqjdrsttcgvlurp
--- URL: https://yqvxrtqjdrsttcgvlurp.supabase.co
+-- Project ID: meqgdruxaqjvnobylbev
+-- URL: https://meqgdruxaqjvnobylbev.supabase.co
 -- ===================================================================
 
 -- 1. BẢNG HỒ SƠ NGƯỜI DÙNG (USERS PROFILE)
@@ -58,13 +58,32 @@ ALTER TABLE public.study_progress ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.quiz_history ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.custom_vocabulary ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Allow public read users_profile" ON public.users_profile FOR SELECT USING (true);
-CREATE POLICY "Allow public insert/update users_profile" ON public.users_profile FOR ALL USING (true);
+-- Cấp quyền thao tác cho anon, authenticated, service_role
+GRANT ALL ON TABLE public.users_profile TO anon, authenticated, service_role;
+GRANT ALL ON TABLE public.study_progress TO anon, authenticated, service_role;
+GRANT ALL ON TABLE public.quiz_history TO anon, authenticated, service_role;
+GRANT ALL ON TABLE public.custom_vocabulary TO anon, authenticated, service_role;
 
-CREATE POLICY "Allow public read study_progress" ON public.study_progress FOR SELECT USING (true);
-CREATE POLICY "Allow public insert/update study_progress" ON public.study_progress FOR ALL USING (true);
+-- Xóa các policy cũ nếu có và tạo lại
+DROP POLICY IF EXISTS "Allow public users_profile" ON public.users_profile;
+CREATE POLICY "Allow public users_profile" ON public.users_profile FOR ALL USING (true) WITH CHECK (true);
 
-CREATE POLICY "Allow public read quiz_history" ON public.quiz_history FOR SELECT USING (true);
-CREATE POLICY "Allow public insert quiz_history" ON public.quiz_history FOR INSERT WITH CHECK (true);
+DROP POLICY IF EXISTS "Allow public study_progress" ON public.study_progress;
+CREATE POLICY "Allow public study_progress" ON public.study_progress FOR ALL USING (true) WITH CHECK (true);
 
-CREATE POLICY "Allow public custom_vocabulary" ON public.custom_vocabulary FOR ALL USING (true);
+DROP POLICY IF EXISTS "Allow public quiz_history" ON public.quiz_history;
+CREATE POLICY "Allow public quiz_history" ON public.quiz_history FOR ALL USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow public custom_vocabulary" ON public.custom_vocabulary;
+CREATE POLICY "Allow public custom_vocabulary" ON public.custom_vocabulary FOR ALL USING (true) WITH CHECK (true);
+
+-- 5. NẠP KHÔI PHỤC DỮ LIỆU CÁC TÀI KHOẢN ĐÃ CÓ
+INSERT INTO public.users_profile (username, password_hash, points, streak_days, unlocked_topics)
+VALUES 
+    ('1234', '1234', 37, 1, ARRAY['basic_a1', 'daily_life']),
+    ('admin_test', '123456', 100, 3, ARRAY['basic_a1', 'daily_life', 'travel', 'food']),
+    ('134', '1234', 6, 1, ARRAY['basic_a1'])
+ON CONFLICT (username) DO UPDATE 
+SET points = EXCLUDED.points, 
+    streak_days = EXCLUDED.streak_days, 
+    unlocked_topics = EXCLUDED.unlocked_topics;

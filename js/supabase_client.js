@@ -1,13 +1,13 @@
 /**
  * Supabase Cloud Sync Module for Web Tiếng Anh
- * Project Reference: yqvxrtqjdrsttcgvlurp
- * Endpoint: https://yqvxrtqjdrsttcgvlurp.supabase.co
+ * Project Reference: meqgdruxaqjvnobylbev
+ * Endpoint: https://meqgdruxaqjvnobylbev.supabase.co
  */
 
 const SupabaseConfig = {
-  projectRef: 'yqvxrtqjdrsttcgvlurp',
-  supabaseUrl: 'https://yqvxrtqjdrsttcgvlurp.supabase.co',
-  anonKey: 'sb_publishable_S9t2XVfd2LSfxdcRM_UFcg_kiAtJsy1',
+  projectRef: 'meqgdruxaqjvnobylbev',
+  supabaseUrl: 'https://meqgdruxaqjvnobylbev.supabase.co',
+  anonKey: 'sb_publishable_0FcyUVkXDdXYOLnBe0WXuA_EWIKaHTd',
   client: null,
   isConnected: false
 };
