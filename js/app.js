@@ -1057,6 +1057,80 @@ Nguyên tắc vàng khi trả lời:
             }, 1000);
         }
 
+        function saveLastLogin(u, p) {
+            try {
+                localStorage.setItem('gas_active_user', u);
+                localStorage.setItem('gas_last_login_creds', JSON.stringify({ u: u, p: p }));
+            } catch (e) {}
+        }
+
+        function prefillLastLoginCreds() {
+            try {
+                let creds = JSON.parse(localStorage.getItem('gas_last_login_creds') || 'null');
+                if (creds && creds.u) {
+                    const uInput = document.getElementById('username');
+                    const pInput = document.getElementById('password');
+                    if (uInput) uInput.value = creds.u;
+                    if (pInput && creds.p !== undefined) pInput.value = creds.p;
+                }
+            } catch (e) {}
+        }
+
+        function restoreLastSession() {
+            try {
+                prefillLastLoginCreds();
+                const savedUser = localStorage.getItem('gas_active_user');
+                if (!savedUser) return false;
+
+                let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
+                let creds = JSON.parse(localStorage.getItem('gas_last_login_creds') || 'null');
+
+                // Ensure user record exists locally if we have their saved credentials
+                if (!users[savedUser] && creds && creds.u === savedUser && creds.p) {
+                    users[savedUser] = {
+                        password: creds.p,
+                        dailyProgress: {},
+                        topicProgress: {},
+                        learnedWords: [],
+                        points: 0,
+                        unlockedTopics: []
+                    };
+                    localStorage.setItem('gas_users', JSON.stringify(users));
+                }
+
+                if (users[savedUser]) {
+                    currentUser = savedUser;
+                    const userDisplay = document.getElementById('user-display');
+                    if (userDisplay) userDisplay.innerText = savedUser;
+
+                    if (typeof SupabaseService !== 'undefined') {
+                        SupabaseService.fetchUser(savedUser).then(cloudUser => {
+                            if (cloudUser) {
+                                let latestUsers = JSON.parse(localStorage.getItem('gas_users') || '{}');
+                                if (latestUsers[savedUser]) {
+                                    if (cloudUser.points > (latestUsers[savedUser].points || 0)) {
+                                        latestUsers[savedUser].points = cloudUser.points;
+                                    }
+                                    if (cloudUser.unlocked_topics && cloudUser.unlocked_topics.length > 0) {
+                                        latestUsers[savedUser].unlockedTopics = Array.from(new Set([...(latestUsers[savedUser].unlockedTopics || []), ...cloudUser.unlocked_topics]));
+                                    }
+                                    localStorage.setItem('gas_users', JSON.stringify(latestUsers));
+                                    updateDashboardProgress();
+                                }
+                            }
+                        });
+                    }
+
+                    initDashboard();
+                    showScreen('screen-dashboard');
+                    return true;
+                }
+            } catch (e) {
+                console.warn('Restore session error:', e);
+            }
+            return false;
+        }
+
         async function login() {
             const u = document.getElementById('username').value.trim();
             const p = document.getElementById('password').value;
@@ -1075,9 +1149,8 @@ Nguyên tắc vàng khi trả lời:
             // 1. Check local storage first (instant login)
             if (users[u] && users[u].password === p) {
                 currentUser = u;
+                saveLastLogin(u, p);
                 document.getElementById('user-display').innerText = u;
-                document.getElementById('username').value = '';
-                document.getElementById('password').value = '';
                 if (msg) msg.style.display = 'none';
                 if (loginBtn) { loginBtn.disabled = false; loginBtn.style.opacity = '1'; }
                 
@@ -1127,9 +1200,8 @@ Nguyên tắc vàng khi trả lời:
                         localStorage.setItem('gas_users', JSON.stringify(users));
 
                         currentUser = u;
+                        saveLastLogin(u, p);
                         document.getElementById('user-display').innerText = u;
-                        document.getElementById('username').value = '';
-                        document.getElementById('password').value = '';
 
                         setTimeout(() => {
                             if (msg) msg.style.display = 'none';
@@ -1158,7 +1230,9 @@ Nguyên tắc vàng khi trả lời:
 
         function logout() {
             currentUser = null;
+            try { localStorage.removeItem('gas_active_user'); } catch (e) {}
             showScreen('screen-auth');
+            prefillLastLoginCreds();
         }
 
         // --- DASHBOARD ---
@@ -2386,8 +2460,10 @@ Nguyên tắc vàng khi trả lời:
             }
         }
     
-        // Start onboarding if brand new user opens page
-        checkOnboarding();
+        // Restore last active login session or prefill saved credentials; start onboarding if brand new user
+        if (!restoreLastSession()) {
+            checkOnboarding();
+        }
 
         // --- SENTENCE GAME & VOICE RECOGNITION ---
         let currentSentenceWords = [];

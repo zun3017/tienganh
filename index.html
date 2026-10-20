@@ -123,6 +123,7 @@
 
         <script>
             function openLoginForm() {
+                if (typeof prefillLastLoginCreds === 'function') prefillLastLoginCreds();
                 document.getElementById('login-cup-trigger').style.display = 'none';
                 let panel = document.getElementById('login-glass-panel');
                 panel.style.opacity = '1';
@@ -175,7 +176,6 @@
             resetAuthScreen();
             document.addEventListener('DOMContentLoaded', function() { resetAuthScreen(); });
             window.addEventListener('pageshow', function() { resetAuthScreen(); });
-            window.addEventListener('focus', function() { resetAuthScreen(); });
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') closeLoginForm();
             });
@@ -188,9 +188,9 @@
             
             <!-- LOGIN PANEL -->
             <div id="login-panel" style="width: 100%;">
-                <input type="text" id="username" placeholder="Tên đăng nhập" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" style="background: rgba(255,255,255,0.95); border: 2px solid rgba(255,255,255,0.8); font-weight: 500; color: #000; margin-bottom: 0.75rem;">
+                <input type="text" id="username" placeholder="Tên đăng nhập" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" onkeydown="if(event.key==='Enter') login()" style="background: rgba(255,255,255,0.95); border: 2px solid rgba(255,255,255,0.8); font-weight: 500; color: #000; margin-bottom: 0.75rem;">
                 <div class="password-input-wrap">
-                    <input type="password" id="password" placeholder="Mật khẩu" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false" style="background: rgba(255,255,255,0.95); border: 2px solid rgba(255,255,255,0.8); font-weight: 500; color: #000;">
+                    <input type="password" id="password" placeholder="Mật khẩu" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false" onkeydown="if(event.key==='Enter') login()" style="background: rgba(255,255,255,0.95); border: 2px solid rgba(255,255,255,0.8); font-weight: 500; color: #000;">
                     <button type="button" class="password-toggle-btn" style="width:auto !important; margin:0 !important;" onclick="togglePasswordVisibility('password', this)" title="Ẩn/Hiện mật khẩu">👁️</button>
                 </div>
                 <button id="btn-login-submit" onclick="login()" style="font-size: 1.1rem; padding: 1rem; border-radius: 12px; margin-top: 1rem; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); font-weight: bold; width: 100%;">Đăng Nhập</button>
@@ -683,8 +683,8 @@
     <script src="js/premium_vocab.js"></script>
     <script src="js/toeic_650_data.js"></script>
     <script src="js/survival_300_data.js"></script>
-    <script src="js/supabase_client.js?v=5.5"></script>
-    <script src="js/app.js?v=5.5"></script>
+    <script src="js/supabase_client.js?v=5.6"></script>
+    <script src="js/app.js?v=5.6"></script>
     
     <!-- Mobile Viewport & Gesture Lock (No accidental zoom / double-tap zoom / zero-scroll) -->
     <script>
