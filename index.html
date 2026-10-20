@@ -21,7 +21,7 @@
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="css/style.css?v=5.0">
+    <link rel="stylesheet" href="css/style.css?v=5.2">
 </head>
 <body>
     <div class="bg-particle" style="width: 300px; height: 300px; top: 10%; left: 10%;"></div>
@@ -240,18 +240,13 @@
             
             <!-- FLOATING ICONS (Topics and Tools) (3D Glass Cards - Balanced 2-Column Symmetrical Layout) -->
             <!-- LEFT COLUMN: Learning & Tools -->
-            <div class="glass-card-floating float-delay-1" title="Cửa Hàng Tích Điểm" onclick="showCloudContent('store')" style="top: 20%; left: 6%; z-index: 100; display: flex; flex-direction: column; gap: 0.3rem;">
+            <div class="glass-card-floating float-delay-1" title="Cửa Hàng Tích Điểm" onclick="showCloudContent('store')" style="top: 25%; left: 6%; z-index: 100; display: flex; flex-direction: column; gap: 0.3rem;">
                 <span class="card-icon" style="margin-bottom: 0;">🛒</span>
                 <span style="font-weight: 800; font-size: 0.95rem;">Cửa Hàng</span>
                 <span id="user-points-display" style="background: rgba(0,0,0,0.5); color: #fbbf24; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; white-space: nowrap;">Điểm: 0</span>
             </div>
 
-            <div class="glass-card-floating float-delay-2" title="Luyện Phản Xạ Nghe 5 Giây" onclick="startListenSpeedGame()" style="top: 45%; left: 6%; z-index: 100;">
-                <span class="card-icon">🎧</span>
-                <span>Phản Xạ Nghe</span>
-            </div>
-
-            <div class="glass-card-floating float-delay-3" title="Trí Nhớ Siêu Phàm" onclick="showCloudContent('srs')" style="top: 70%; left: 6%; z-index: 100;">
+            <div class="glass-card-floating float-delay-3" title="Trí Nhớ Siêu Phàm" onclick="showCloudContent('srs')" style="top: 62%; left: 6%; z-index: 100;">
                 <span class="card-icon">🧠</span>
                 <span>Ôn Tập</span>
             </div>
@@ -625,62 +620,6 @@
                 </div>
             </div>
         </div>
-    <!-- 7. LISTEN SPEED ARENA SCREEN (TASK 9) -->
-    <div id="screen-listen-speed" class="container glass ls-arena-screen" style="display: none;">
-        <!-- Header -->
-        <div class="wm-header">
-            <button class="btn-outline wm-back-btn" onclick="showScreen('screen-dashboard')">⬅ Quay lại</button>
-            <div class="wm-title-box">
-                <h3 style="margin: 0; color: #0284c7; font-size: 1.25rem;">🎧 Phản Xạ Nghe (5 Giây)</h3>
-                <span id="ls-question-counter" class="wm-subtitle">Câu 1 / 5</span>
-            </div>
-            <div class="wm-stats">
-                <div id="ls-score-display" class="wm-stat-badge" style="background: #e0f2fe; color: #0369a1; border-color: #7dd3fc;">
-                    🪙 +0
-                </div>
-            </div>
-        </div>
-
-        <!-- 5-Second Timer Bar -->
-        <div class="listen-timer-wrap">
-            <div id="ls-timer-bar" class="listen-timer-progress"></div>
-        </div>
-
-        <!-- Audio Player Center Box -->
-        <div style="background: rgba(255, 255, 255, 0.85); border-radius: 20px; padding: 2rem 1rem; text-align: center; width: 100%; margin-bottom: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 2px dashed #38bdf8;">
-            <button id="ls-audio-btn" class="audio-btn" style="width: 70px; height: 70px; font-size: 2.2rem; background: linear-gradient(135deg, #38bdf8, #0284c7); color: white; margin: 0 auto 1rem auto; box-shadow: 0 8px 20px rgba(2,132,199,0.35);" onclick="playListenSpeedAudio()">🔊</button>
-            <p style="margin: 0; font-size: 0.95rem; color: #64748b; font-weight: 600;">(Chạm loa để nghe lại)</p>
-            <div id="ls-feedback-text" style="margin-top: 10px; font-weight: bold; font-size: 1.1rem; min-height: 28px;"></div>
-        </div>
-
-        <!-- 4 Options Grid -->
-        <div id="ls-options-grid" class="listen-options-grid">
-            <!-- Injected via JS -->
-        </div>
-
-        <!-- Victory Popup / Modal -->
-        <div id="ls-victory-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1200; justify-content: center; align-items: center; backdrop-filter: blur(8px);">
-            <div style="background: white; padding: 2rem; border-radius: 24px; max-width: 450px; width: 90%; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.4); animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
-                <div style="font-size: 3.5rem; margin-bottom: 0.5rem;">🎧</div>
-                <h2 style="color: #0284c7; margin-bottom: 0.5rem;">HOÀN THÀNH VÁN ĐẤU!</h2>
-                <p style="color: #475569; margin-bottom: 1.5rem;">Khả năng phản xạ nghe của bạn đang tiến bộ vượt bậc!</p>
-                <div style="background: #f8fafc; border-radius: 16px; padding: 1rem; margin-bottom: 1.5rem; border: 1px solid #e2e8f0; display: flex; justify-content: space-around;">
-                    <div>
-                        <div style="font-size: 0.8rem; color: #64748b; font-weight: 600;">ĐIỂM SỐ</div>
-                        <div id="ls-result-score" style="font-size: 1.4rem; font-weight: 800; color: #0284c7;">5 / 5</div>
-                    </div>
-                    <div>
-                        <div style="font-size: 0.8rem; color: #64748b; font-weight: 600;">THƯỞNG XU</div>
-                        <div id="ls-result-coins" style="font-size: 1.4rem; font-weight: 800; color: #f59e0b;">+25 🪙</div>
-                    </div>
-                </div>
-                <div style="display: flex; gap: 10px; justify-content: center;">
-                    <button class="btn-primary" style="background: #0284c7;" onclick="startListenSpeedGame()">🎧 Chơi Ván Tiếp</button>
-                    <button class="btn-outline" onclick="closeListenSpeedVictory()">⬅ Về Bảng Điều Khiển</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Load Data -->
     <script src="js/vocab_data.js"></script>
@@ -690,8 +629,8 @@
     <script src="js/premium_vocab.js"></script>
     <script src="js/toeic_650_data.js"></script>
     <script src="js/survival_300_data.js"></script>
-    <script src="js/supabase_client.js?v=5.1"></script>
-    <script src="js/app.js?v=5.1"></script>
+    <script src="js/supabase_client.js?v=5.2"></script>
+    <script src="js/app.js?v=5.2"></script>
     
     <!-- Mobile Viewport & Gesture Lock (No accidental zoom / double-tap zoom / zero-scroll) -->
     <script>

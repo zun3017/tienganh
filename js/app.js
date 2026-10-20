@@ -604,7 +604,7 @@ function safeSyncToSupabase(userKey) {
 
             // Header display management
             const mainHeader = document.getElementById('main-header');
-            if (currentUser && screenId !== 'screen-auth' && screenId !== 'screen-dashboard' && screenId !== 'screen-word-match' && screenId !== 'screen-listen-speed') {
+            if (currentUser && screenId !== 'screen-auth' && screenId !== 'screen-dashboard' && screenId !== 'screen-word-match') {
                 if (mainHeader) mainHeader.style.display = 'flex';
                 updateDashboardProgress();
             } else {
@@ -617,7 +617,7 @@ function safeSyncToSupabase(userKey) {
 
             // Fixed non-scrolling viewport control
             if (document.body && document.body.style) {
-                if (screenId === 'screen-flashcard' || screenId === 'screen-dashboard' || screenId === 'screen-word-match' || screenId === 'screen-listen-speed') {
+                if (screenId === 'screen-flashcard' || screenId === 'screen-dashboard' || screenId === 'screen-word-match') {
                     document.body.style.overflow = 'hidden';
                 } else {
                     document.body.style.overflow = '';
@@ -628,7 +628,7 @@ function safeSyncToSupabase(userKey) {
             if (typeof document !== 'undefined') {
                 const mascot = document.querySelector ? document.querySelector('.mascot-container') : null;
                 const badge = document.getElementById('supabase-status-badge');
-                if (screenId === 'screen-flashcard' || screenId === 'screen-word-match' || screenId === 'screen-listen-speed') {
+                if (screenId === 'screen-flashcard' || screenId === 'screen-word-match') {
                     // Hide completely during learning/gaming session for 100% focus and no button blocking!
                     if (mascot) mascot.style.display = 'none';
                     if (badge) badge.style.display = 'none';
@@ -2481,247 +2481,6 @@ function safeSyncToSupabase(userKey) {
                     btnVoice.style.color = 'var(--primary)';
                 }
             };
-        }
-
-        // --- LISTEN SPEED ARENA (TASK 9) ---
-        let lsCurrentIndex = 0;
-        let lsQuestions = [];
-        let lsScore = 0;
-        let lsTimerInterval = null;
-        let lsTimeRemaining = 5.0;
-        let isLsAnswered = false;
-
-        function startListenSpeedGame(customList) {
-            let victoryModal = document.getElementById('ls-victory-modal');
-            if (victoryModal) victoryModal.style.display = 'none';
-
-            let pool = [];
-            if (customList && Array.isArray(customList) && customList.length >= 4) {
-                pool = [...customList];
-            } else if (typeof currentWords !== 'undefined' && currentWords && currentWords.length >= 4) {
-                pool = [...currentWords];
-            } else if (typeof survival300Words !== 'undefined' && Array.isArray(survival300Words) && survival300Words.length >= 4) {
-                pool = [...survival300Words];
-            } else if (typeof window !== 'undefined' && window.survival300Words && Array.isArray(window.survival300Words) && window.survival300Words.length >= 4) {
-                pool = [...window.survival300Words];
-            } else if (typeof survival300Topics !== 'undefined' && Array.isArray(survival300Topics) && survival300Topics[0] && survival300Topics[0].words) {
-                pool = survival300Topics.flatMap(t => t.words || []);
-            } else if (typeof vocabTopics !== 'undefined' && Array.isArray(vocabTopics) && vocabTopics[0] && vocabTopics[0].words) {
-                pool = vocabTopics.flatMap(t => t.words || []);
-            }
-
-            if (pool.length < 4) {
-                alert("Cần ít nhất 4 từ vựng để bắt đầu game phản xạ nghe!");
-                return;
-            }
-
-            // Shuffle and pick 5 questions
-            let shuffledPool = [...pool].sort(() => Math.random() - 0.5);
-            let targetWords = shuffledPool.slice(0, 5);
-
-            lsQuestions = targetWords.map(w => {
-                let cleanEn = w.word.replace(/\(.*?\)/g, '').split('/')[0].trim();
-                let cleanVi = w.meaning.split(',')[0].split(';')[0].trim();
-                
-                // Pick 3 distractors
-                let distractors = pool.filter(p => p.word !== w.word)
-                                      .sort(() => Math.random() - 0.5)
-                                      .slice(0, 3)
-                                      .map(d => d.meaning.split(',')[0].split(';')[0].trim());
-                
-                let options = [cleanVi, ...distractors].sort(() => Math.random() - 0.5);
-                return {
-                    wordObj: w,
-                    word: cleanEn,
-                    meaning: cleanVi,
-                    options: options
-                };
-            });
-
-            lsCurrentIndex = 0;
-            lsScore = 0;
-            isLsAnswered = false;
-
-            let scoreEl = document.getElementById('ls-score-display');
-            if (scoreEl) scoreEl.innerText = '🪙 +0';
-
-            showScreen('screen-listen-speed');
-            renderListenSpeedQuestion();
-        }
-
-        function renderListenSpeedQuestion() {
-            if (lsCurrentIndex >= lsQuestions.length) {
-                finishListenSpeedVictory();
-                return;
-            }
-
-            isLsAnswered = false;
-            let currentQ = lsQuestions[lsCurrentIndex];
-
-            let counterEl = document.getElementById('ls-question-counter');
-            if (counterEl) counterEl.innerText = `Câu ${lsCurrentIndex + 1} / ${lsQuestions.length}`;
-
-            let feedbackEl = document.getElementById('ls-feedback-text');
-            if (feedbackEl) {
-                feedbackEl.innerText = '';
-                feedbackEl.style.color = '#64748b';
-            }
-
-            let grid = document.getElementById('ls-options-grid');
-            if (grid) {
-                grid.innerHTML = '';
-                currentQ.options.forEach(optText => {
-                    let btn = document.createElement('button');
-                    btn.className = 'listen-opt-btn';
-                    btn.innerText = optText;
-                    btn.onclick = function() {
-                        handleListenSpeedChoice(optText, btn);
-                    };
-                    grid.appendChild(btn);
-                });
-            }
-
-            // Reset Timer Bar
-            let bar = document.getElementById('ls-timer-bar');
-            if (bar) {
-                bar.style.width = '100%';
-                bar.style.background = '#10b981';
-            }
-
-            // Speak audio immediately
-            playListenSpeedAudio();
-
-            // Start 5-second countdown timer
-            if (lsTimerInterval) clearInterval(lsTimerInterval);
-            lsTimeRemaining = 5.0;
-            let startTime = Date.now();
-            lsTimerInterval = setInterval(() => {
-                let elapsed = (Date.now() - startTime) / 1000;
-                lsTimeRemaining = Math.max(0, 5.0 - elapsed);
-                let pct = (lsTimeRemaining / 5.0) * 100;
-                if (bar) {
-                    bar.style.width = `${pct}%`;
-                    if (pct < 35) {
-                        bar.style.background = '#ef4444';
-                    } else if (pct < 65) {
-                        bar.style.background = '#f59e0b';
-                    }
-                }
-
-                if (lsTimeRemaining <= 0) {
-                    clearInterval(lsTimerInterval);
-                    if (!isLsAnswered) {
-                        handleListenSpeedTimeout();
-                    }
-                }
-            }, 50);
-        }
-
-        function playListenSpeedAudio() {
-            if (lsCurrentIndex >= lsQuestions.length) return;
-            let currentQ = lsQuestions[lsCurrentIndex];
-            speakWordDirectly(currentQ.word);
-        }
-
-        function handleListenSpeedChoice(chosenMeaning, btnEl) {
-            if (isLsAnswered) return;
-            isLsAnswered = true;
-            if (lsTimerInterval) clearInterval(lsTimerInterval);
-
-            let currentQ = lsQuestions[lsCurrentIndex];
-            let feedbackEl = document.getElementById('ls-feedback-text');
-
-            if (chosenMeaning === currentQ.meaning) {
-                // Correct!
-                btnEl.classList.add('correct');
-                let gained = lsTimeRemaining >= 3.0 ? 10 : 5;
-                lsScore += gained;
-                let scoreEl = document.getElementById('ls-score-display');
-                if (scoreEl) scoreEl.innerText = `🪙 +${lsScore}`;
-
-                if (feedbackEl) {
-                    feedbackEl.innerText = `🎉 Chính xác! (${currentQ.word})`;
-                    feedbackEl.style.color = '#10b981';
-                }
-
-                setTimeout(() => {
-                    lsCurrentIndex++;
-                    renderListenSpeedQuestion();
-                }, 800);
-            } else {
-                // Wrong!
-                btnEl.classList.add('wrong');
-                document.querySelectorAll('.listen-opt-btn').forEach(b => {
-                    if (b.innerText === currentQ.meaning) b.classList.add('correct');
-                });
-
-                if (feedbackEl) {
-                    feedbackEl.innerText = `❌ Đáp án đúng: "${currentQ.meaning}" (${currentQ.word})`;
-                    feedbackEl.style.color = '#ef4444';
-                }
-
-                // Add to ICU
-                addWordToICU(currentQ.wordObj);
-
-                setTimeout(() => {
-                    lsCurrentIndex++;
-                    renderListenSpeedQuestion();
-                }, 1400);
-            }
-        }
-
-        function handleListenSpeedTimeout() {
-            if (isLsAnswered) return;
-            isLsAnswered = true;
-            let currentQ = lsQuestions[lsCurrentIndex];
-            let feedbackEl = document.getElementById('ls-feedback-text');
-
-            document.querySelectorAll('.listen-opt-btn').forEach(b => {
-                if (b.innerText === currentQ.meaning) b.classList.add('correct');
-            });
-
-            if (feedbackEl) {
-                feedbackEl.innerText = `⏰ Hết 5 giây! Đáp án là: "${currentQ.meaning}" (${currentQ.word})`;
-                feedbackEl.style.color = '#ef4444';
-            }
-
-            addWordToICU(currentQ.wordObj);
-
-            setTimeout(() => {
-                lsCurrentIndex++;
-                renderListenSpeedQuestion();
-            }, 1400);
-        }
-
-        function finishListenSpeedVictory() {
-            if (lsTimerInterval) clearInterval(lsTimerInterval);
-            let finalCoins = 25;
-
-            let users = JSON.parse(localStorage.getItem('gas_users') || '{}');
-            if (currentUser && users[currentUser]) {
-                if (users[currentUser].points === undefined) users[currentUser].points = 0;
-                users[currentUser].points += finalCoins;
-                localStorage.setItem('gas_users', JSON.stringify(users));
-                safeSyncToSupabase();
-                updateDashboardProgress();
-            }
-
-            let resultScoreEl = document.getElementById('ls-result-score');
-            if (resultScoreEl) resultScoreEl.innerText = `🪙 +${lsScore} Đ`;
-
-            let resultCoinsEl = document.getElementById('ls-result-coins');
-            if (resultCoinsEl) resultCoinsEl.innerText = `+${finalCoins} 🪙`;
-
-            let modal = document.getElementById('ls-victory-modal');
-            if (modal) modal.style.display = 'flex';
-
-            if (typeof triggerConfetti === 'function') triggerConfetti();
-        }
-
-        function closeListenSpeedVictory() {
-            let modal = document.getElementById('ls-victory-modal');
-            if (modal) modal.style.display = 'none';
-            showScreen('screen-dashboard');
         }
 
         // --- MOBILE TOUCH SWIPE GESTURES ---
