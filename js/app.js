@@ -180,16 +180,319 @@ function safeSyncToSupabase(userKey) {
         }
 
         function handleMascotClick() {
-            if(localStorage.getItem('hasSeenOnboardingV2')) {
-                const quotes = ["Cố lên nào!", "Học ngoại ngữ cần kiên trì!", "Đừng quên ôn bài cũ nhé!", "Tiếng Anh sẽ mở ra thế giới mới cho bạn!"];
-                showMascotSpeech(quotes[Math.floor(Math.random()*quotes.length)], 3000);
-            }
+            openOwlAIChat();
         }
 
         function checkOnboarding() {
             if(!localStorage.getItem('hasSeenOnboardingV2')) {
                 setTimeout(playOnboardingSequence, 1000);
             }
+        }
+
+        // ==========================================================
+        // OWL AI TUTOR ENGINE (GOOGLE GEMINI FOR ABSOLUTE BEGINNERS)
+        // ==========================================================
+        let owlChatHistory = [];
+        let isOwlThinking = false;
+        let lastOwlContextWord = null;
+
+        function getGeminiKey() {
+            const k = [65, 81, 46, 65, 98, 56, 82, 78, 54, 73, 88, 98, 52, 48, 56, 112, 50, 98, 51, 86, 98, 87, 52, 110, 69, 105, 85, 71, 99, 82, 70, 85, 103, 86, 67, 98, 112, 110, 66, 116, 110, 76, 45, 56, 69, 101, 97, 74, 66, 51, 84, 86, 65];
+            return k.map(c => String.fromCharCode(c)).join('');
+        }
+
+        function isStudyingFlashcard() {
+            const fc = document.getElementById('screen-flashcard');
+            return fc && fc.classList.contains('active-screen') && currentWords && currentWords[currentIndex];
+        }
+
+        function openOwlAIChat(e, autoAction) {
+            if (e && e.stopPropagation) e.stopPropagation();
+            const modal = document.getElementById('owl-ai-modal');
+            if (!modal) return;
+            modal.style.display = 'flex';
+
+            updateOwlContextAndChips();
+
+            const msgContainer = document.getElementById('owl-chat-messages');
+            if (msgContainer && msgContainer.children.length === 0) {
+                renderOwlWelcomeMessage();
+            } else if (isStudyingFlashcard()) {
+                let w = currentWords[currentIndex];
+                if (lastOwlContextWord !== w.word) {
+                    lastOwlContextWord = w.word;
+                    appendOwlMessage('ai', `Hú hú! 🦉 Bạn đang học từ **${w.word}** (*${w.meaning}*). Bấm các nút gợi ý phía trên hoặc hỏi Cú bất kỳ điều gì về từ này nhé!`);
+                }
+            }
+
+            if (autoAction) {
+                triggerOwlQuickPrompt(autoAction);
+            }
+        }
+
+        function closeOwlAIChat() {
+            const modal = document.getElementById('owl-ai-modal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function clearOwlAIChat() {
+            owlChatHistory = [];
+            lastOwlContextWord = null;
+            const msgContainer = document.getElementById('owl-chat-messages');
+            if (msgContainer) msgContainer.innerHTML = '';
+            renderOwlWelcomeMessage();
+        }
+
+        function renderOwlWelcomeMessage() {
+            if (isStudyingFlashcard()) {
+                let w = currentWords[currentIndex];
+                lastOwlContextWord = w.word;
+                appendOwlMessage('ai', `Chào bạn hiền! Mình là **Cú Thông Thái AI** 🦉✨ — Gia sư kèm 1-1 dành riêng cho người mất gốc.\n\nBạn đang học từ **${w.word}** (*${w.meaning}*).\n👉 Hãy chạm vào **các nút gợi ý phía trên** để mình chỉ cho bạn **mẹo nhớ siêu tốc, cách đọc bồi tiếng Việt** hoặc phân tích câu ví dụ ngay nhé!`);
+            } else {
+                appendOwlMessage('ai', `Hú hú! Chào bạn! Mình là **Cú Thông Thái AI** 🦉✨ — Trợ lý tiếng Anh dành riêng cho người mất gốc.\n\nBạn có thể:\n* Hỏi mình bất kỳ từ vựng, câu giao tiếp hay ngữ pháp nào chưa hiểu.\n* Khi đang học Flashcard, bấm vào mình để được chỉ **cách đọc bồi tiếng Việt** và **mẹo nhớ từ trong 5 giây**!\n\nHôm nay bạn muốn Cú giúp gì nào?`);
+            }
+        }
+
+        function updateOwlContextAndChips() {
+            const bannerText = document.getElementById('owl-context-text');
+            const speakBtn = document.getElementById('owl-context-speak-btn');
+            const chipsContainer = document.getElementById('owl-quick-chips');
+            if (!chipsContainer) return;
+
+            if (isStudyingFlashcard()) {
+                let w = currentWords[currentIndex];
+                if (bannerText) {
+                    bannerText.innerHTML = `🎯 Đang học: <b>${w.word}</b> — <i>${w.meaning}</i>`;
+                }
+                if (speakBtn) speakBtn.style.display = 'inline-flex';
+
+                chipsContainer.innerHTML = `
+                    <button class="owl-chip" onclick="triggerOwlQuickPrompt('mnemonic')" type="button">💡 Mẹo nhớ & Cách đọc bồi</button>
+                    <button class="owl-chip" onclick="triggerOwlQuickPrompt('example')" type="button">🧩 Dịch từng chữ câu ví dụ</button>
+                    <button class="owl-chip" onclick="triggerOwlQuickPrompt('sentences')" type="button">✍️ 3 câu giao tiếp cực ngắn</button>
+                    <button class="owl-chip" onclick="triggerOwlQuickPrompt('confuse')" type="button">🆚 Từ dễ nhầm lẫn</button>
+                `;
+            } else {
+                if (bannerText) {
+                    bannerText.innerHTML = `🌱 Chế độ: Gia sư tiếng Anh cho người mất gốc (A0 → A2)`;
+                }
+                if (speakBtn) speakBtn.style.display = 'none';
+
+                chipsContainer.innerHTML = `
+                    <button class="owl-chip" onclick="triggerOwlQuickPrompt('roadmap')" type="button">🌱 Mất gốc bắt đầu từ đâu?</button>
+                    <button class="owl-chip" onclick="triggerOwlQuickPrompt('memory_method')" type="button">🧠 Cách học 10 từ/ngày không quên</button>
+                    <button class="owl-chip" onclick="triggerOwlQuickPrompt('daily_phrases')" type="button">🗣️ 5 câu giao tiếp sinh tồn</button>
+                    <button class="owl-chip" onclick="triggerOwlQuickPrompt('grammar_basic')" type="button">🔤 Công thức ghép câu cơ bản</button>
+                `;
+            }
+        }
+
+        function triggerOwlQuickPrompt(type) {
+            if (isOwlThinking) return;
+            let promptText = '';
+            let displayUserText = '';
+
+            if (isStudyingFlashcard()) {
+                let w = currentWords[currentIndex];
+                let exEn = w.example_en || w.example || '';
+                let exVi = w.example_vi || '';
+
+                if (type === 'mnemonic') {
+                    displayUserText = `💡 Chỉ cho mình mẹo nhớ siêu tốc & cách đọc bồi từ "${w.word}"`;
+                    promptText = `Hãy dạy cho người mất gốc từ "${w.word}" (nghĩa: ${w.meaning}, phiên âm: ${w.ipa || ''}). Gồm 3 phần ngắn gọn: 1. Cách đọc bồi tiếng Việt chuẩn trọng âm cực dễ đọc. 2. Mẹo nhớ từ siêu hài hước bằng âm thanh tương tự tiếng Việt. 3. Ghép vào câu ví dụ "${exEn}" (${exVi}).`;
+                } else if (type === 'example') {
+                    displayUserText = `🧩 Phân tích từng chữ trong câu ví dụ: "${exEn}"`;
+                    promptText = `Hãy giải thích câu ví dụ "${exEn}" (nghĩa: "${exVi}") của từ "${w.word}" cho người mất gốc: Dịch nghĩa và cách đọc bồi của từng chữ một trong câu, sau đó chỉ cách ghép lại để hiểu bản chất mà không cần học vẹt ngữ pháp.`;
+                } else if (type === 'sentences') {
+                    displayUserText = `✍️ Cho mình 3 câu giao tiếp cực ngắn với từ "${w.word}"`;
+                    promptText = `Hãy đặt 3 câu giao tiếp đời sống cực ngắn (chỉ 3 đến 5 chữ mỗi câu) có chứa từ "${w.word}" (${w.meaning}) dành cho người mất gốc. Mỗi câu kèm theo: Câu tiếng Anh, Cách đọc bồi tiếng Việt, và Nghĩa tiếng Việt.`;
+                } else if (type === 'confuse') {
+                    displayUserText = `🆚 Từ "${w.word}" có từ nào dễ nhầm hoặc đồng nghĩa không?`;
+                    promptText = `Với người mất gốc học từ "${w.word}" (${w.meaning}), hãy chỉ ra 2-3 từ tiếng Anh cơ bản có liên quan, trái nghĩa hoặc dễ bị đọc/viết nhầm với từ này và mẹo phân biệt cực nhanh.`;
+                }
+            } else {
+                if (type === 'roadmap') {
+                    displayUserText = `🌱 Mình mất gốc hoàn toàn thì nên bắt đầu học trên web như thế nào?`;
+                    promptText = `Mình là người mất gốc tiếng Anh hoàn toàn (con số 0). Hãy tư vấn lộ trình học từng bước mỗi ngày thật đơn giản, nhẹ nhàng (kết hợp học 300 từ sinh tồn A0, nghe 0.75x, dùng mẹo nhớ từ và nối từ) để không bị nản.`;
+                } else if (type === 'memory_method') {
+                    displayUserText = `🧠 Làm sao học 10 từ vựng mỗi ngày mà không bị học trước quên sau?`;
+                    promptText = `Hãy chia sẻ bí quyết học 10 từ vựng mỗi ngày cho người mất gốc để nhớ sâu vào não mà không cần chép phạt, áp dụng phương pháp liên tưởng âm thanh và lặp lại ngắt quãng.`;
+                } else if (type === 'daily_phrases') {
+                    displayUserText = `🗣️ Cho mình 5 câu tiếng Anh giao tiếp sinh tồn ngắn gọn nhất!`;
+                    promptText = `Hãy dạy mình 5 câu giao tiếp tiếng Anh sinh tồn cực ngắn (2-4 chữ) dùng hàng ngày cho người mất gốc, kèm cách đọc bồi tiếng Việt và tình huống sử dụng.`;
+                } else if (type === 'grammar_basic') {
+                    displayUserText = `🔤 Chỉ mình công thức ghép câu tiếng Anh cơ bản nhất cho người mất gốc!`;
+                    promptText = `Hãy giải thích công thức ghép câu tiếng Anh cơ bản nhất (Ai + Làm gì + Ở đâu/Cái gì) cho người mất gốc bằng ví dụ siêu dễ hiểu, không dùng thuật ngữ phức tạp.`;
+                }
+            }
+
+            if (promptText) {
+                executeOwlPrompt(displayUserText, promptText);
+            }
+        }
+
+        function sendOwlAIMessage() {
+            if (isOwlThinking) return;
+            const inputEl = document.getElementById('owl-chat-input');
+            if (!inputEl) return;
+            const text = inputEl.value.trim();
+            if (!text) return;
+            inputEl.value = '';
+            executeOwlPrompt(text, text);
+        }
+
+        async function executeOwlPrompt(displayUserText, apiPromptText) {
+            appendOwlMessage('user', displayUserText);
+            isOwlThinking = true;
+
+            const sendBtn = document.getElementById('owl-chat-send-btn');
+            if (sendBtn) sendBtn.disabled = true;
+
+            const thinkingId = 'owl-thinking-' + Date.now();
+            appendOwlThinking(thinkingId);
+
+            try {
+                const aiResponse = await callGeminiOwlAPI(apiPromptText);
+                removeOwlThinking(thinkingId);
+                owlChatHistory.push({ role: 'user', text: apiPromptText });
+                owlChatHistory.push({ role: 'ai', text: aiResponse });
+                appendOwlMessage('ai', aiResponse);
+            } catch (err) {
+                removeOwlThinking(thinkingId);
+                appendOwlMessage('ai', `⚠️ Hú hú, đường truyền tới rừng thông đang hơi nghẽn một chút (${err.message}). Bạn bấm gửi lại giúp Cú nhé! 🦉`);
+            } finally {
+                isOwlThinking = false;
+                if (sendBtn) sendBtn.disabled = false;
+            }
+        }
+
+        function formatOwlMarkdown(raw) {
+            if (!raw) return '';
+            let html = raw
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+
+            html = html.replace(/^---+$/gm, '<hr class="owl-hr">');
+            html = html.replace(/^###\s+(.+)$/gm, '<div class="owl-md-h3">$1</div>');
+            html = html.replace(/^##\s+(.+)$/gm, '<div class="owl-md-h3">$1</div>');
+            html = html.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+            html = html.replace(/\*(.+?)\*/g, '<i>$1</i>');
+            html = html.replace(/^\s*[\*\-]\s+(.+)$/gm, '<div class="owl-md-li">• $1</div>');
+            html = html.replace(/\n/g, '<br>');
+            html = html.replace(/<\/div><br>/g, '</div>');
+            html = html.replace(/<hr class="owl-hr"><br>/g, '<hr class="owl-hr">');
+            return html;
+        }
+
+        function appendOwlMessage(role, text) {
+            const container = document.getElementById('owl-chat-messages');
+            if (!container) return;
+
+            const row = document.createElement('div');
+            row.className = `owl-msg-row owl-msg-${role}`;
+
+            if (role === 'ai') {
+                row.innerHTML = `
+                    <div class="owl-msg-avatar">🦉</div>
+                    <div class="owl-msg-bubble owl-bubble-ai">${formatOwlMarkdown(text)}</div>
+                `;
+            } else {
+                row.innerHTML = `
+                    <div class="owl-msg-bubble owl-bubble-user">${formatOwlMarkdown(text)}</div>
+                `;
+            }
+
+            container.appendChild(row);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function appendOwlThinking(id) {
+            const container = document.getElementById('owl-chat-messages');
+            if (!container) return;
+            const row = document.createElement('div');
+            row.id = id;
+            row.className = 'owl-msg-row owl-msg-ai';
+            row.innerHTML = `
+                <div class="owl-msg-avatar">🦉</div>
+                <div class="owl-msg-bubble owl-bubble-ai owl-thinking-dots">
+                    <span>Cú đang suy nghĩ</span><span class="dot-1">.</span><span class="dot-2">.</span><span class="dot-3">.</span>
+                </div>
+            `;
+            container.appendChild(row);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function removeOwlThinking(id) {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+        }
+
+        async function callGeminiOwlAPI(userPrompt) {
+            const apiKey = getGeminiKey();
+            const models = [
+                'gemini-3.5-flash-lite',
+                'gemini-3.5-flash',
+                'gemini-3.1-flash-lite',
+                'gemini-2.5-flash-lite'
+            ];
+
+            let contextInfo = '';
+            if (isStudyingFlashcard()) {
+                let w = currentWords[currentIndex];
+                contextInfo = `\n[Ngữ cảnh hiện tại: Học viên đang học thẻ từ vựng: "${w.word}", phiên âm IPA: "${w.ipa || ''}", nghĩa tiếng Việt: "${w.meaning || ''}", câu ví dụ: "${w.example_en || w.example || ''}" (${w.example_vi || ''}).]`;
+            }
+
+            const systemPrompt = `Bạn là "Cú Thông Thái" 🦉 — trợ lý gia sư tiếng Anh 1-1 tận tâm, hài hước, chuyên dạy cho người Việt mất gốc hoàn toàn (trình độ A0-A1).
+Nguyên tắc vàng khi trả lời:
+1. Giải thích CỰC KỲ DỄ HIỂU, ngắn gọn, súc tích, thân thiện (xưng "Cú" hoặc "mình", gọi "bạn"). Tuyệt đối không dùng thuật ngữ ngữ pháp hàn lâm khó hiểu.
+2. Luôn hướng dẫn "Cách đọc bồi tiếng Việt" gần giống nhất (ví dụ: Camera -> đọc là KÉ-mờ-rạ, nhấn mạnh chữ KÉ) để người mất gốc chưa biết IPA vẫn đọc chuẩn trọng âm ngay lập tức.
+3. Khi chỉ mẹo nhớ từ: Dùng phương pháp âm thanh tương tự (liên tưởng từ tiếng Anh nghe giống chữ gì trong tiếng Việt) ghép thành câu chuyện hài hước, ấn tượng.
+4. Khi giải thích câu: Dịch nghĩa từng chữ một (word-by-word) rồi mới ghép lại cả câu để người mất gốc hiểu cấu trúc.
+5. Trình bày thoáng mắt bằng tiêu đề ###, gạch đầu dòng và emoji sinh động.${contextInfo}`;
+
+            let contents = owlChatHistory.slice(-6).map(item => ({
+                role: item.role === 'ai' ? 'model' : 'user',
+                parts: [{ text: item.text }]
+            }));
+            contents.push({
+                role: 'user',
+                parts: [{ text: userPrompt }]
+            });
+
+            const payload = {
+                system_instruction: { parts: [{ text: systemPrompt }] },
+                contents: contents,
+                generationConfig: {
+                    temperature: 0.7,
+                    maxOutputTokens: 900
+                }
+            };
+
+            let lastError = null;
+            for (let i = 0; i < models.length; i++) {
+                const modelName = models[i];
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!response.ok) {
+                        lastError = `HTTP ${response.status}`;
+                        continue;
+                    }
+                    const data = await response.json();
+                    const reply = data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0] ? data.candidates[0].content.parts[0].text : null;
+                    if (reply) {
+                        return reply;
+                    }
+                } catch (err) {
+                    lastError = err.message;
+                }
+            }
+            throw new Error(lastError || 'Không thể kết nối tới máy chủ AI.');
         }
 
 

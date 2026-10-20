@@ -21,15 +21,16 @@
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="css/style.css?v=5.3">
+    <link rel="stylesheet" href="css/style.css?v=5.4">
 </head>
 <body>
     <div class="bg-particle" style="width: 300px; height: 300px; top: 10%; left: 10%;"></div>
     <div class="bg-particle" style="width: 200px; height: 200px; top: 60%; right: 5%; background: rgba(16, 185, 129, 0.1);"></div>
     <div class="bg-particle" style="width: 250px; height: 250px; bottom: -50px; left: 20%; background: rgba(239, 68, 68, 0.1);"></div>
     
-    <div class="mascot-container" onclick="handleMascotClick()">
-        <div class="mascot-speech" id="mascot-speech">Cố lên nhé!</div>
+    <div class="mascot-container" onclick="handleMascotClick()" title="Bấm để hỏi Gia Sư Cú Thông Thái AI">
+        <div class="mascot-speech" id="mascot-speech">Bấm vào mình để hỏi bài nhé! 🦉✨</div>
+        <div class="mascot-ai-badge">✨ Cú AI</div>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" style="width:100%; height:100%; filter: drop-shadow(0 15px 20px rgba(0,0,0,0.25));">
             <!-- Body Outline/Shadow -->
             <path d="M 25 35 C 10 55, 10 85, 20 90 C 40 95, 60 95, 80 90 C 90 85, 90 55, 75 35 Z" fill="#3b2514" />
@@ -460,6 +461,7 @@
                 <span id="flashcard-topic-title">Chủ đề</span>
                 <span class="progress-text" id="flashcard-progress">Từ 1 / 100</span>
             </div>
+            <button class="btn-owl-ai-top" onclick="openOwlAIChat(event)" title="Hỏi Gia Sư Cú AI">🦉 Cú AI</button>
         </div>
         <div class="progress-wrapper flashcard-pbar-wrap">
             <div class="progress-bar" id="flashcard-progress-bar"></div>
@@ -513,7 +515,10 @@
                     
                     <div id="card-mnemonic-box" style="display: none; background: #fef3c7; color: #b45309; padding: 10px; border-radius: 8px; font-size: 0.9rem; margin-top: 10px; text-align: left; border: 1px dashed #f59e0b;"></div>
                     
-                    <button id="btn-sentence-game" class="btn-primary" style="display: none; margin-top: 15px; padding: 8px 16px; font-size: 0.9rem; width: 100%;"><span style="margin-right:5px;">🎮</span> Luyện Xếp Câu</button>
+                    <div class="card-back-action-row" onclick="event.stopPropagation()">
+                        <button id="btn-ask-owl-card" class="btn-ask-owl-card" onclick="openOwlAIChat(event, 'mnemonic')" type="button">🦉 Mẹo nhớ & Cách đọc AI</button>
+                        <button id="btn-sentence-game" class="btn-primary" style="display: none; margin: 0; padding: 8px 12px; font-size: 0.85rem; flex: 1;"><span style="margin-right:4px;">🎮</span> Luyện Xếp Câu</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -626,6 +631,49 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- 7. OWL AI TUTOR MODAL (TRỢ LÝ CÚ THÔNG THÁI AI CHO NGƯỜI MẤT GỐC) -->
+    <div id="owl-ai-modal" class="owl-ai-backdrop" style="display: none;" onclick="if(event.target === this) closeOwlAIChat()">
+        <div class="owl-ai-window">
+            <!-- Header -->
+            <div class="owl-ai-header">
+                <div class="owl-ai-header-left">
+                    <div class="owl-ai-avatar">🦉</div>
+                    <div>
+                        <div class="owl-ai-title">Cú Thông Thái AI <span class="owl-ai-pro-tag">GEMINI</span></div>
+                        <div class="owl-ai-subtitle">🟢 Gia sư 1-1 dành riêng cho người mất gốc</div>
+                    </div>
+                </div>
+                <div class="owl-ai-header-actions">
+                    <button class="owl-ai-icon-btn" onclick="clearOwlAIChat()" title="Xóa lịch sử trò chuyện" type="button">🗑️</button>
+                    <button class="owl-ai-icon-btn owl-ai-close-btn" onclick="closeOwlAIChat()" title="Đóng" type="button">✕</button>
+                </div>
+            </div>
+
+            <!-- Context Banner (Current Word or General Mode) -->
+            <div id="owl-context-banner" class="owl-context-banner">
+                <span id="owl-context-text">🌱 Chế độ: Gia sư tiếng Anh mất gốc</span>
+                <button id="owl-context-speak-btn" class="owl-context-speak" style="display: none;" onclick="playAudio(event)" type="button">🔊 Nghe từ</button>
+            </div>
+
+            <!-- Quick Action Chips (1-Tap Prompts for Beginners) -->
+            <div id="owl-quick-chips" class="owl-quick-chips">
+                <!-- Dynamically populated -->
+            </div>
+
+            <!-- Chat Messages Area -->
+            <div id="owl-chat-messages" class="owl-chat-messages">
+                <!-- Messages injected here -->
+            </div>
+
+            <!-- Input Area -->
+            <div class="owl-chat-input-bar">
+                <input type="text" id="owl-chat-input" placeholder="Hỏi Cú bất kỳ từ vựng, cách đọc, câu tiếng Anh nào..." autocomplete="off" onkeydown="if(event.key === 'Enter') sendOwlAIMessage()">
+                <button id="owl-chat-send-btn" class="owl-chat-send-btn" onclick="sendOwlAIMessage()" type="button">Gửi ➤</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Load Data -->
     <script src="js/vocab_data.js"></script>
@@ -635,8 +683,8 @@
     <script src="js/premium_vocab.js"></script>
     <script src="js/toeic_650_data.js"></script>
     <script src="js/survival_300_data.js"></script>
-    <script src="js/supabase_client.js?v=5.3"></script>
-    <script src="js/app.js?v=5.3"></script>
+    <script src="js/supabase_client.js?v=5.4"></script>
+    <script src="js/app.js?v=5.4"></script>
     
     <!-- Mobile Viewport & Gesture Lock (No accidental zoom / double-tap zoom / zero-scroll) -->
     <script>
