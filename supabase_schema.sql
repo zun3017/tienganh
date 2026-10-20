@@ -52,11 +52,28 @@ CREATE TABLE IF NOT EXISTS public.custom_vocabulary (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- 5. BẢNG KHO TỪ VỰNG HỆ THỐNG (SYSTEM VOCABULARY - 3354 TỪ)
+CREATE TABLE IF NOT EXISTS public.vocabulary (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    topic TEXT NOT NULL,
+    word TEXT NOT NULL,
+    ipa TEXT,
+    meaning TEXT NOT NULL,
+    example_en TEXT,
+    example_vi TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 -- Bật Row Level Security (RLS) & cấp quyền truy cập công khai/anon
 ALTER TABLE public.users_profile ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.study_progress ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.quiz_history ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.custom_vocabulary ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.vocabulary ENABLE ROW LEVEL SECURITY;
+
+GRANT ALL ON TABLE public.vocabulary TO anon, authenticated, service_role;
+DROP POLICY IF EXISTS "Allow public vocabulary" ON public.vocabulary;
+CREATE POLICY "Allow public vocabulary" ON public.vocabulary FOR ALL USING (true) WITH CHECK (true);
 
 -- Cấp quyền thao tác cho anon, authenticated, service_role
 GRANT ALL ON TABLE public.users_profile TO anon, authenticated, service_role;
