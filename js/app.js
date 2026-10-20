@@ -902,8 +902,16 @@ Nguyên tắc vàng khi trả lời:
                 if (document.body) document.body.scrollTop = 0;
             } catch (e) {}
 
-            document.querySelectorAll('.container').forEach(el => el.classList.remove('active-screen'));
-            document.getElementById(screenId).classList.add('active-screen');
+            document.querySelectorAll('.container').forEach(el => {
+                el.classList.remove('active-screen');
+            });
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) {
+                if (targetScreen.style && targetScreen.style.display === 'none') {
+                    targetScreen.style.display = '';
+                }
+                targetScreen.classList.add('active-screen');
+            }
 
             // Header display management
             const mainHeader = document.getElementById('main-header');
